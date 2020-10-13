@@ -17,4 +17,3 @@ filetype plugin indent on
 
 " LamT: starting here
 set mouse-=a
-
