@@ -1,0 +1,14 @@
+#export XDG_SESSION_TYPE=x11
+#export GDK_BACKEND=x11
+#exec dbus-launch gnome-session
+#xrdb ~/.Xresources-xrdp
+#exec gnome-session
+
+#x0vncserver -rfbauth ~/.vnc/passwd &
+
+# LamT: this should be a valid way of startx according to Arch Wiki
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx
+fi
+
+xrandr --output Virtual1 --mode 1280x800	
