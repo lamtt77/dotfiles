@@ -18,7 +18,6 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-# LamT:  gpg-agent will need to enable ssh support and allow pubkey in sshcontrol
-	pushurl = git@github.com:lamtt77/dotfiles.git
+# LamT: gpg-agent will need to enable ssh support and allow pubkey in sshcontrol
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null

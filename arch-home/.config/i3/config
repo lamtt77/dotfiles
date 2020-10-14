@@ -24,8 +24,8 @@ bar {
 }
 
 # Add gaps between windows look nicer
-gaps inner 5
-gaps outer 5
+gaps inner 3
+gaps outer 3
 
 # Mouse, please stop focus whenever you hover to whatever
 focus_follows_mouse no
