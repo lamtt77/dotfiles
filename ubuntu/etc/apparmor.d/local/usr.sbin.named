@@ -1,0 +1,14 @@
+# Samba DLZ and Active Directory Zones (default source installation)
+/var/lib/samba/private/sam.ldb rwk,
+/usr/lib/x86_64-linux-gnu/samba/bind9/** rm,
+/usr/lib/x86_64-linux-gnu/samba/ldb/** rm,
+/usr/lib/x86_64-linux-gnu/samba/** rm,
+/usr/lib/x86_64-linux-gnu/ldb/** rm,
+
+# Lam copied from https://wiki.samba.org/index.php/BIND9_DLZ_AppArmor_and_SELinux_Integration
+/var/lib/samba/private/dns.keytab rk,
+/var/lib/samba/private/named.conf r,
+/var/lib/samba/private/dns/** rwk,
+/etc/smb.conf r,
+/var/tmp/** rwmk,
+/dev/urandom rw,
