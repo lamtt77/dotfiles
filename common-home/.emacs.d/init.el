@@ -36,15 +36,59 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
+(fset 'yes-or-no-p 'y-or-n-p)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
+(setq delete-old-versions -1 )		; delete excess backup versions silently
+(setq version-control t )		; use version control
+(setq vc-make-backup-files t )		; make backups file even when in version controlled dir
+(setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
+(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
+(setq ring-bell-function 'ignore )	; silent bell when you make a mistake
+(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
+(setq coding-system-for-write 'utf-8 )
+(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
+(setq default-fill-column 80)		; toggle wrapping text at the 80th character
+(setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
+(setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
+
+
 ;;(straight-use-package 'auctex)
+
+(use-package gruvbox-theme
+  :config (load-theme 'gruvbox-light-medium t))
 
 (use-package evil
   :init
-  (setq evil-want-keybinding nil))
+  (setq evil-want-keybinding nil)
+  (evil-mode 0))
 
 (use-package evil-collection
   :after evil 
-  :defer nil)
+  :defer nil
+  :config
+  (evil-collection-init))
+
+(use-package which-key
+  :config
+  (which-key-mode))
+
+(use-package undo-tree			
+  :init
+  (global-undo-tree-mode))
+
+; expand the marked region in semantic increments (negative prefix to reduce region)
+(use-package expand-region
+  :config
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+; deletes all the whitespace when you hit backspace or delete
+(use-package hungry-delete
+  :config
+  (global-hungry-delete-mode))
 
 (use-package gnuplot)
 
@@ -60,6 +104,9 @@
   :defer nil
   :custom
   (pdf-tools-install))
+
+;; not working yet
+;; (setq image-use-external-converter t)
 
 (use-package org-download
   :after org
