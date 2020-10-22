@@ -200,3 +200,15 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+# LamT: change termite themes on-the-fly
+set $mode_term_theme Terminal theme (l) light-medium, (d) dark-medium
+mode "$mode_term_theme" {
+    # choose which theme should be applied by pressing l (light-medium) or d (dark-medium)
+    bindsym l exec --no-startup-id "~/.local/scripts/termite-switch-theme.sh light-medium", mode "default"
+    bindsym d exec --no-startup-id "~/.local/scripts/termite-switch-theme.sh dark-medium", mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+t mode "$mode_term_theme"
