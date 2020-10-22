@@ -69,9 +69,7 @@ set autoindent
 set wrap
 set ignorecase
 set smartcase
-set nobackup
-set nowritebackup
-set swapfile
+set nobackup nowritebackup
 set directory=~/.vim/swapdir//
 set undodir=~/.vim/undodir//
 set viewdir=~/.vim/viewdir//
