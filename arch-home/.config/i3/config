@@ -67,7 +67,7 @@ floating_modifier $mod
 bindsym $mod+Return exec i3-sensible-terminal
 
 # LamT
-bindsym $mod+Shift+Return exec termite
+bindsym $mod+Shift+Return exec termite $@
 # kill focused window
 #bindsym $mod+Shift+q kill
 bindsym $mod+q kill
