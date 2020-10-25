@@ -67,10 +67,8 @@ set incsearch nohlsearch
 set tabstop=8 expandtab shiftwidth=4 softtabstop=4
 set autoindent
 set wrap
-set ignorecase
-set smartcase
-set nobackup
-set nowritebackup
+set ignorecase smartcase
+set nobackup nowritebackup
 set swapfile
 set directory=~/.vim/swapdir//
 set undodir=~/.vim/undodir//
@@ -156,8 +154,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
-Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }  " lazy loading, rarely use
-" let g:webdevicons_enable_nerdtree = 1
 " Plug 'ryanoasis/vim-devicons'
 
 " Plug 'justinmk/vim-dirvish'       " yet to see benefit vs built-in netrw
