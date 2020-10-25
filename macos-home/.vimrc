@@ -67,9 +67,11 @@ set incsearch nohlsearch
 set tabstop=8 expandtab shiftwidth=4 softtabstop=4
 set autoindent
 set wrap
+
 set ignorecase smartcase
 set nobackup nowritebackup
 set swapfile
+
 set directory=~/.vim/swapdir//
 set undodir=~/.vim/undodir//
 set viewdir=~/.vim/viewdir//

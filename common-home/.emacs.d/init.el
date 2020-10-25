@@ -116,7 +116,7 @@
   (org-download-image-dir "images")
   (org-download-heading-lvl nil)
   (org-download-timestamp "%Y%m%d-%H%M%S_")
-  (org-image-actual-width 300)
+  (org-image-actual-width 600)
   ;; (org-download-screenshot-method "/usr/bin/scrot %s")
   ;; Drag-and-drop to `dired`
   (add-hook 'dired-mode-hook 'org-download-enable)
