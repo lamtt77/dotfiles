@@ -89,19 +89,19 @@ scrollback_lines = 10000
 
 # vim: ft=dosini cms=#%s
 [colors]
-# Base16 Gruvbox dark, medium
+# Base16 Gruvbox dark, hard
 # Author: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
 
 foreground          = #d5c4a1
 foreground_bold     = #d5c4a1
 cursor              = #d5c4a1
-cursor_foreground   = #282828
-background          = #282828
+cursor_foreground   = #1d2021
+background          = #1d2021
 
 # 16 color space
 
 # Black, Gray, Silver, White
-color0  = #282828
+color0  = #1d2021
 color8  = #665c54
 color7  = #d5c4a1
 color15 = #fbf1c7
