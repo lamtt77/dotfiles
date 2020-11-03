@@ -565,7 +565,13 @@ nnoremap <F5> :UndotreeToggle<cr>
 " Change to Directory of Current file
 nnoremap <Leader>cd :cd %:p:h<CR>
 
-" === call function at ~/.vim/autoload/functions.vim
+" === TODO: call function from ~/.vim/autoload/functions.vim
+function! TrimWhitespace()
+  let l:save = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:save)
+endfunction
+
 augroup trimwhitespace
   autocmd BufWritePre * :call TrimWhitespace()
 augroup end
