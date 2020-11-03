@@ -10,7 +10,7 @@ PS1='[\u@\h \W]\$ '
 
 # LamT: customization start here
 alias l='ls -a'
-alias ll='ls -l'
+alias ll='ls -lAh'		# A: almost all except . and ..
 alias la='ls -laF'
 
 export EDITOR='vim'
