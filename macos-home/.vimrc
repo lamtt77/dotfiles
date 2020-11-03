@@ -218,14 +218,12 @@ Plug 'junegunn/limelight.vim'
 " Plug 'benmills/vimux'
 " Plug 'benmills/vimux-golang'
 
-
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'hashivim/vim-terraform'
 
 Plug 'majutsushi/tagbar'
 
 " Plug 'kana/vim-arpeggio'
-
-Plug 'ekalinin/Dockerfile.vim'
 
 Plug 'romainl/vim-qf'
 
@@ -320,11 +318,12 @@ endif
 " .............................................................................
 
 " My default settings for using netrw with :Lex
-let g:netrw_banner = 0      " hide / unhide with Shift-I
-let g:netrw_liststyle = 2   " multi-columns view for files
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 30
+let g:netrw_banner=0      " hide / unhide with Shift-I
+let g:netrw_liststyle=2   " multi-columns view for files
+let g:netrw_browse_split=4
+let g:netrw_preview=1
+let g:netrw_altv=1
+let g:netrw_winsize=70
 
 " === More USEFUL Plugins here
 
@@ -564,16 +563,9 @@ nnoremap <F5> :UndotreeToggle<cr>
 " === Some shortcut commands here
 
 " Change to Directory of Current file
-" command! CDC cd %:p:h
 nnoremap <Leader>cd :cd %:p:h<CR>
 
-" === Some quick functions are here, else putting into ~/.vim/autoload/functions.vim
-fun! TrimWhitespace()
-  let l:save = winsaveview()
-  keeppatterns %s/\s\+$//e
-  call winrestview(l:save)
-endfun
-
+" === call function at ~/.vim/autoload/functions.vim
 augroup trimwhitespace
   autocmd BufWritePre * :call TrimWhitespace()
 augroup end

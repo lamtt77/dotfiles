@@ -5,6 +5,12 @@ function! functions#grep(args) abort
 	return system(join([&grepprg, shellescape(args[0]), len(args) > 1 ? join(args[1:-1], ' ') : ''], ' '))
 endfunction
 
+fun! TrimWhitespace()
+  let l:save = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:save)
+endfun
+
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/autoload/general.vim
 " For use with pressing * or # in visual mode to search for current selection
 function! functions#VisualSelection(direction, extra_filter) range
