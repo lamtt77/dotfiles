@@ -54,10 +54,11 @@ set lazyredraw
 " Display non printable characters
 " set list              " a bit dizzy if always on
 set laststatus=2
-
-set splitbelow
-set splitright
 set autoread
+
+" LamT: default vim seems OK
+"set splitbelow
+"set splitright
 
 set nocursorline
 set guicursor=
@@ -140,12 +141,8 @@ endif
 call plug#begin('~/.vim/plugged')
 " Plug 'joshdick/onedark.vim'
 Plug 'sainnhe/gruvbox-material'
-" Plug 'arcticicestudio/nord-vim'
-" Plug 'phanviet/vim-monokai-pro'
-" Plug 'flazz/vim-colorschemes'
 
 " Plug 'sheerun/vim-polyglot'
-
 "Plug 'prettier/vim-prettier', {
 "  \ 'do': 'yarn install',
 "  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -160,14 +157,12 @@ Plug 'junegunn/vim-easy-align'
 
 " Plug 'justinmk/vim-dirvish'       " yet to see benefit vs built-in netrw
 
-" Lightline is even slower than airline when using with CoC
-" Plug 'itchyny/lightline.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 
 " Match more stuff with % (html tag, LaTeX...)
 Plug 'andymass/vim-matchup'
-Plug 'justinmk/vim-sneak' | let g:sneak#label = 1 | let g:sneak#map_netrw = 0
+
+" Plug 'justinmk/vim-sneak' | let g:sneak#label = 1 | let g:sneak#map_netrw = 0
 " Plug 'easymotion/vim-easymotion'
 
 " easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
@@ -192,7 +187,7 @@ Plug 'tpope/vim-sleuth'
 " " allows * and # searches to occur on the current visual selection
 " Plug 'nelstrom/vim-visual-star-search'
 
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " Let test if vimproc could impore VIM async call performance?
 " let g:make = 'gmake'
@@ -213,14 +208,6 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-" if has('nvim')
-"   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/denite.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-
 Plug 'mhinz/vim-grepper'
 Plug 'dyng/ctrlsf.vim'
 
@@ -228,13 +215,13 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/limelight.vim'
 
 " Plug 'christoomey/vim-tmux-navigator'
+" Plug 'benmills/vimux'
+" Plug 'benmills/vimux-golang'
+
 
 Plug 'hashivim/vim-terraform'
 
 Plug 'majutsushi/tagbar'
-
-Plug 'benmills/vimux'
-Plug 'benmills/vimux-golang'
 
 " Plug 'kana/vim-arpeggio'
 
@@ -246,10 +233,10 @@ Plug 'romainl/vim-qf'
 " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'honza/vim-snippets'
 
-Plug 'lervag/vimtex'
-if has('nvim')
-  let g:vimtex_compiler_progname = 'nvr'
-endif
+"Plug 'lervag/vimtex'
+"if has('nvim')
+"  let g:vimtex_compiler_progname = 'nvr'
+"endif
 
 Plug 'vimwiki/vimwiki'
 
@@ -285,15 +272,6 @@ let mapleader="\<space>"
 " === THEMEs and COLORs
 set background=dark
 
-" " ... onedark theme
-" let g:onedark_terminal_italics = 1
-" colorscheme onedark
-" let g:airline_theme ='onedark'
-" .............................................................................
-" let g:lightline = {
-"   \ 'colorscheme': 'onedark',
-"   \ }
-
 " `material`: Carefully designed to have a soft contrast.
 " `mix`: Color palette obtained by calculating the mean of the other two.
 " `original`: The color palette used in the original gruvbox.
@@ -302,14 +280,10 @@ let g:gruvbox_material_palette = 'mix'
 " set contrast - available values: 'hard', 'medium'(default), 'soft'
 let g:gruvbox_material_background = 'medium'
 colorscheme gruvbox-material
-let g:airline_theme = 'gruvbox_material'
-
-" colorscheme nord
 
 " nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
 " nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
 " nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
-
 " nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
 " nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
 " nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
@@ -326,21 +300,6 @@ if colorterm =~# 'truecolor' || colorterm =~# '24bit'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
-
-" plugin airline
-let g:airline_highlighting_cache = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-let g:airline#extensions#tabline#show_tab_nr = 1
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline_powerline_fonts = 1
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1
-let g:airline_skip_empty_sections = 1
-let g:airline#extensions#tabline#fnametruncate = 20
-let g:airline#extensions#tabline#fnamecollapse = 2
-let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 " --- vim go (polyglot) settings.
 " let g:go_highlight_build_constraints = 1
@@ -371,13 +330,6 @@ let g:netrw_winsize = 30
 
 " Sourcing for Coc settings
 source ~/.vim/plugged/coc-lam.vim
-
-" func GoYCM()
-"     :CocDisable
-"     nnoremap <buffer> <silent> <leader>gd :YcmCompleter GoTo<CR>
-"     nnoremap <buffer> <silent> <leader>gr :YcmCompleter GoToReferences<CR>
-"     nnoremap <buffer> <silent> <leader>rr :YcmCompleter RefactorRename<space>
-" endfun
 
 " Plugin vim-go settings
 " let g:go_gopls_options = ['-remote=auto']
@@ -429,16 +381,6 @@ augroup end
 " " Only run linters named in ale_linters settings.
 let g:ale_linters_explicit = 1
 
-" " Set this. Airline will handle the rest.
-" let g:airline#extensions#ale#enabled = 1
-" let g:airline#extensions#tagbar#enabled = 1
-" let g:airline#extensions#virtualenv#enabled = 1
-" Airline coc integration - caution: may impact performance
-" let g:airline#extensions#coc#enabled = 1
-" let airline#extensions#coc#error_symbol = 'E:'
-" let airline#extensions#coc#warning_symbol = 'W:'
-" let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-" let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 " }}}1
 
 " {{{1 KEY MAPPINGS
@@ -572,16 +514,16 @@ let g:gitgutter_sign_removed_first_line = '◥'
 " nmap <Leader>- <Plug>GitGutterUndoHunk
 " nmap <Leader>p <Plug>GitGutterPreviewHunk
 
-" .............................................................................
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
+"" .............................................................................
+"nmap <leader>1 <Plug>AirlineSelectTab1
+"nmap <leader>2 <Plug>AirlineSelectTab2
+"nmap <leader>3 <Plug>AirlineSelectTab3
+"nmap <leader>4 <Plug>AirlineSelectTab4
+"nmap <leader>5 <Plug>AirlineSelectTab5
+"nmap <leader>6 <Plug>AirlineSelectTab6
+"nmap <leader>7 <Plug>AirlineSelectTab7
+"nmap <leader>8 <Plug>AirlineSelectTab8
+"nmap <leader>9 <Plug>AirlineSelectTab9
 
 " -----------------------------------------------------------------------------
 " Basic and frequent mappings
