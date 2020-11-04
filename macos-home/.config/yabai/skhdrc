@@ -2,23 +2,34 @@
 alt - return : ~/.config/yabai/scripts/open_iterm2.sh
 
 # Show system statistics
-fn + ralt - 1 : ~/.config/yabai/scripts/show_cpu.sh
-fn + ralt - 2 : ~/.config/yabai/scripts/show_mem.sh
-fn + ralt - 3 : ~/.config/yabai/scripts/show_bat.sh
-fn + ralt - 4 : ~/.config/yabai/scripts/show_disk.sh
-fn + ralt - 5 : ~/.config/yabai/scripts/show_song.sh
+fn + alt - 1 : ~/.config/yabai/scripts/show_cpu.sh
+fn + alt - 2 : ~/.config/yabai/scripts/show_mem.sh
+fn + alt - 3 : ~/.config/yabai/scripts/show_bat.sh
+fn + alt - 4 : ~/.config/yabai/scripts/show_disk.sh
+fn + alt - 5 : ~/.config/yabai/scripts/show_song.sh
 
 # Navigation
 fn - h : yabai -m window --focus west
 fn - j : yabai -m window --focus south
 fn - k : yabai -m window --focus north
 fn - l : yabai -m window --focus east
+fn - m : yabai -m window --focus mouse
 
 # Moving windows
 fn + ctrl - h : yabai -m window --warp west
 fn + ctrl - j : yabai -m window --warp south
 fn + ctrl - k : yabai -m window --warp north
 fn + ctrl - l : yabai -m window --warp east
+
+alt + shift - 1 : yabai -m space --focus 1
+alt + shift - 2 : yabai -m space --focus 2
+alt + shift - 3 : yabai -m space --focus 3
+alt + shift - 4 : yabai -m space --focus 4
+alt + shift - 5 : yabai -m space --focus 5
+alt + shift - 6 : yabai -m space --focus 6
+alt + shift - m : yabai -m space --focus last
+alt + shift - p : yabai -m space --focus prev
+alt + shift - n : yabai -m space --focus next
 
 # Move focus container to workspace
 fn + shift - m : yabai -m window --space last && yabai -m space --focus last
