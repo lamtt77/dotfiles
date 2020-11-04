@@ -44,20 +44,20 @@ fn + shift - 6 : yabai -m window --space 6 && yabai -m space --focus 6
 
 # Resize windows
 lctrl + alt - h : \
-    yabai -m window --resize left:-20:0 ; \
-    yabai -m window --resize right:-20:0
+    yabai -m window --resize left:-30:0 ; \
+    yabai -m window --resize right:-30:0
 
 lctrl + alt - j : \
-    yabai -m window --resize bottom:0:20 ; \
-    yabai -m window --resize top:0:20
+    yabai -m window --resize bottom:0:30 ; \
+    yabai -m window --resize top:0:30
 
 lctrl + alt - k : \
-    yabai -m window --resize top:0:-20 ; \
-    yabai -m window --resize bottom:0:-20
+    yabai -m window --resize top:0:-30 ; \
+    yabai -m window --resize bottom:0:-30
 
 lctrl + alt - l : \
-    yabai -m window --resize right:20:0 ; \
-    yabai -m window --resize left:20:0
+    yabai -m window --resize right:30:0 ; \
+    yabai -m window --resize left:30:0
 
 # Float and center window
 shift + alt - c : yabai -m window --toggle float;\
@@ -70,8 +70,8 @@ lctrl + alt - 0 : yabai -m space --balance
 lctrl + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # Rotate windows clockwise and anticlockwise
-alt - r         : yabai -m space --rotate 90
-shift + alt - r : yabai -m space --rotate 270
+fn - r         : yabai -m space --rotate 90
+fn + shift - r : yabai -m space --rotate 270
 
 # Rotate on X and Y Axis
 shift + alt - x : yabai -m space --mirror x-axis
@@ -95,3 +95,6 @@ shift + lctrl + alt - r :
 # Make window native fullscreen
 fn - f         : yabai -m window --toggle zoom-fullscreen
 fn + alt - f : yabai -m window --toggle native-fullscreen
+# LamT: useful but not used yet
+#fn - p         : yabai -m window --toggle zoom-parent
+#fn - s         : yabai -m window --toggle split

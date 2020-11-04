@@ -1,9 +1,3 @@
-# Lam changed to use gpg agent instead of macos ssh default agent
-# the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-# Lam: should I change to `gpg-agent --daemon`?
-gpgconf --launch gpg-agent
-
 # for go lang
 export GOPATH=/opt/goworkspace
 export GOBIN=$GOPATH/bin
@@ -32,3 +26,10 @@ export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # https://github.com/roxma/vim-hug-neovim-rpc/issues/47
 export PATH="/usr/local/opt/openssl/bin:/local/bin:/usr/local/opt/python@3.8/bin:$PATH"
+
+# Lam changed to use gpg agent instead of macos ssh default agent
+# the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+# Lam: should I change to `gpg-agent --daemon`?
+gpgconf --launch gpg-agent
+
