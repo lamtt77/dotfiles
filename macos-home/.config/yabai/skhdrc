@@ -9,11 +9,14 @@ fn + alt - 4 : ~/.config/yabai/scripts/show_disk.sh
 fn + alt - 5 : ~/.config/yabai/scripts/show_song.sh
 
 # Navigation
+#
 fn - h : yabai -m window --focus west
 fn - j : yabai -m window --focus south
 fn - k : yabai -m window --focus north
 fn - l : yabai -m window --focus east
 fn - m : yabai -m window --focus mouse
+fn - o : yabai -m window --focus next
+fn - i : yabai -m window --focus prev
 
 # Moving windows
 fn + ctrl - h : yabai -m window --warp west
@@ -63,7 +66,10 @@ lctrl + alt - l : \
 
 # Float and center window
 shift + alt - c : yabai -m window --toggle float;\
-                  yabai -m window --grid 4:4:1:1:2:2
+                  yabai -m window --grid 6:6:1:1:4:4
+
+# Float / Unfloat window
+shift + alt - space : yabai -m window --toggle float
 
 # Equalize size of windows
 lctrl + alt - 0 : yabai -m space --balance
@@ -85,9 +91,6 @@ shift + lctrl + alt - j : yabai -m window --insert south
 shift + lctrl + alt - k : yabai -m window --insert north
 shift + lctrl + alt - l : yabai -m window --insert east
 
-# Float / Unfloat window
-shift + alt - space : yabai -m window --toggle float
-
 # Restart Yabai
 shift + lctrl + alt - r :
     /usr/bin/env osascript <<< \
@@ -96,6 +99,6 @@ shift + lctrl + alt - r :
 
 # Make window native fullscreen
 fn - f         : yabai -m window --toggle zoom-fullscreen
-fn + alt - f : yabai -m window --toggle native-fullscreen
-fn - p         : yabai -m window --toggle zoom-parent
+fn + alt - f   : yabai -m window --toggle native-fullscreen
+fn - p   : yabai -m window --toggle zoom-parent
 fn - s         : yabai -m window --toggle split
