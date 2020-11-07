@@ -320,10 +320,7 @@ endif
 " My default settings for using netrw with :Lex
 let g:netrw_banner=0      " hide / unhide with Shift-I
 let g:netrw_liststyle=2   " multi-columns view for files
-let g:netrw_browse_split=4
-let g:netrw_preview=1
-let g:netrw_altv=1
-let g:netrw_winsize=70
+let g:netrw_winsize=40
 
 " === More USEFUL Plugins here
 
