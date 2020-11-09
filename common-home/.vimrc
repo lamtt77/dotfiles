@@ -44,10 +44,6 @@ set undoreload=10000
 set display=truncate
 set incsearch
 
-if &t_Co > 2 || has("gui_running")
-  syntax on
-endif
-
 " Yank and paste with the system clipboard
 set clipboard=unnamed
 " Copy/Paste/Cut
@@ -56,31 +52,6 @@ if has('unnamedplus')
 endif
 
 set mouse=a
-
-"" LamT: integrate with ibus-bamboo
-"function! IBusOff()
-"  let g:ibus_prev_engine = system('ibus engine')
-"  execute 'silent !ibus engine xkb:us::eng'
-"endfunction
-"
-"function! IBusOn()
-"  let l:current_engine = system('ibus engine')
-"  if l:current_engine !~? 'xkb:us::eng'
-"    let g:ibus_prev_engine = l:current_engine
-"  endif
-"  execute 'silent !' . 'ibus engine ' . g:ibus_prev_engine
-"endfunction
-"
-"augroup IBusHandler
-"  autocmd CmdLineEnter [/?] call IBusOn()
-"  autocmd CmdLineLeave [/?] call IBusOff()
-"  autocmd InsertEnter * call IBusOn()
-"  autocmd InsertLeave * call IBusOff()
-"augroup END
-"
-"call IBusOff()
-"" === end integration
-
 
 "============================== PLUGIN initialization start here
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
@@ -117,3 +88,32 @@ if colorterm =~# 'truecolor' || colorterm =~# '24bit'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
+
+" syntax setting must come after termguicolors
+if &t_Co > 2 || has("gui_running")
+  syntax on
+endif
+
+"" LamT: integrate with ibus-bamboo
+"function! IBusOff()
+"  let g:ibus_prev_engine = system('ibus engine')
+"  execute 'silent !ibus engine xkb:us::eng'
+"endfunction
+"
+"function! IBusOn()
+"  let l:current_engine = system('ibus engine')
+"  if l:current_engine !~? 'xkb:us::eng'
+"    let g:ibus_prev_engine = l:current_engine
+"  endif
+"  execute 'silent !' . 'ibus engine ' . g:ibus_prev_engine
+"endfunction
+"
+"augroup IBusHandler
+"  autocmd CmdLineEnter [/?] call IBusOn()
+"  autocmd CmdLineLeave [/?] call IBusOff()
+"  autocmd InsertEnter * call IBusOn()
+"  autocmd InsertLeave * call IBusOff()
+"augroup END
+"
+"call IBusOff()
+"" === end integration
