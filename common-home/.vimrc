@@ -7,6 +7,8 @@ set ttimeoutlen=100	" wait up to 100ms after Esc for special key
 
 set nobackup nowritebackup
 set hidden
+set number
+set ruler
 
 filetype plugin indent on
 
@@ -117,3 +119,15 @@ endif
 "
 "call IBusOff()
 "" === end integration
+
+" === My custom mapping start here
+
+" Simulate M-f and M-b as in emacs to replace for Shift Right and Left in
+" Insert and Command mode
+noremap! f <S-Right>
+noremap! b <S-Left>
+
+" C-M-u and C-M-d scroll up and down other window in normal mode; not perfect
+" yet, should not do if reached top or bottom
+nnoremap <C-d> <C-w>w<C-d><C-w>p
+nnoremap <C-u> <C-w>w<C-u><C-w>p
