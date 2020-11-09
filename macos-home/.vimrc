@@ -546,14 +546,13 @@ nnoremap <Leader>ps :Rg<SPACE>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 
-" simulate PageDown as M-v in emacs as Ctrl-B conflicted with tmux
-nnoremap v <PageUp>       " i_CTRL-V and type M-v
-" M-f and M-b scroll up and down other window; not perfect yet, should not do
-" if reached top or bottom
-nnoremap f <C-w>w<C-f><C-w>p
-nnoremap b <C-w>w<C-b><C-w>p
-nnoremap d <C-w>w<C-d><C-w>p
-nnoremap u <C-w>w<C-u><C-w>p
+" Simulate M-f and M-b as in emacs to replace for Shift Right and Left
+noremap f <S-Right>
+noremap b <S-Left>
+
+" C-M-u and C-M-d scroll up and down other window; not perfect yet, should not do if reached top or bottom
+nnoremap <C-d> <C-w>w<C-d><C-w>p
+nnoremap <C-u> <C-w>w<C-u><C-w>p
 
 nnoremap <F5> :UndotreeToggle<cr>
 
