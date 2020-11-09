@@ -33,8 +33,8 @@ endif
 " }}}1
 
 " {{{1 VIM SETTINGS
-syntax on
 filetype plugin indent on
+
 " Absolute Path for python3 and ruby (mainly to satisfy nvim)
 let g:python3_host_prog = '/usr/local/opt/python@3.8/bin/python3'
 let g:ruby_host_prog = '/usr/local/lib/ruby/gems/2.7.0/bin/neovim-ruby-host'
@@ -73,9 +73,32 @@ set ignorecase smartcase
 set nobackup nowritebackup
 set swapfile
 
-set directory=~/.vim/swapdir//
-set undodir=~/.vim/undodir//
-set viewdir=~/.vim/viewdir//
+" LamT: taken from Arch
+" Move temporary files to a secure location to protect against CVE-2017-1000382
+if exists('$XDG_CACHE_HOME')
+  let &g:directory=$XDG_CACHE_HOME
+else
+  let &g:directory=$HOME . '/.cache'
+endif
+let &g:backupdir=&g:directory . '/vim/backup//'
+let &g:undodir=&g:directory . '/vim/undo//'
+let &g:viewdir=&g:directory . '/vim/view//'
+let &g:directory.='/vim/swap//'
+
+" Create directories if they doesn't exist
+if ! isdirectory(expand(&g:directory))
+  silent! call mkdir(expand(&g:directory), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:backupdir))
+  silent! call mkdir(expand(&g:backupdir), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:undodir))
+  silent! call mkdir(expand(&g:undodir), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:viewdir))
+  silent! call mkdir(expand(&g:viewdir), 'p', 0700)
+endif
+
 set undofile
 set undolevels=3000
 set undoreload=10000
@@ -297,6 +320,11 @@ if colorterm =~# 'truecolor' || colorterm =~# '24bit'
   set termguicolors
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+" syntax setting must come after termguicolors
+if &t_Co > 2 || has("gui_running")
+  syntax on
 endif
 
 " --- vim go (polyglot) settings.
