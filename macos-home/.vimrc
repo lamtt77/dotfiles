@@ -141,13 +141,11 @@ set history=200
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set wildmenu		" display completion matches in a status line
-set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 
 set foldmethod=marker
 set foldopen-=hor
 set foldopen+=jump
-
 let g:vimsyn_folding = 'f'
 " }}}
 
