@@ -103,11 +103,18 @@ set undofile
 set undolevels=3000
 set undoreload=10000
 
-" Yank and paste with the system clipboard
-set clipboard=unnamed
-" Copy/Paste/Cut
+"" Yank and paste with the system clipboard
+"if has('unnamedplus')
+"  set clipboard+=unnamedplus
+"else
+"  set clipboard+=unnamed
+"endif
+
+" System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
+  set clipboard=unnamedplus,autoselect,exclude:cons\|linux
+else
+  set clipboard=unnamed
 endif
 
 set mouse=a

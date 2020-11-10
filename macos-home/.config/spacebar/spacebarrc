@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-spacebar -m config position           top
+spacebar -m config position           bottom
 spacebar -m config height             26
 spacebar -m config spacing_left       25
 spacebar -m config spacing_right      15
@@ -18,6 +18,6 @@ spacebar -m config power_icon_strip    
 spacebar -m config space_icon         
 spacebar -m config clock_icon         
 spacebar -m config dnd_icon           
-spacebar -m config clock_format       "%I:%M %p | %a, %b %e, %Y"
-
+#spacebar -m config clock_format       "%I:%M %p | %a, %b %e, %Y"
+spacebar -m config clock_format       "%a, %b %e, %Y"
 echo "spacebar configuration loaded.."
