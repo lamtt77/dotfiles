@@ -103,13 +103,6 @@ set undofile
 set undolevels=3000
 set undoreload=10000
 
-"" Yank and paste with the system clipboard
-"if has('unnamedplus')
-"  set clipboard+=unnamedplus
-"else
-"  set clipboard+=unnamed
-"endif
-
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if has('unnamedplus')
   set clipboard=unnamedplus,autoselect,exclude:cons\|linux
@@ -580,12 +573,12 @@ nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 
 " Simulate M-f and M-b as in emacs to replace for Shift Right and Left
-noremap f <S-Right>
-noremap b <S-Left>
+noremap! <Esc>f <S-Right>
+noremap! <Esc>b <S-Left>
 
 " C-M-u and C-M-d scroll up and down other window; not perfect yet, should not do if reached top or bottom
-nnoremap <C-d> <C-w>w<C-d><C-w>p
-nnoremap <C-u> <C-w>w<C-u><C-w>p
+nnoremap <Esc><C-d> <C-w>w<C-d><C-w>p
+nnoremap <Esc><C-u> <C-w>w<C-u><C-w>p
 
 nnoremap <F5> :UndotreeToggle<cr>
 
