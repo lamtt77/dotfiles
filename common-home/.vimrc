@@ -51,7 +51,7 @@ set colorcolumn=80
 
 set smartindent
 set expandtab
-set softtabstop=4
+set softtabstop=4 shiftwidth=4
 set ignorecase smartcase
 
 " LamT: taken from Arch
@@ -167,14 +167,17 @@ let mapleader="\<space>"
 
 " Simulate M-f and M-b as in emacs to replace for Shift Right and Left in
 " Insert and Command mode
-noremap! <Esc>f <S-Right>
-noremap! <Esc>b <S-Left>
+noremap! <Esc>f         <S-Right>
+noremap! <Esc>b         <S-Left>
 
 " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect
 " yet, should not do if reached top or bottom
-nnoremap <Esc><C-d> <C-w>w<C-d><C-w>p
-nnoremap <Esc><C-u> <C-w>w<C-u><C-w>p>
+nnoremap <Esc><C-d>     <C-w>w<C-d><C-w>p
+nnoremap <Esc><C-u>     <C-w>w<C-u><C-w>p>
 
 " Paste from existing selection (not from unnamedplus clipboard)
-nnoremap <leader>p "*p
+nnoremap <leader>p      "*p
+
+" Simulate Insert key for MacOS, rarely use anyway
+inoremap <C-F12>          <Insert>
 " === My custom mapping end here
