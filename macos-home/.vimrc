@@ -291,14 +291,14 @@ let mapleader="\<space>"
 " === THEMEs and COLORs
 set background=dark
 
-" `material`: Carefully designed to have a soft contrast.
-" `mix`: Color palette obtained by calculating the mean of the other two.
-" `original`: The color palette used in the original gruvbox.
 " let g:gruvbox_material_diagnostic_line_highlight = 1
 let g:gruvbox_material_palette = 'mix'
-" set contrast - available values: 'hard', 'medium'(default), 'soft'
 let g:gruvbox_material_background = 'medium'
 colorscheme gruvbox-material
+
+" lightline
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox_material'
 
 " nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
 " nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
@@ -319,7 +319,6 @@ if colorterm =~# 'truecolor' || colorterm =~# '24bit'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
-
 " syntax setting must come after termguicolors
 if &t_Co > 2 || has("gui_running")
   syntax on
