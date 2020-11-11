@@ -1,4 +1,9 @@
-icons = "awesome"
+[icons]
+name = "awesome"
+
+[icons.overrides]
+vpn_on = " "
+vpn_off = ""
  
 [theme]
 name = "solarized-dark"
@@ -73,6 +78,8 @@ block = "sound"
 [[block]]
 block = "toggle"
 text = "VPN"
+icon_on = "vpn_on"
+icon_off = "toggle_off"
 command_state = "~/.config/i3/vpn.sh status"
 command_on = "~/.config/i3/vpn.sh toggle"
 command_off = "~/.config/i3/vpn.sh toggle"
