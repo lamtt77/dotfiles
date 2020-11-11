@@ -95,7 +95,16 @@ else
   set clipboard=unnamed
 endif
 
-set mouse=a
+" set shell
+"if executable('zsh')
+"  set shell=zsh
+"else
+"  set shell=bash
+"endif
+
+if has('mouse') " mouse support?
+  set mouse=a
+endif
 
 " === PLUGIN initialization start here
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
@@ -180,4 +189,7 @@ nnoremap <leader>p      "*p
 
 " Simulate Insert key for MacOS, rarely use anyway
 inoremap <C-F12>          <Insert>
+
 " === My custom mapping end here
+
+" vim: tabstop=2 shiftwidth=2 expandtab

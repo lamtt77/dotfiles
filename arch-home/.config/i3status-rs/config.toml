@@ -71,6 +71,14 @@ ip = true
 block = "sound"
 
 [[block]]
+block = "toggle"
+text = "VPN"
+command_state = "~/.config/i3/vpn.sh status"
+command_on = "~/.config/i3/vpn.sh toggle"
+command_off = "~/.config/i3/vpn.sh toggle"
+interval = 5
+
+[[block]]
 block = "time"
 interval = 60
 format = "%a %d/%m %R"
