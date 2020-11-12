@@ -80,9 +80,9 @@ block = "toggle"
 text = "VPN"
 icon_on = "vpn_on"
 icon_off = "toggle_off"
-command_state = "~/.config/i3/vpn.sh status"
-command_on = "~/.config/i3/vpn.sh toggle"
-command_off = "~/.config/i3/vpn.sh toggle"
+command_state = "~/.local/bin/vpn.sh status"
+command_on = "~/.local/bin/vpn.sh toggle"
+command_off = "~/.local/bin/vpn.sh toggle"
 interval = 5
 
 [[block]]
