@@ -55,7 +55,6 @@
 (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
 (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 
-
 ;;(straight-use-package 'auctex)
 
 (use-package gruvbox-theme
@@ -78,7 +77,8 @@
 
 (use-package undo-tree			
   :init
-  (global-undo-tree-mode))
+  (global-undo-tree-mode)
+  (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
 
 ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 i3-msg "workspace 6; append_layout ~/.config/i3/workspace_6.json"
 

@@ -32,7 +32,21 @@ endif
 
 " }}}1
 
+" First thing: enable 24-bit true colors only if your terminal supports it.
+let colorterm=$COLORTERM
+if colorterm =~# 'truecolor' || colorterm =~# '24bit'
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+" syntax setting must come after termguicolors
+if &t_Co > 2 || has("gui_running")
+  syntax on
+endif
+
 filetype plugin indent on
+set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
+
 set history=200		" keep 200 lines of command line history
 set showcmd		" display incomplete commands
 set wildmenu		" display completion matches in a status line
@@ -132,19 +146,6 @@ set background=dark
 let g:gruvbox_material_palette = 'mix'
 let g:gruvbox_material_background = 'medium'
 colorscheme gruvbox-material
-
-" Enable 24-bit true colors only if your terminal supports it.
-let colorterm=$COLORTERM
-if colorterm =~# 'truecolor' || colorterm =~# '24bit'
-  set termguicolors
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-
-" syntax setting must come after termguicolors
-if &t_Co > 2 || has("gui_running")
-  syntax on
-endif
 
 "" LamT: integrate with ibus-bamboo
 "function! IBusOff()
