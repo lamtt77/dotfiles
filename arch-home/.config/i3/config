@@ -281,12 +281,12 @@ bindsym $mod+Print mode "$mode_system"
 #i3-save-tree --workspace 3 > ~/.config/i3/workspace_3.json
 #tail -n +2 ~/.config/i3/workspace_3.json | fgrep -v '// splitv' | sed 's|//||g' > ~/.config/i3/workspace_3.1.json
 
-bindsym $mod+Ctrl+1 exec ~/.config/i3/start_w1.sh
-bindsym $mod+Ctrl+2 exec ~/.config/i3/start_w2.sh
-bindsym $mod+Ctrl+3 exec ~/.config/i3/start_w3.sh
-bindsym $mod+Ctrl+4 exec ~/.config/i3/start_w4.sh
-bindsym $mod+Ctrl+5 exec ~/.config/i3/start_w5.sh
-bindsym $mod+Ctrl+6 exec ~/.config/i3/start_w6.sh
+bindsym $mod+Ctrl+1 exec ~/.local/bin/start_w1.sh
+bindsym $mod+Ctrl+2 exec ~/.local/bin/start_w2.sh
+bindsym $mod+Ctrl+3 exec ~/.local/bin/start_w3.sh
+bindsym $mod+Ctrl+4 exec ~/.local/bin/start_w4.sh
+bindsym $mod+Ctrl+5 exec ~/.local/bin/start_w5.sh
+bindsym $mod+Ctrl+6 exec ~/.local/bin/start_w6.sh
 
 # Shortcuts to start application
 bindsym $mod+Ctrl+f exec --no-startup-id firefox
@@ -314,9 +314,9 @@ bindsym --release Ctrl+Print exec "escrotum -C "
 set $mode_term_theme Terminal theme (l) light, (d) dark
 mode "$mode_term_theme" {
     # choose which theme should be applied by pressing l or d
-    bindsym l exec --no-startup-id "~/.local/scripts/termite-switch-theme.sh light", mode "default"
+    bindsym l exec --no-startup-id "~/.local/bin/termite-switch-theme.sh light", mode "default"
 
-    bindsym d exec --no-startup-id "~/.local/scripts/termite-switch-theme.sh dark", mode "default"
+    bindsym d exec --no-startup-id "~/.local/bin/termite-switch-theme.sh dark", mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"

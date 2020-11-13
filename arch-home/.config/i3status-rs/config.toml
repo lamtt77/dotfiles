@@ -1,4 +1,9 @@
-icons = "awesome"
+[icons]
+name = "awesome"
+
+[icons.overrides]
+vpn_on = " "
+vpn_off = ""
  
 [theme]
 name = "solarized-dark"
@@ -69,6 +74,16 @@ ip = true
 
 [[block]]
 block = "sound"
+
+[[block]]
+block = "toggle"
+text = "VPN"
+icon_on = "vpn_on"
+icon_off = "toggle_off"
+command_state = "~/.local/bin/vpn.sh status"
+command_on = "~/.local/bin/vpn.sh toggle"
+command_off = "~/.local/bin/vpn.sh toggle"
+interval = 5
 
 [[block]]
 block = "time"
