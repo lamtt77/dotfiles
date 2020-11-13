@@ -28,12 +28,12 @@ fn + ctrl - m : yabai -m space --focus last
 fn + ctrl - p : yabai -m space --focus prev
 fn + ctrl - n : yabai -m space --focus next
 
-alt + shift - 1 : yabai -m space --focus 1
-alt + shift - 2 : yabai -m space --focus 2
-alt + shift - 3 : yabai -m space --focus 3
-alt + shift - 4 : yabai -m space --focus 4
-alt + shift - 5 : yabai -m space --focus 5
-alt + shift - 6 : yabai -m space --focus 6
+fn + cmd - 1 : yabai -m space --focus 1
+fn + cmd - 2 : yabai -m space --focus 2
+fn + cmd - 3 : yabai -m space --focus 3
+fn + cmd - 4 : yabai -m space --focus 4
+fn + cmd - 5 : yabai -m space --focus 5
+fn + cmd - 6 : yabai -m space --focus 6
 
 # Move focus container to workspace
 fn + shift - m : yabai -m window --space last && yabai -m space --focus last

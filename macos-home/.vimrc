@@ -126,12 +126,14 @@ set shortmess+=c
 " diagnostics appear/become resolved.
 set signcolumn=yes
 
-set colorcolumn=81
+set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 set nocursorcolumn
 set history=200
 
+" Not needed if lightline is in-use
 set ruler		" show the cursor position all the time
+
 set showcmd		" display incomplete commands
 set wildmenu		" display completion matches in a status line
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
@@ -288,6 +290,18 @@ call plug#end()
 " global map leader should come first
 let mapleader="\<space>"
 
+" Enable 24-bit true colors only if your terminal supports it.
+let colorterm=$COLORTERM
+if colorterm =~# 'truecolor' || colorterm =~# '24bit'
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+" syntax setting must come after termguicolors
+if &t_Co > 2 || has("gui_running")
+  syntax on
+endif
+
 " === THEMEs and COLORs
 set background=dark
 
@@ -311,18 +325,6 @@ let g:lightline.colorscheme = 'gruvbox_material'
 " junegunn/limelight.vim
 " .............................................................................
 let g:limelight_conceal_ctermfg=244
-
-" Enable 24-bit true colors only if your terminal supports it.
-let colorterm=$COLORTERM
-if colorterm =~# 'truecolor' || colorterm =~# '24bit'
-  set termguicolors
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-" syntax setting must come after termguicolors
-if &t_Co > 2 || has("gui_running")
-  syntax on
-endif
 
 " --- vim go (polyglot) settings.
 " let g:go_highlight_build_constraints = 1
