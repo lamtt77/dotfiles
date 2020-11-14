@@ -21,7 +21,7 @@ export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 # Add .NET Core SDK tools
 export PATH="$PATH:/Users/alam/.dotnet/tools"
 
-export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="~/.local/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # https://github.com/roxma/vim-hug-neovim-rpc/issues/47
