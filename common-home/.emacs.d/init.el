@@ -31,7 +31,7 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
-;;  (package-initialize)
+;;  (package-initialize)                ; only need if package-selected-packages is in-use
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
@@ -39,6 +39,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 (setq delete-old-versions -1 )		; delete excess backup versions silently

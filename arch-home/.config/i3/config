@@ -28,8 +28,9 @@ font pango:monospace 10
 # font, it doesn’t scale on retina/hidpi displays.
 
 # start a terminal
-bindsym $mod+Return exec termite $@	# LamT
-bindsym $mod+Shift+Return exec i3-sensible-terminal
+bindsym $mod+Return exec termite $@
+bindsym $mod+Shift+v exec termite -e ~/.local/bin/vimclip
+bindsym $mod+Shift+Return exec i3-sensible-terminal         # urxvt
 
 # kill focused window
 #bindsym $mod+Shift+q kill
@@ -47,7 +48,6 @@ bindsym $mod+Shift+d exec dmenu_run
 bindsym $mod+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Droid Sans 14'
 
 # start rofi (window mode)
-#bindsym $mod+Tab exec rofi -show window -i -lines 10 -eh 1 -width 50 -padding 50 -opacity "85" -font "Droid Sans 16"
 bindsym $alt+Tab exec rofi -show window -show-icons -i -lines 10 -eh 1 -width 50 -padding 50 -opacity "85" -font "Droid Sans 16"
 
 # change focus
@@ -219,9 +219,9 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
 # key bind for Alsa sound
-bindsym F12 exec amixer -q sset Master 5%+ unmute
-bindsym F11  exec amixer -q sset Master 5%- unmute
-bindsym F10 exec amixer -q sset Master toggle
+bindsym Shift+F12 exec amixer -q sset Master 5%+ unmute
+bindsym Shift+F11  exec amixer -q sset Master 5%- unmute
+bindsym Shift+F10 exec amixer -q sset Master toggle
 
 bindsym $mod+x [urgent=latest] focus
 
@@ -292,7 +292,7 @@ bindsym $mod+Ctrl+6 exec ~/.local/bin/start_w6.sh
 bindsym $mod+Ctrl+f exec --no-startup-id firefox
 bindsym $mod+Ctrl+v exec --no-startup-id vlc
 bindsym $mod+Ctrl+c exec --no-startup-id chromium
-bindsym $mod+Ctrl+r exec --no-startup-id urxvt -e ranger
+bindsym $mod+Ctrl+r exec --no-startup-id termite -e ranger
 
 # lock PC
 bindsym $mod+Ctrl+Delete exec $Locker, mode "default"

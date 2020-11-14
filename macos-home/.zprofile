@@ -1,2 +1,2 @@
-# LamT: already run in zshrc
-# [[ -e ~/.profile ]] && source ~/.profile
+# LamT: interactive login mode
+[[ -e ~/.profile ]] && source ~/.profile

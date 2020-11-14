@@ -1,0 +1,30 @@
+alias l='ls -a'
+alias ll='ls -lAh'
+alias la='ls -laF'
+
+# Lam alias for doom-emacs and spacemacs
+alias doom-emacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --with-profile doom-emacs &'
+alias spacemacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --with-profile spacemacs &'
+
+# From https://github.com/nickjj/dotfiles/blob/master/.aliases
+#alias dew="docker-compose exec web"
+#
+#alias dpsql="docker-compose exec postgres psql"
+#
+#alias drun='docker run --rm -it -v "${PWD}":/app'
+#
+#alias rmpyc="find . -type d -name '__pycache__' -exec rm -rf {} \;"
+#
+#alias jek="bundle exec jekyll serve --config _config.yml,_config.dev.yml --drafts --livereload"
+#
+#alias ymp3="youtube-dl --extract-audio --audio-format mp3"
+#
+#alias octal="stat -c '%a %n'"
+#
+#alias follow="namei -om"
+#
+#alias diff="diff --color -u"
+#
+#alias 755d="find . -type d -exec chmod 755 {} \;"
+#
+#alias 644f="find . -type f -exec chmod 644 {} \;"

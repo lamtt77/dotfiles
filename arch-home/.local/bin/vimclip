@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+if ! [ -x "$(command -v vim)" ]; then
+  echo 'Error: vim is not available.' >&2
+  exit 1
+fi
+
+if [ "Darwin" = $(uname -s) ]; then
+    if ! [ -x "$(command -v pbcopy)" ]; then
+      echo 'Error: pbcopy is not available.' >&2
+      exit 1
+    fi
+
+    TMP=$(mktemp -t vimclip)
+    vim $TMP
+    if [ -s $TMP ]; then
+        pbcopy < $TMP
+    else
+        rm $TMP
+    fi
+else
+    if ! [ -x "$(command -v xsel)" ]; then
+      echo 'Error: xsel is not available.' >&2
+      exit 1
+    fi
+    TMP=$(mktemp -p /tmp -t vimclip.XXXXXXXX)
+    chmod o-r $TMP
+    vim $VIM_OPTS $TMP
+    if [ -s $TMP ]; then
+        xsel -i -b < $TMP
+    else
+        rm $TMP
+    fi
+fi

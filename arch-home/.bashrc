@@ -2,6 +2,8 @@
 # ~/.bashrc
 #
 
+[[ -f ~/.profile ]] && . ~/.profile
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -12,9 +14,6 @@ PS1='[\u@\h \W]\$ '
 alias l='ls -a'
 alias ll='ls -lAh'		# A: almost all except . and ..
 alias la='ls -laF'
-
-export EDITOR='vim'
-export PATH=/opt/resolve/bin/:/home/lam/.gem/ruby/2.7.0/bin:$PATH
 
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 
