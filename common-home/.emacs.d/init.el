@@ -31,7 +31,7 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
-;;  (package-initialize)
+;;  (package-initialize)                ; only need if package-selected-packages is in-use
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
@@ -39,6 +39,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 (setq delete-old-versions -1 )		; delete excess backup versions silently
@@ -54,7 +55,6 @@
 (setq default-fill-column 80)		; toggle wrapping text at the 80th character
 (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
 (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
-
 
 ;;(straight-use-package 'auctex)
 
@@ -78,7 +78,8 @@
 
 (use-package undo-tree			
   :init
-  (global-undo-tree-mode))
+  (global-undo-tree-mode)
+  (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
 
 ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region

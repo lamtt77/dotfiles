@@ -32,4 +32,3 @@ export PATH="/usr/local/opt/openssl/bin:/local/bin:/usr/local/opt/python@3.8/bin
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 # Lam: should I change to `gpg-agent --daemon`?
 gpgconf --launch gpg-agent
-
