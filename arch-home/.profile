@@ -21,3 +21,6 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 #  exec startx ~/.xinitrc dwm
 #  #exec startx ~/.xinitrc i3
 #fi
+
+# LamT: for suckless st only
+export COLORTERM=truecolor

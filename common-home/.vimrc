@@ -51,9 +51,6 @@ let g:python3_host_prog = '/usr/bin/python3'
 set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
 
 set history=200		" keep 200 lines of command line history
-set showcmd		" display incomplete commands
-set wildmenu		" display completion matches in a status line
-set scrolloff=3
 
 set ttimeout		" time out for key codes
 set ttimeoutlen=100	" wait up to 100ms after Esc for special key
@@ -64,14 +61,21 @@ set updatetime=200
 
 set hidden
 set nobackup nowritebackup
+
+" Settings pertain to display
+set showcmd		" display incomplete commands
+set wildmenu		" display completion matches in a status line
+set scrolloff=3
 " set number
 set ruler
 set colorcolumn=80
-
+" Show @@@ in the last line if it is truncated.
+set display=truncate
 set smartindent
 set expandtab
 set softtabstop=4 shiftwidth=4
 set ignorecase smartcase
+set nowrap
 
 " LamT: taken from Arch
 " Move temporary files to a secure location to protect against CVE-2017-1000382
@@ -103,8 +107,6 @@ set undofile
 set undolevels=3000
 set undoreload=10000
 
-" Show @@@ in the last line if it is truncated.
-set display=truncate
 set incsearch
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
