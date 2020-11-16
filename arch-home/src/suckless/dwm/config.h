@@ -64,7 +64,7 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_d,      spawn,          SHCMD("rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Droid Sans 14'") }, 
+	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Droid Sans 14'") }, 
 	{ MODKEY|ALTKEY,                XK_Tab,    spawn,          SHCMD("rofi -show window -show-icons -i -lines 10 -eh 1 -width 50 -padding 50 -opacity '85' -font 'Droid Sans 16'") }, 
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
