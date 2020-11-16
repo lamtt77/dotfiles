@@ -45,6 +45,9 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 filetype plugin indent on
+
+" Absolute Path for python3 and ruby (mainly to satisfy nvim)
+let g:python3_host_prog = '/usr/bin/python3'
 set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
 
 set history=200		" keep 200 lines of command line history
@@ -60,7 +63,8 @@ set updatetime=200
 
 set hidden
 set nobackup nowritebackup
-set number ruler
+" set number
+set ruler
 set colorcolumn=80
 
 set smartindent
@@ -104,9 +108,13 @@ set incsearch
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if has('unnamedplus')
-  set clipboard=unnamedplus,autoselect,exclude:cons\|linux
+  if has('nvim')
+    set clipboard^=unnamedplus
+  else
+    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
+  endif
 else
-  set clipboard=unnamed
+  set clipboard^=unnamed
 endif
 
 " set shell
@@ -193,4 +201,4 @@ inoremap <C-F12>          <Insert>
 
 " === My custom mapping end here
 
-" vim: tabstop=2 shiftwidth=2 expandtab
+" vim: sts=2 sw=2 et

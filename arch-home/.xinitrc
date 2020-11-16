@@ -36,10 +36,39 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
+# ===
+xrandr --output Virtual1 --mode 1280x800    # LamT: my Macbook Pro resolution
 xrdb ~/.Xresources-xrdp		# LamT: for xrdp black box issue
 
+# LamT: for dwm grey window issue when opening Idea
+export _JAVA_AWT_WM_NONREPARENTING=1
+export AWT_TOOLKIT=MToolkit
+wmname LG3D
+
+# LamT: for Vietnamese Input: IBus Bamboo Engine
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+export QT4_IM_MODULE=ibus
+export CLUTTER_IM_MODULE=ibus
+# ibus-daemon -rdx      # LamT: do not like to load permanently for now
+
+# ===
+# Here i3 is kept as default
+session=${1:-i3}
+
+case $session in
+    i3|i3wm           ) exec i3;;
+    dwm               ) exec dwm;;
+    kde               ) exec startplasma-x11;;
+    xfce|xfce4        ) exec startxfce4;;
+    # No known session, try to run it as command
+    *                 ) exec $1;;
+esac
+
+# exec dwm                # LamT
+# exec i3
 # exec enlightenment_start
-exec i3
 # exec mate-session
 # exec xmonad
 # exec startlxqt
@@ -56,10 +85,9 @@ exec i3
 # exec cinnamon-session
 # exec pekwm
 # exec catwm
-# exec dwm
 # exec startede
 # exec icewm-session
 # exec jwm
 # exec monsterwm
 # exec notion
-# exec startdde       # deepin-session
+# exec startdde         # deepin-session

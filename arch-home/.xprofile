@@ -6,17 +6,7 @@
 
 #x0vncserver -rfbauth ~/.vnc/passwd &
 
-# LamT: this should be a valid way of startx according to Arch Wiki
-if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx
-fi
-
-xrandr --output Virtual1 --mode 1280x800	
-
-# LamT: for Vietnamese Input: IBus Bamboo Engine
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-export QT4_IM_MODULE=ibus
-export CLUTTER_IM_MODULE=ibus
-# ibus-daemon -rdx
+# LamT: already in .bash_profile
+#if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+#  exec startx
+#fi

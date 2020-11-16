@@ -3,14 +3,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '()))
+ '(column-number-mode t)
+ '(menu-bar-mode nil)
+ '(package-selected-packages 'nil)
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 113 :width normal)))))
 
 ;; '(package-selected-packages
 ;;   '(org-roam gnuplot auctex ox-report evil)))
@@ -64,7 +66,7 @@
 (use-package evil
   :init
   (setq evil-want-keybinding nil)
-  (evil-mode 0))
+  (evil-mode 1))
 
 (use-package evil-collection
   :after evil 

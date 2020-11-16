@@ -1,0 +1,30 @@
+{
+  "coc.preferences.extensionUpdateCheck": "never",
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "Markdown",
+    "json",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "coc.preferences.formatOnType": true,
+  "tsserver.formatOnType": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "html.format.enable": true,
+  "languageserver": {
+    "golang": {
+      "command": "/opt/goworkspace/bin/gopls",
+      "args": ["-remote=auto"],
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  }
+}
