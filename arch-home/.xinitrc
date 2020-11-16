@@ -53,7 +53,6 @@ export QT4_IM_MODULE=ibus
 export CLUTTER_IM_MODULE=ibus
 # ibus-daemon -rdx      # LamT: do not like to load permanently for now
 
-# ===
 # Here i3 is kept as default
 session=${1:-i3}
 
@@ -66,6 +65,7 @@ case $session in
     *                 ) exec $1;;
 esac
 
+# ===
 # exec dwm                # LamT
 # exec i3
 # exec enlightenment_start
