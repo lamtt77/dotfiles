@@ -40,7 +40,7 @@ fi
 xrandr --output Virtual1 --mode 1280x800    # LamT: my Macbook Pro resolution
 xrdb ~/.Xresources-xrdp		# LamT: for xrdp black box issue
 
-# LamT: for dwm grey window issue when opening Idea
+# LamT: for dwm grey window issue when opening Idea, seems not happen if within LightDM
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
 wmname LG3D
@@ -53,12 +53,14 @@ export QT4_IM_MODULE=ibus
 export CLUTTER_IM_MODULE=ibus
 # ibus-daemon -rdx      # LamT: do not like to load permanently for now
 
-# Here i3 is kept as default
-session=${1:-i3}
+# Default DM is set here
+session=${1:-dwm}
 
 case $session in
     i3|i3wm           ) exec i3;;
-    dwm               ) exec dwm;;
+    # dwm               ) exec dwm;;
+    # looping startdwm to reload config (killall xinit/lightdm) without restart all apps
+    dwm               ) (conky | dwm-setstatus) & startdwm;;
     kde               ) exec startplasma-x11;;
     xfce|xfce4        ) exec startxfce4;;
     # No known session, try to run it as command

@@ -5,9 +5,3 @@
 #exec gnome-session
 
 #x0vncserver -rfbauth ~/.vnc/passwd &
-
-# LamT: start using xinitrc.desktop
-if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  #exec startx ~/.xinitrc dwm
-  exec startx ~/.xinitrc i3
-fi

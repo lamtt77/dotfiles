@@ -15,3 +15,9 @@ fi
 # LamT: gpg-agent will need to enable ssh support and allow pubkey in sshcontrol
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
+
+# LamT: only change here if using direclty xinitrc (i.e. not via LightDM)
+#if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+#  exec startx ~/.xinitrc dwm
+#  #exec startx ~/.xinitrc i3
+#fi
