@@ -1,4 +1,3 @@
-
 ;; https://github.com/zamansky/dot-emacs/blob/master/init.el
 (require 'package)
 (setq package-enable-at-startup nil)
