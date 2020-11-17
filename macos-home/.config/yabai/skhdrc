@@ -1,5 +1,5 @@
 # opens iTerm2
-alt - return : ~/.config/yabai/scripts/open_iterm2.sh
+ctrl + alt - return : ~/.config/yabai/scripts/open_iterm2.sh
 
 # Show system statistics
 fn + alt - 1 : ~/.config/yabai/scripts/show_cpu.sh
@@ -64,11 +64,11 @@ lctrl + alt - l : \
     yabai -m window --resize left:30:0
 
 # Float and center window
-shift + alt - c : yabai -m window --toggle float;\
+fn + alt - c : yabai -m window --toggle float;\
                   yabai -m window --grid 6:6:1:1:4:4
 
 # Float / Unfloat window
-shift + alt - space : yabai -m window --toggle float
+fn + alt - space : yabai -m window --toggle float
 
 # Equalize size of windows
 lctrl + alt - 0 : yabai -m space --balance
@@ -81,17 +81,17 @@ fn - r         : yabai -m space --rotate 90
 fn + shift - r : yabai -m space --rotate 270
 
 # Rotate on X and Y Axis
-shift + alt - x : yabai -m space --mirror x-axis
-shift + alt - y : yabai -m space --mirror y-axis
+fn + alt - x : yabai -m space --mirror x-axis
+fn + alt - y : yabai -m space --mirror y-axis
 
 # Set insertion point for focused container
-shift + lctrl + alt - h : yabai -m window --insert west
-shift + lctrl + alt - j : yabai -m window --insert south
-shift + lctrl + alt - k : yabai -m window --insert north
-shift + lctrl + alt - l : yabai -m window --insert east
+fn + lctrl + alt - h : yabai -m window --insert west
+fn + lctrl + alt - j : yabai -m window --insert south
+fn + lctrl + alt - k : yabai -m window --insert north
+fn + lctrl + alt - l : yabai -m window --insert east
 
 # Restart Yabai
-shift + lctrl + alt - r :
+fn + lctrl + alt - r :
     /usr/bin/env osascript <<< \
         "display notification \"Restarting Yabai\" with title \"Yabai\""; \
     launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
