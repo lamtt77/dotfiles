@@ -1,5 +1,5 @@
 [[ -e ~/.aliases ]] && source ~/.aliases
-[[ -e ~/.profile ]] && source ~/.profile
+[[ -e ~/.myprofile ]] && source ~/.myprofile
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
