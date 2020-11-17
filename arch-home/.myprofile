@@ -16,11 +16,13 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# LamT: only change here if using direclty xinitrc (i.e. not via LightDM)
-#if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-#  exec startx ~/.xinitrc dwm
-#  #exec startx ~/.xinitrc i3
-#fi
-
 # LamT: for suckless st only
 export COLORTERM=truecolor
+
+# LamT: only change here if using direclty xinitrc (i.e. not via LightDM)
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx ~/.xinitrc dwm
+  #exec startx ~/.xinitrc i3
+fi
+
+# vim:ft=sh

@@ -9,4 +9,4 @@ alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 # LamT: customization start here
-[[ -f ~/.profile ]] && . ~/.profile
+[[ -f ~/.myprofile ]] && . ~/.myprofile
