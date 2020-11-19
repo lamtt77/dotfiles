@@ -58,8 +58,8 @@ session=${1:-dwm}
 
 case $session in
     i3|i3wm           ) exec i3;;
-    # dwm               ) exec dwm;;
-    # looping startdwm to reload config (killall xinit/lightdm) without restart all apps
+    # call `startdwm` instead of `exec dwm` to loop reload config (killall xinit/lightdm) without restart all apps
+    #dwm               ) startdwm;;
     dwm               ) (conky | dwm-setstatus) & startdwm;;
     kde               ) exec startplasma-x11;;
     xfce|xfce4        ) exec startxfce4;;

@@ -48,13 +48,13 @@ set synmaxcol=200       " Only highlight the first 200 columns.
 set display=truncate
 set backspace=indent,eol,start
 set hidden
+set autoread
 " Use visual bell instead of beeping when doing something wrong
 set visualbell
 set lazyredraw
 " Display non printable characters
 " set list              " a bit dizzy if always on
 set laststatus=2
-set autoread
 
 " LamT: default vim seems OK
 "set splitbelow
