@@ -60,6 +60,7 @@ set ttyfast
 set updatetime=200
 
 set hidden
+" set autoread
 set nobackup nowritebackup
 
 " Settings pertain to display
@@ -72,7 +73,8 @@ set colorcolumn=80
 " Show @@@ in the last line if it is truncated.
 set display=truncate
 set smartindent
-set expandtab
+" `et` will not work with C/C++
+" set expandtab
 set softtabstop=4 shiftwidth=4
 set ignorecase smartcase
 set nowrap
@@ -182,6 +184,16 @@ colorscheme gruvbox-material
 "call IBusOff()
 "" === end integration
 
+function! TrimWhitespace()
+  let l:save = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:save)
+endfunction
+
+augroup trimwhitespace
+  autocmd BufWritePre * :call TrimWhitespace()
+augroup end
+
 " === My custom mapping start here
 " global map leader should come first
 let mapleader="\<space>"
@@ -204,4 +216,4 @@ inoremap <C-F12>          <Insert>
 
 " === My custom mapping end here
 
-" vim: sts=2 sw=2 et
+" vim:sts=2 sw=2 et:
