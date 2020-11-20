@@ -65,9 +65,9 @@ set guicursor=
 " set relativenumber
 set number
 set incsearch nohlsearch
-set tabstop=8 expandtab shiftwidth=4 softtabstop=4
+set tabstop=8 softtabstop=4 expandtab shiftwidth=4
 set autoindent
-set wrap
+set nowrap
 
 set ignorecase smartcase
 set nobackup nowritebackup
@@ -390,9 +390,9 @@ endif
 " customize by filetype
 augroup customizefiletype
   au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-  " c
-  autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
-  autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
+  " c & cpp
+  autocmd FileType c setlocal ts=8 sw=4 noet
+  autocmd FileType cpp setlocal ts=8 sw=4 noet
   " for html files, 2 spaces
   autocmd Filetype html setlocal ts=2 sw=2 expandtab
 augroup end

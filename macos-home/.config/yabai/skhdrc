@@ -14,8 +14,8 @@ fn - j : yabai -m window --focus south
 fn - k : yabai -m window --focus north
 fn - l : yabai -m window --focus east
 fn - m : yabai -m window --focus mouse
-fn - o : yabai -m window --focus next
-fn - i : yabai -m window --focus prev
+fn - n : yabai -m window --focus next
+fn - p : yabai -m window --focus prev
 
 # Moving windows
 fn + ctrl - h : yabai -m window --warp west
@@ -99,5 +99,6 @@ fn + lctrl + alt - r :
 # Make window native fullscreen
 fn - f         : yabai -m window --toggle zoom-fullscreen
 fn + alt - f   : yabai -m window --toggle native-fullscreen
-fn - p   : yabai -m window --toggle zoom-parent
+# Deck Mode!
+fn - d         : yabai -m window --toggle zoom-parent
 fn - s         : yabai -m window --toggle split
