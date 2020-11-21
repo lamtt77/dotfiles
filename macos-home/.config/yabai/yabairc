@@ -2,11 +2,11 @@
 
 # ====== Variables =============================
 
-gaps_top="3"
-gaps_bottom="3"
-gaps_left="3"
-gaps_right="3"
-gaps_inner="3"
+gaps_top="0"
+gaps_bottom="0"
+gaps_left="0"
+gaps_right="0"
+gaps_inner="0"
 
 normal_border_color="010101"
 focused_border_color="808080"
