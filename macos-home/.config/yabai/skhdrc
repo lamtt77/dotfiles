@@ -1,5 +1,5 @@
 # opens iTerm2
-ctrl + alt - return : ~/.config/yabai/scripts/open_iterm2.sh
+fn - o : ~/.config/yabai/scripts/open_iterm2.sh
 
 # Show system statistics
 fn + alt - 1 : ~/.config/yabai/scripts/show_cpu.sh
@@ -47,34 +47,34 @@ fn + shift - 5 : yabai -m window --space 5 && yabai -m space --focus 5
 fn + shift - 6 : yabai -m window --space 6 && yabai -m space --focus 6
 
 # Resize windows
-lctrl + alt - h : \
-    yabai -m window --resize left:-30:0 ; \
-    yabai -m window --resize right:-30:0
+fn + alt - h : \
+    yabai -m window --resize left:-40:0 ; \
+    yabai -m window --resize right:-40:0
 
-lctrl + alt - j : \
+fn + alt - l : \
+    yabai -m window --resize right:40:0 ; \
+    yabai -m window --resize left:40:0
+
+fn + alt - j : \
     yabai -m window --resize bottom:0:30 ; \
     yabai -m window --resize top:0:30
 
-lctrl + alt - k : \
+fn + alt - k : \
     yabai -m window --resize top:0:-30 ; \
     yabai -m window --resize bottom:0:-30
 
-lctrl + alt - l : \
-    yabai -m window --resize right:30:0 ; \
-    yabai -m window --resize left:30:0
+# Equalize size of windows
+fn + alt - 0 : yabai -m space --balance
 
 # Float and center window
-fn + alt - c : yabai -m window --toggle float;\
-                  yabai -m window --grid 6:6:1:1:4:4
+fn + alt - c : yabai -m window --toggle float; \
+               yabai -m window --grid 6:6:1:1:4:4
 
 # Float / Unfloat window
 fn + alt - space : yabai -m window --toggle float
 
-# Equalize size of windows
-lctrl + alt - 0 : yabai -m space --balance
-
 # Enable / Disable gaps in current workspace
-lctrl + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
+fn + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # Rotate windows clockwise and anticlockwise
 fn - r         : yabai -m space --rotate 90
@@ -100,5 +100,5 @@ fn + lctrl + alt - r :
 fn - f         : yabai -m window --toggle zoom-fullscreen
 fn + alt - f   : yabai -m window --toggle native-fullscreen
 # Deck Mode!
-fn - d         : yabai -m window --toggle zoom-parent
+fn + shift - f : yabai -m window --toggle zoom-parent
 fn - s         : yabai -m window --toggle split
