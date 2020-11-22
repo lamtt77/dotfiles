@@ -312,43 +312,7 @@
                     }
                 ]
             },
-            "devices": [
-                {
-                    "disable_built_in_keyboard_if_exists": false,
-                    "fn_function_keys": [],
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "is_pointing_device": false,
-                        "product_id": 3620,
-                        "vendor_id": 6700
-                    },
-                    "ignore": false,
-                    "manipulate_caps_lock_led": false,
-                    "simple_modifications": [
-                        {
-                            "from": {
-                                "key_code": "application"
-                            },
-                            "to": {
-                                "key_code": "fn"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "disable_built_in_keyboard_if_exists": false,
-                    "fn_function_keys": [],
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "is_pointing_device": false,
-                        "product_id": 50475,
-                        "vendor_id": 1133
-                    },
-                    "ignore": false,
-                    "manipulate_caps_lock_led": false,
-                    "simple_modifications": []
-                }
-            ],
+            "devices": [],
             "fn_function_keys": [
                 {
                     "from": {

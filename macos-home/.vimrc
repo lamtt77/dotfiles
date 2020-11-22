@@ -65,7 +65,7 @@ set guicursor=
 " set relativenumber
 set number
 set incsearch nohlsearch
-set tabstop=8 softtabstop=4 expandtab shiftwidth=4
+set tabstop=8 softtabstop=4  shiftwidth=4 expandtab
 set autoindent
 set nowrap
 
@@ -195,7 +195,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 " Plug 'preservim/nerdcommenter'
 " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
-Plug 'tpope/vim-sleuth'
+" Plug 'tpope/vim-sleuth'
 " Plug 'tpope/vim-fugitive'
 " Plug 'tpope/vim-projectionist'
 " " enhances the . operator to work as one would expect with a number of Vim plugins
