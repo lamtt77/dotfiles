@@ -1,9 +1,11 @@
 !---------------------------------
 ! Xft settings
 ! --------------------------------
-!Xft.dpi:        109
-! LamT: dpi for Macbook Pro 13 is 113 for dimensions 1280x800 according to https://dpi.lv
-Xft.dpi:       113
+! LamT: dpi for Macbook Pro 13.3 is 113 for native dimensions 1280x800 according to https://dpi.lv
+! LamT: dpi for LG27MK420H-B 27 is 82 for native dimensions 1920x1080 according to https://dpi.lv
+! LamT: comment out as it does not seem to change the default 96x96!
+! Xft.dpi:        82
+
 Xft.antialias:  true
 Xft.rgba:       rgb
 Xft.hinting:    true

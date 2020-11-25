@@ -44,6 +44,17 @@ if &t_Co > 2 || has("gui_running")
   syntax on
 endif
 
+if has('gui_running')
+    "set guifont=Menlo:h13
+    "set gfn:Monaco:h13
+    " toolbar and scrollbars
+    set guioptions=
+    " set guioptions-=T       " remove toolbar
+    " set guioptions-=L       " left scroll bar
+    " set guioptions-=r       " right scroll bar
+    set shortmess=atI       " Don't show the intro message at start and truncate msgs (avoid press ENTER msgs)
+endif
+
 filetype plugin indent on
 
 " Absolute Path for python3 and ruby (mainly to satisfy nvim)
@@ -159,6 +170,12 @@ set background=dark
 let g:gruvbox_material_palette = 'mix'
 let g:gruvbox_material_background = 'medium'
 colorscheme gruvbox-material
+
+" My default settings for using netrw with :Lex
+let g:netrw_banner=0                " hide / unhide with Shift-I
+let g:netrw_liststyle=2             " multi-columns view for files
+let g:netrw_winsize=40
+let g:netrw_use_errorwindow=0       " fix an annoying netrw error displayed on top vim-8.2-1988
 
 "" LamT: integrate with ibus-bamboo
 "function! IBusOff()
