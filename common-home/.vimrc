@@ -173,7 +173,7 @@ colorscheme gruvbox-material
 
 " My default settings for using netrw with :Lex
 let g:netrw_banner=0                " hide / unhide with Shift-I
-let g:netrw_liststyle=2             " multi-columns view for files
+let g:netrw_liststyle=1             " multi-columns view for files
 let g:netrw_winsize=40
 let g:netrw_use_errorwindow=0       " fix an annoying netrw error displayed on top vim-8.2-1988
 

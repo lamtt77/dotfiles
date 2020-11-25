@@ -127,3 +127,6 @@
   ("C-M-y" . org-download-screenshot)
   ("C-M-p" . org-download-clipboard)
   :config)
+
+;; (use-package magit)
+(use-package evil-magit)
