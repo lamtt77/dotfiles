@@ -61,10 +61,10 @@ filetype plugin indent on
 let g:python3_host_prog = '/usr/bin/python3'
 set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
 
-set history=200		" keep 200 lines of command line history
+set history=1000		" keep 1000 lines of command line history
 
-set ttimeout		" time out for key codes
-set ttimeoutlen=100	" wait up to 100ms after Esc for special key
+set ttimeout		        " time out for key codes
+set ttimeoutlen=100	        " wait up to 100ms after Esc for special key
 set ttyfast
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience. Is it true?
@@ -83,9 +83,12 @@ set ruler
 set colorcolumn=80
 " Show @@@ in the last line if it is truncated.
 set display=truncate
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+
 set smartindent
 " `et` will not work with C/C++
 " set expandtab
+set smarttab
 set softtabstop=4 shiftwidth=4
 set ignorecase smartcase
 set nowrap
@@ -162,6 +165,10 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/gruvbox-material'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf.vim'
+
+Plug 'francoiscabrol/ranger.vim'
 call plug#end()
 " === PLUGIN initialization end here
 
@@ -176,6 +183,9 @@ let g:netrw_banner=0                " hide / unhide with Shift-I
 let g:netrw_liststyle=1             " multi-columns view for files
 let g:netrw_winsize=40
 let g:netrw_use_errorwindow=0       " fix an annoying netrw error displayed on top vim-8.2-1988
+
+" fugitive status line, this requires set ruler on
+set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 
 "" LamT: integrate with ibus-bamboo
 "function! IBusOff()
@@ -217,19 +227,29 @@ let mapleader="\<space>"
 
 " Simulate M-f and M-b as in emacs to replace for Shift Right and Left in
 " Insert and Command mode
-noremap! <Esc>f         <S-Right>
-noremap! <Esc>b         <S-Left>
+noremap! <Esc>f             <S-Right>
+noremap! <Esc>b             <S-Left>
 
 " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect
 " yet, should not do if reached top or bottom
-nnoremap <Esc><C-d>     <C-w>w<C-d><C-w>p
-nnoremap <Esc><C-u>     <C-w>w<C-u><C-w>p>
-
-" Paste from existing selection (not from unnamedplus clipboard)
-nnoremap <leader>p      "*p
+nnoremap <Esc><C-d>         <C-w>w<C-d><C-w>p
+nnoremap <Esc><C-u>         <C-w>w<C-u><C-w>p>
 
 " Simulate Insert key for MacOS, rarely use anyway
-inoremap <C-F12>          <Insert>
+inoremap <C-F12>            <Insert>
+
+" Paste from existing selection (not from unnamedplus clipboard)
+nnoremap <leader>p          "*p
+
+" FZF mappings
+" current working directory (project)
+nnoremap <leader>.          :FZF<CR>
+nnoremap <leader>b          :Buffers<CR>
+
+nnoremap <leader>l          :LF<CR>
+" Ranger mappings, default open current file directory
+let g:ranger_map_keys = 0
+nnoremap <leader>r          :Ranger<CR>
 
 " === My custom mapping end here
 
