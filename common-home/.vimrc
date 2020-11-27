@@ -49,9 +49,6 @@ if has('gui_running')
     "set gfn:Monaco:h13
     " toolbar and scrollbars
     set guioptions=
-    " set guioptions-=T       " remove toolbar
-    " set guioptions-=L       " left scroll bar
-    " set guioptions-=r       " right scroll bar
     set shortmess=atI       " Don't show the intro message at start and truncate msgs (avoid press ENTER msgs)
 endif
 
@@ -85,7 +82,7 @@ set colorcolumn=80
 set display=truncate
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
-set smartindent
+set autoindent
 " `et` will not work with C/C++
 " set expandtab
 set smarttab
@@ -166,9 +163,13 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/gruvbox-material'
 Plug 'tpope/vim-fugitive'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'francoiscabrol/ranger.vim'
+Plug 'francoiscabrol/ranger.vim' | let g:ranger_map_keys = 0
+
+Plug 'voldikss/vim-floaterm'
 call plug#end()
 " === PLUGIN initialization end here
 
@@ -187,13 +188,52 @@ let g:netrw_use_errorwindow=0       " fix an annoying netrw error displayed on t
 " fugitive status line, this requires set ruler on
 set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 
-"" LamT: integrate with ibus-bamboo
-"function! IBusOff()
+" === fzf plugin
+let $FZF_DEFAULT_COMMAND = 'find * -path "*/\.*"
+    \ -prune -o -path "node_modules/**"
+    \ -prune -o -path "target/**"
+    \ -prune -o -path "dist/**"
+    \ -prune -o -type f -print -o -type l -print 2> /dev/null'
+
+" ripgrep then ag silver search
+if executable('rg')
+  let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob "!.git" --files --follow'
+elseif executable('ag')
+  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+endif
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --glob "!.git" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --hidden --glob "!.git" --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
+" === vim-floaterm
+command! NNN FloatermNew nnn
+command! LF FloatermNew lf
+command! RangerNvim FloatermNew ranger
+
+"" lamt: integrate with ibus-bamboo
+"function! ibusoff()
 "  let g:ibus_prev_engine = system('ibus engine')
 "  execute 'silent !ibus engine xkb:us::eng'
 "endfunction
 "
-"function! IBusOn()
+"function! ibuson()
 "  let l:current_engine = system('ibus engine')
 "  if l:current_engine !~? 'xkb:us::eng'
 "    let g:ibus_prev_engine = l:current_engine
@@ -245,11 +285,16 @@ nnoremap <leader>p          "*p
 " current working directory (project)
 nnoremap <leader>.          :FZF<CR>
 nnoremap <leader>b          :Buffers<CR>
+nnoremap <leader><space>    :Rg<CR>
+nnoremap <leader>gg         :GGrep<CR>
 
-nnoremap <leader>l          :LF<CR>
 " Ranger mappings, default open current file directory
-let g:ranger_map_keys = 0
 nnoremap <leader>r          :Ranger<CR>
+
+" vim-floaterm mappings
+nnoremap <leader>fr         :RangerNvim<CR>
+nnoremap <leader>fl         :LF<CR>
+nnoremap <leader>fn         :NNN<CR>
 
 " === My custom mapping end here
 
