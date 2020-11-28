@@ -173,6 +173,11 @@ Plug 'voldikss/vim-floaterm'
 
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 Plug 'dyng/ctrlsf.vim'
+
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+Plug 'michaeljsmith/vim-indent-object'
+" Plug 'wellle/targets.vim'     " So many text objects, not used yet
 call plug#end()
 " === PLUGIN initialization end here
 
@@ -271,14 +276,8 @@ command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
 "call IBusOff()
 "" === end integration
 
-function! TrimWhitespace()
-  let l:save = winsaveview()
-  keeppatterns %s/\s\+$//e
-  call winrestview(l:save)
-endfunction
-
 augroup trimwhitespace
-  autocmd BufWritePre * :call TrimWhitespace()
+  autocmd BufWritePre * :call lamutils#TrimWhitespace()
 augroup end
 
 " === My custom mapping start here
@@ -310,7 +309,24 @@ nnoremap <silent> <leader><space>   :Rg<CR>
 nnoremap <silent> <leader>gg        :GGrep<CR>
 
 " Ranger mappings, default current buffer directory
-nnoremap <leader>r          :Ranger<CR>
+nnoremap <leader>rg                 :Ranger<CR>
+
+" === convenient mappings
+" visual mode pressing * or # searches for the current selection
+vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+" change to directory of current file
+nnoremap <Leader>cd                 :cd %:p:h<CR>
+" maintain visual mode after shifting > and <
+vmap < <gv
+vmap > >gv
+" write even though you did not sudo to begin with: w!!
+cmap w!! w !sudo tee % >/dev/null
+" replace all for word under cursor
+nnoremap <leader>rr                 yiw:%s/\<<C-r><C-w>\>//g<left><left>
+" replace all but in visual selection
+xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 
 " vim-floaterm mappings
 nnoremap <leader>fr         :RangerNvim<CR>
@@ -331,9 +347,7 @@ nnoremap <Leader>R
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 " same as above except it works with a visual selection.
-xmap <Leader>R
-  \ "sy
-  \ :Grepper <C-r>s -noprompt<CR>
+xmap <Leader>R                    "sy
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
@@ -347,6 +361,5 @@ nnoremap <leader>so :CtrlSFOpen<CR>
 nnoremap <leader>st :CtrlSFToggle<CR>
 
 " === My custom mapping end here
-
 
 " vim:sts=2 sw=2 et:

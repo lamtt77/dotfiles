@@ -548,7 +548,7 @@ if has('macunix')
   vmap <C-c> :w !pbcopy<CR><CR>
 endif
 
-"" Vmap for maintain Visual Mode after shifting > and <
+" maintain visual mode after shifting > and <
 vmap < <gv
 vmap > >gv
 
@@ -576,15 +576,8 @@ nnoremap <F5> :UndotreeToggle<cr>
 " Change to Directory of Current file
 nnoremap <Leader>cd :cd %:p:h<CR>
 
-" === TODO: call function from ~/.vim/autoload/functions.vim
-function! TrimWhitespace()
-  let l:save = winsaveview()
-  keeppatterns %s/\s\+$//e
-  call winrestview(l:save)
-endfunction
-
 augroup trimwhitespace
-  autocmd BufWritePre * :call TrimWhitespace()
+  autocmd BufWritePre * :call lamutils#TrimWhitespace()
 augroup end
 
 " Automatically reload .vimrc file on save
