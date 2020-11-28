@@ -170,6 +170,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'francoiscabrol/ranger.vim' | let g:ranger_map_keys = 0
 
 Plug 'voldikss/vim-floaterm'
+
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'dyng/ctrlsf.vim'
 call plug#end()
 " === PLUGIN initialization end here
 
@@ -227,7 +230,24 @@ command! NNN FloatermNew nnn
 command! LF FloatermNew lf
 command! RangerNvim FloatermNew ranger
 
-"" lamt: integrate with ibus-bamboo
+" === vim-grepper
+let g:grepper = {}
+let g:grepper.tools = ['git', 'rg', 'ag']
+let g:grepper.jump = 1
+let g:grepper.next_tool     = '<leader>gr'
+let g:grepper.simple_prompt = 1
+let g:grepper.quickfix      = 0
+
+" === CtrlSF
+let g:ctrlsf_backend = 'rg'
+let g:ctrlsf_extra_backend_args = {
+  \ 'rg': '--hidden',
+  \ 'ag': '--hidden'
+  \ }
+
+command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
+
+"" LamT: integrate with ibus-bamboo
 "function! ibusoff()
 "  let g:ibus_prev_engine = system('ibus engine')
 "  execute 'silent !ibus engine xkb:us::eng'
@@ -279,16 +299,17 @@ nnoremap <Esc><C-u>         <C-w>w<C-u><C-w>p>
 inoremap <C-F12>            <Insert>
 
 " Paste from existing selection (not from unnamedplus clipboard)
-nnoremap <leader>p          "*p
+nnoremap <leader>p                  "*p
 
-" FZF mappings
-" current working directory (project)
-nnoremap <leader>.          :FZF<CR>
-nnoremap <leader>b          :Buffers<CR>
-nnoremap <leader><space>    :Rg<CR>
-nnoremap <leader>gg         :GGrep<CR>
+" Fuzzy search in `pwd` directory (current project)
+nnoremap <silent> <leader>,         :FZF<CR>
+" Fuzzy search in curent buffer directory
+nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<CR>/<CR>
+nnoremap <silent> <leader>b         :Buffers<CR>
+nnoremap <silent> <leader><space>   :Rg<CR>
+nnoremap <silent> <leader>gg        :GGrep<CR>
 
-" Ranger mappings, default open current file directory
+" Ranger mappings, default current buffer directory
 nnoremap <leader>r          :Ranger<CR>
 
 " vim-floaterm mappings
@@ -296,6 +317,36 @@ nnoremap <leader>fr         :RangerNvim<CR>
 nnoremap <leader>fl         :LF<CR>
 nnoremap <leader>fn         :NNN<CR>
 
+" === grepper mappings
+nnoremap <leader>gr :Grepper -tool git<cr>
+" this will support much more gs + motion
+nmap gs <plug>(GrepperOperator)
+xmap gs <Plug>(GrepperOperator)
+
+" after searching for text, this will do project wide find and replace.
+nnoremap <Leader>R
+  \ :let @s='\<'.expand('<cword>').'\>'<CR>
+  \ :Grepper -cword -noprompt<CR>
+  \ :cfdo %s/<C-r>s//g \| update
+  \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+
+" same as above except it works with a visual selection.
+xmap <Leader>R
+  \ "sy
+  \ :Grepper <C-r>s -noprompt<CR>
+  \ :cfdo %s/<C-r>s//g \| update
+  \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+
+" === CtrlSF mappings
+nmap     <leader>sf <Plug>CtrlSFPrompt
+vmap     <leader>sf <Plug>CtrlSFVwordPath
+vmap     <leader>sF <Plug>CtrlSFVwordExec
+nmap     <leader>sn <Plug>CtrlSFCwordPath
+nmap     <leader>sp <Plug>CtrlSFPwordPath
+nnoremap <leader>so :CtrlSFOpen<CR>
+nnoremap <leader>st :CtrlSFToggle<CR>
+
 " === My custom mapping end here
+
 
 " vim:sts=2 sw=2 et:

@@ -3,10 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(menu-bar-mode nil)
- '(package-selected-packages 'nil)
- '(tool-bar-mode nil))
+ '(package-selected-packages 'nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -15,7 +12,7 @@
  '(default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
 
 ;; '(package-selected-packages
-;;   '(org-roam gnuplot auctex ox-report evil)))
+;;   '(org-roam gnuplot auctex ox-report)))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -39,6 +36,7 @@
 (setq straight-use-package-by-default t)
 
 (fset 'yes-or-no-p 'y-or-n-p)
+(column-number-mode t)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
@@ -50,7 +48,7 @@
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
 (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
-;;(setq ring-bell-function 'ignore )	; silent bell when you make a mistake
+(setq ring-bell-function 'ignore )	; silent bell when you make a mistake
 (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
 (setq coding-system-for-write 'utf-8 )
 (setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
