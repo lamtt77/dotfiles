@@ -47,9 +47,9 @@ endif
 if has('gui_running')
     "set guifont=Menlo:h13
     "set gfn:Monaco:h13
-    " toolbar and scrollbars
+    " no toolbar and scrollbars
     set guioptions=
-    set shortmess=atI       " Don't show the intro message at start and truncate msgs (avoid press ENTER msgs)
+    set shortmess=atI   " Don't show the intro message at start and truncate msgs (avoid press ENTER msgs)
 endif
 
 filetype plugin indent on
@@ -58,33 +58,32 @@ filetype plugin indent on
 let g:python3_host_prog = '/usr/bin/python3'
 set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
 
-set history=1000		" keep 1000 lines of command line history
+set history=1000        " keep 1000 lines of command line history
 
-set ttimeout		        " time out for key codes
-set ttimeoutlen=100	        " wait up to 100ms after Esc for special key
+set ttimeout            " time out for key codes
+set ttimeoutlen=100     " wait up to 100ms after Esc for special key
 set ttyfast
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience. Is it true?
+" delays and poor user experience. TODO Is it true in general or only for Coc plugin?
 set updatetime=200
 
 set hidden
-" set autoread
+" set autoread          " sometimes I like to know if buffer has changed
 set nobackup nowritebackup
 
-" Settings pertain to display
-set showcmd		" display incomplete commands
-set wildmenu		" display completion matches in a status line
+set showcmd             " display incomplete commands
+set wildmenu            " display completion matches in a status line
 set scrolloff=3
 " set number
 set ruler
 set colorcolumn=80
-" Show @@@ in the last line if it is truncated.
-set display=truncate
+
+set display=truncate    " Show @@@ in the last line if it is truncated
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set list
 
 set autoindent
-" `et` will not work with C/C++
-" set expandtab
+set expandtab           " C/C++ will need to set to noexpandtab
 set smarttab
 set softtabstop=4 shiftwidth=4
 set ignorecase smartcase
@@ -177,7 +176,7 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 Plug 'michaeljsmith/vim-indent-object'
-" Plug 'wellle/targets.vim'     " So many text objects, not used yet
+" Plug 'wellle/targets.vim'         " So many text objects, not used yet
 call plug#end()
 " === PLUGIN initialization end here
 
@@ -280,17 +279,14 @@ augroup trimwhitespace
   autocmd BufWritePre * :call lamutils#TrimWhitespace()
 augroup end
 
-" === My custom mapping start here
+" === All my custom mappings start here
 " global map leader should come first
 let mapleader="\<space>"
 
-" Simulate M-f and M-b as in emacs to replace for Shift Right and Left in
-" Insert and Command mode
+" Simulate M-f and M-b as in emacs to replace for Shift Right and Left in Insert and Command mode
 noremap! <Esc>f             <S-Right>
 noremap! <Esc>b             <S-Left>
-
-" C-M-u and C-M-d scroll up and down other window in normal mode; not perfect
-" yet, should not do if reached top or bottom
+" C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
 nnoremap <Esc><C-d>         <C-w>w<C-d><C-w>p
 nnoremap <Esc><C-u>         <C-w>w<C-u><C-w>p>
 
@@ -306,32 +302,34 @@ nnoremap <silent> <leader>,         :FZF<CR>
 nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<CR>/<CR>
 nnoremap <silent> <leader>b         :Buffers<CR>
 nnoremap <silent> <leader><space>   :Rg<CR>
+xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<CR>
+" Git Grep
 nnoremap <silent> <leader>gg        :GGrep<CR>
 
-" Ranger mappings, default current buffer directory
-nnoremap <leader>rg                 :Ranger<CR>
-
 " === convenient mappings
-" visual mode pressing * or # searches for the current selection
+" visual mode pressing * or # searches for the current selection, use `//` to resume that search pattern
 vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " change to directory of current file
 nnoremap <Leader>cd                 :cd %:p:h<CR>
 " maintain visual mode after shifting > and <
-vmap < <gv
-vmap > >gv
+vnoremap < <gv
+vnoremap > >gv
 " write even though you did not sudo to begin with: w!!
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee % >/dev/null
 " replace all for word under cursor
 nnoremap <leader>rr                 yiw:%s/\<<C-r><C-w>\>//g<left><left>
 " replace all but in visual selection
 xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 
+" Ranger mappings, default current buffer directory
+nnoremap <leader>rg                 :Ranger<CR>
+
 " vim-floaterm mappings
-nnoremap <leader>fr         :RangerNvim<CR>
-nnoremap <leader>fl         :LF<CR>
-nnoremap <leader>fn         :NNN<CR>
+nnoremap <leader>fr                 :RangerNvim<CR>
+nnoremap <leader>fl                 :LF<CR>
+nnoremap <leader>fn                 :NNN<CR>
 
 " === grepper mappings
 nnoremap <leader>gr :Grepper -tool git<cr>
@@ -340,14 +338,15 @@ nmap gs <plug>(GrepperOperator)
 xmap gs <Plug>(GrepperOperator)
 
 " after searching for text, this will do project wide find and replace.
-nnoremap <Leader>R
+nnoremap <leader>R
   \ :let @s='\<'.expand('<cword>').'\>'<CR>
-  \ :Grepper -cword -noprompt<CR>
+  \ :Grepper -noprompt -cword<CR>
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 " same as above except it works with a visual selection.
-xmap <Leader>R                    "sy
+xnoremap <leader>R                     "sy
+  \ :Grepper -noprompt -query '<C-r>s'<CR>
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
