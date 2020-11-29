@@ -348,12 +348,11 @@ let mapleader="\<space>"
 cnoremap <expr> <CR>        ccr#CCR()
 
 nnoremap Y                  y$
-nnoremap <C-j>              <C-w>w
-nnoremap <C-k>              <C-w>W
-inoremap <Esc>o             <C-O>o
-inoremap <Esc>O             <C-O>O
-inoremap <Esc>I             <C-O>^
-inoremap <Esc>A             <C-O>$
+
+nnoremap <Esc>j             <C-w>w
+nnoremap <Esc>k             <C-w>W
+tnoremap <Esc>j             <C-w>w
+tnoremap <Esc>k             <C-w>W
 
 " Simulate M-f and M-b as in emacs to replace for Shift Right and Left in Insert and Command mode
 noremap! <Esc>f             <S-Right>
