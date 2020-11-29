@@ -45,17 +45,17 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has('gui_running')
-    "set guifont=Menlo:h13
-    "set gfn:Monaco:h13
-    " no toolbar and scrollbars
-    set guioptions=
-    set shortmess=atI   " Don't show the intro message at start and truncate msgs (avoid press ENTER msgs)
+  "set guifont=Menlo:h13
+  "set gfn:Monaco:h13
+  " no toolbar and scrollbars
+  set guioptions=
+  set shortmess=atI   " Don't show the intro message at start and truncate msgs
 endif
-
-filetype plugin indent on
 
 " Absolute Path for python3 and ruby (mainly to satisfy nvim)
 let g:python3_host_prog = '/usr/bin/python3'
+
+filetype plugin indent on
 set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
 
 set history=1000        " keep 1000 lines of command line history
@@ -65,7 +65,7 @@ set ttimeoutlen=100     " wait up to 100ms after Esc for special key
 set ttyfast
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience. TODO Is it true in general or only for Coc plugin?
-set updatetime=200
+set updatetime=300
 
 set hidden
 " set autoread          " sometimes I like to know if buffer has changed
@@ -73,19 +73,22 @@ set nobackup nowritebackup
 
 set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
+set laststatus=2
 set scrolloff=3
 " set number
 set ruler
 set colorcolumn=80
 
 set display=truncate    " Show @@@ in the last line if it is truncated
-set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-set list
+set list listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+
+"set foldmethod=marker  " turn this off and use bottom file comment vim: instead
+"set foldopen-=hor
+"set foldopen+=jump
+"let g:vimsyn_folding = 'f'
 
 set autoindent
-set expandtab           " C/C++ will need to set to noexpandtab
 set smarttab
-set softtabstop=4 shiftwidth=4
 set ignorecase smartcase
 set nowrap
 
@@ -115,6 +118,7 @@ if ! isdirectory(expand(&g:viewdir))
   silent! call mkdir(expand(&g:viewdir), 'p', 0700)
 endif
 
+set noswapfile
 set undofile
 set undolevels=3000
 set undoreload=10000
@@ -144,6 +148,9 @@ if has('mouse') " mouse support?
 endif
 
 " === PLUGIN initialization start here
+" Load up the match it built-in plugin which provides smart % XML/HTML matching.
+runtime macros/matchit.vim
+
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
 if !filereadable(vimplug_exists)
@@ -161,7 +168,11 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/gruvbox-material'
+
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -173,10 +184,20 @@ Plug 'voldikss/vim-floaterm'
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 Plug 'dyng/ctrlsf.vim'
 
+Plug 'romainl/vim-qf' | let g:qf_mapping_ack_style = 1
+
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 Plug 'michaeljsmith/vim-indent-object'
 " Plug 'wellle/targets.vim'         " So many text objects, not used yet
+
+" TODO going to try these,
+" Plug 'honza/vim-snippets'
+" Plug 'majutsushi/tagbar'
+
+" from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
+" Plug 'godlygeek/tabular'  " alignment (useful for markdown tables for example)
+" Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
 call plug#end()
 " === PLUGIN initialization end here
 
@@ -197,16 +218,18 @@ set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 
 " === fzf plugin
 let $FZF_DEFAULT_COMMAND = 'find * -path "*/\.*"
-    \ -prune -o -path "node_modules/**"
-    \ -prune -o -path "target/**"
-    \ -prune -o -path "dist/**"
-    \ -prune -o -type f -print -o -type l -print 2> /dev/null'
+  \ -prune -o -path "node_modules/**"
+  \ -prune -o -path "target/**"
+  \ -prune -o -path "dist/**"
+  \ -prune -o -type f -print -o -type l -print 2> /dev/null'
 
 " ripgrep then ag silver search
 if executable('rg')
   let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob "!.git" --files --follow'
+  set grepprg=rg\ --hidden\ --vimgrep\ --glob\ '!*{.git,node_modules,build,bin,obj,tags}'
 elseif executable('ag')
   let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+  set grepprg=ag\ --hidden\ --vimgrep
 endif
 
 command! -bang -nargs=* Rg
@@ -229,6 +252,23 @@ command! -bang -nargs=* GGrep
   \   'git grep --line-number -- '.shellescape(<q-args>), 0,
   \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
+" === supercharge default `:grep`, from https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3#file-grep-vim
+" this would require properly set grepprg; alternatively type `:gr` or `:lgr` to use the legacy ones
+function! Grep(...)
+  return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
+endfunction
+
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
+cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
+
+augroup quickfix
+  autocmd!
+  autocmd QuickFixCmdPost cgetexpr cwindow
+  autocmd QuickFixCmdPost lgetexpr lwindow
+augroup END
+
 " === vim-floaterm
 command! NNN FloatermNew nnn
 command! LF FloatermNew lf
@@ -241,6 +281,7 @@ let g:grepper.jump = 1
 let g:grepper.next_tool     = '<leader>gr'
 let g:grepper.simple_prompt = 1
 let g:grepper.quickfix      = 0
+command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
 
 " === CtrlSF
 let g:ctrlsf_backend = 'rg'
@@ -248,8 +289,6 @@ let g:ctrlsf_extra_backend_args = {
   \ 'rg': '--hidden',
   \ 'ag': '--hidden'
   \ }
-
-command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
 
 "" LamT: integrate with ibus-bamboo
 "function! ibusoff()
@@ -275,13 +314,30 @@ command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
 "call IBusOff()
 "" === end integration
 
-augroup trimwhitespace
-  autocmd BufWritePre * :call lamutils#TrimWhitespace()
-augroup end
+" just one common augroup for vimrc!
+augroup vimrc
+  autocmd!
+augroup END
+" Automatically reload .vimrc file on save
+autocmd vimrc BufWritePost .vimrc so ~/.vimrc
+
+" customize by filetype
+autocmd vimrc FileType cpp,cxx,h,hpp,c setlocal ts=8 sw=4 noet
+autocmd vimrc FileType go,py setlocal ts=8 sw=4 expandtab
+autocmd vimrc Filetype vim,js,ts,html setlocal sts=2 sw=2 expandtab
+
+autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
+
+" Open images with feh->sxiv
+autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
 
 " === All my custom mappings start here
 " global map leader should come first
 let mapleader="\<space>"
+
+" === supercharge command mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
+" included a minor fix from https://github.com/sparkcanon/nvim/blob/9ef3e7399fc8006e5a1f14caec2cc6a7b18d4629/autoload/listcommands.vim
+cnoremap <expr> <CR>        ccr#CCR()
 
 " Simulate M-f and M-b as in emacs to replace for Shift Right and Left in Insert and Command mode
 noremap! <Esc>f             <S-Right>
@@ -308,11 +364,14 @@ nnoremap <silent> <leader>gg        :GGrep<CR>
 
 " === convenient mappings
 " visual mode pressing * or # searches for the current selection, use `//` to resume that search pattern
-vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<CR>/<C-r>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<CR>?<C-r>=@/<CR><CR>
 
 " change to directory of current file
-nnoremap <Leader>cd                 :cd %:p:h<CR>
+nnoremap <leader>cd                 :cd %:p:h<CR>
+" toggle maximum current window
+nnoremap <silent> <leader>zz        :call lamutils#ZoomToggle()<CR>
+
 " maintain visual mode after shifting > and <
 vnoremap < <gv
 vnoremap > >gv
@@ -359,6 +418,13 @@ nmap     <leader>sp <Plug>CtrlSFPwordPath
 nnoremap <leader>so :CtrlSFOpen<CR>
 nnoremap <leader>st :CtrlSFToggle<CR>
 
+"" === DEBUG with TermDebug
+"packadd termdebug
+"let g:termdebug_wide=1
+"noremap <silent> <leader>td :Termdebug<cr>
+"noremap <silent> <leader>ts :Step<cr>
+"noremap <silent> <leader>to :Over<cr>
+
 " === My custom mapping end here
 
-" vim:sts=2 sw=2 et:
+" vim:sts=2 sw=2 et:foldmethod=marker

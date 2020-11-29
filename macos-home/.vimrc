@@ -383,7 +383,7 @@ endif
 
 " customize by filetype
 augroup customizefiletype
-  au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+  autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
   " c & cpp
   autocmd FileType c setlocal ts=8 sw=4 noet
   autocmd FileType cpp setlocal ts=8 sw=4 noet

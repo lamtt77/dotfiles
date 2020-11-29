@@ -5,6 +5,19 @@ function! lamutils#TrimWhitespace()
 endfunction
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/autoload/general.vim
+" Simple Zoom / Restore window (like Tmux)
+function! lamutils#ZoomToggle() abort
+  if exists('t:zoomed') && t:zoomed
+    execute t:zoom_winrestcmd
+    let t:zoomed = 0
+  else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
+  endif
+endfunction
+
 " For use with pressing * or # in visual mode to search for current selection
 function! lamutils#VisualSelection(direction, extra_filter) range
   let l:saved_reg = @"
