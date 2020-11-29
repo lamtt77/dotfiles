@@ -57,7 +57,9 @@ let g:python3_host_prog = '/usr/bin/python3'
 
 filetype plugin indent on
 set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
+set complete+=d         " include #define or macro
 
+set pastetoggle=<F2>
 set history=1000        " keep 1000 lines of command line history
 
 set ttimeout            " time out for key codes
@@ -69,6 +71,7 @@ set updatetime=300
 
 set hidden
 " set autoread          " sometimes I like to know if buffer has changed
+" set autowrite
 set nobackup nowritebackup
 
 set showcmd             " display incomplete commands
@@ -77,9 +80,11 @@ set laststatus=2
 set scrolloff=3
 " set number
 set ruler
+set shiftround
 set colorcolumn=80
 
 set display=truncate    " Show @@@ in the last line if it is truncated
+set lazyredraw
 set list listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
 "set foldmethod=marker  " turn this off and use bottom file comment vim: instead
@@ -90,6 +95,7 @@ set list listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set autoindent
 set smarttab
 set ignorecase smartcase
+set infercase           " smarter keyword completion
 set nowrap
 
 " LamT: taken from Arch
@@ -173,10 +179,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-rsi'              " Gonna try that as I am also comfortable with readline and emacs
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+" ranger can do many things netrw can't
 Plug 'francoiscabrol/ranger.vim' | let g:ranger_map_keys = 0
 
 Plug 'voldikss/vim-floaterm'
@@ -314,7 +322,7 @@ let g:ctrlsf_extra_backend_args = {
 "call IBusOff()
 "" === end integration
 
-" just one common augroup for vimrc!
+" ideally just one common augroup for vimrc!
 augroup vimrc
   autocmd!
 augroup END
@@ -335,9 +343,17 @@ autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
 " global map leader should come first
 let mapleader="\<space>"
 
-" === supercharge command mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
+" === supercharge `valid` command-line mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
 " included a minor fix from https://github.com/sparkcanon/nvim/blob/9ef3e7399fc8006e5a1f14caec2cc6a7b18d4629/autoload/listcommands.vim
 cnoremap <expr> <CR>        ccr#CCR()
+
+nnoremap Y                  y$
+nnoremap <C-j>              <C-w>w
+nnoremap <C-k>              <C-w>W
+inoremap <Esc>o             <C-O>o
+inoremap <Esc>O             <C-O>O
+inoremap <Esc>I             <C-O>^
+inoremap <Esc>A             <C-O>$
 
 " Simulate M-f and M-b as in emacs to replace for Shift Right and Left in Insert and Command mode
 noremap! <Esc>f             <S-Right>
@@ -377,8 +393,8 @@ vnoremap < <gv
 vnoremap > >gv
 " write even though you did not sudo to begin with: w!!
 cnoremap w!! w !sudo tee % >/dev/null
-" replace all for word under cursor
-nnoremap <leader>rr                 yiw:%s/\<<C-r><C-w>\>//g<left><left>
+" replace all for word under cursor, yank that word for later use anyway
+nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
 " replace all but in visual selection
 xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 
@@ -404,7 +420,7 @@ nnoremap <leader>R
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 " same as above except it works with a visual selection.
-xnoremap <leader>R                     "sy
+xnoremap <leader>R                  "sy
   \ :Grepper -noprompt -query '<C-r>s'<CR>
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
