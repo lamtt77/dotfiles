@@ -1,38 +1,4 @@
-" {{{1 VIM RECOMMENDED DEFAULT SETTINGS
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-" Revert with ":iunmap <C-U>".
-inoremap <C-U> <C-G>u<C-U>
-
-" Put these in an autocmd group, so that you can revert them with:
-" ":augroup vimStartup | au! | augroup END"
-augroup vimStartup
-  au!
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid, when inside an event handler
-  " (happens when dropping a file on gvim) and for a commit message (it's
-  " likely a different one than last time).
-  autocmd BufReadPost *
-    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-    \ |   exe "normal! g`\""
-    \ | endif
-
-augroup END
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-" Revert with: ":delcommand DiffOrig".
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-    \ | wincmd p | diffthis
-endif
-
-" }}}1
-
-" First thing: enable 24-bit true colors only if your terminal supports it.
+" === First thing: enable 24-bit true colors only if your terminal supports it. {{{1
 let colorterm=$COLORTERM
 if colorterm =~# 'truecolor' || colorterm =~# '24bit'
   set termguicolors
@@ -45,29 +11,40 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has('gui_running')
-  "set guifont=Menlo:h13
-  "set gfn:Monaco:h13
-  " no toolbar and scrollbars
-  set guioptions=
-  set shortmess=atI   " Don't show the intro message at start and truncate msgs
+  "let &guifont = 'Monaco:h13'
+  set guioptions=a        " no toolbar and scrollbars
+  set mousehide
+  command! Bigger  let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)+1', '')
+  command! Smaller let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)-1', '')
 endif
+" }}}1
+
+" === ALL Settings {{{1
+" ideally just one common augroup for vimrc!
+augroup vimrc
+  autocmd!
+augroup END
 
 " Absolute Path for python3 and ruby (mainly to satisfy nvim)
 let g:python3_host_prog = '/usr/bin/python3'
 
+let g:loaded_2html_plugin     = 1
+let g:loaded_spellfile_plugin = 1   " spellvim built-in plugin
+
 filetype plugin indent on
-set completefunc=syntaxcomplete#Complete    " Ctrl-X Ctrl-U: user complete
-set complete+=d         " include #define or macro
+set completefunc  =syntaxcomplete#Complete " Ctrl-X Ctrl-U: user complete
+set complete     +=d    " include #define or macro
 
-set pastetoggle=<F2>
-set history=1000        " keep 1000 lines of command line history
+set pastetoggle   =<F2>
+set history       =1000 " keep 1000 lines of command line history
 
+set timeoutlen    =500  " change back to default 1000ms if got issue
 set ttimeout            " time out for key codes
-set ttimeoutlen=100     " wait up to 100ms after Esc for special key
+set ttimeoutlen   =10   " wait only up to 10ms after Esc for special key
 set ttyfast
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience. TODO Is it true in general or only for Coc plugin?
-set updatetime=300
+set updatetime    =300
 
 set hidden
 " set autoread          " sometimes I like to know if buffer has changed
@@ -76,24 +53,48 @@ set nobackup nowritebackup
 
 set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
-set laststatus=2
-set scrolloff=3
+set suffixes     +=.a,.1,.class
+set wildignore   +=*.o,*.so,*.zip,*.png
+set wildoptions   =tagfile
+
+set laststatus    =2
+set scrolloff     =3
 " set number
 set ruler
-set shiftround
-set colorcolumn=80
+set colorcolumn   =80
 
-set display=truncate    " Show @@@ in the last line if it is truncated
+set shortmess     =aIT
+set display       =truncate " Show @@@ in the last line if it is truncated
 set lazyredraw
-set list listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set list
 
-"set foldmethod=marker  " turn this off and use bottom file comment vim: instead
-"set foldopen-=hor
-"set foldopen+=jump
-"let g:vimsyn_folding = 'f'
+" customized from https://github.com/mhinz/dotfiles/blob/master/.vim/vimrc
+if has('multi_byte') && &encoding ==# 'utf-8'
+  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+  let &showbreak = '↪ '
+  autocmd vimrc InsertEnter * set listchars-=trail:⣿
+  autocmd vimrc InsertLeave * set listchars+=trail:⣿
+else
+  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+  let &showbreak = '-> '
+  autocmd vimrc InsertEnter * set listchars-=trail:.
+  autocmd vimrc InsertLeave * set listchars+=trail:.
+endif
+
+" spelling
+set spellfile         =~/.vim/spell/en.utf-8.add
+set spelllang         =en
+
+" set diffopt          +=vertical,foldcolumn:0,indent-heuristic,algorithm:patience
+set foldmethod        =marker
+set foldopen         -=hor
+set foldopen         +=jump
+let g:vimsyn_folding  ='f'
 
 set autoindent
 set smarttab
+set shiftround
+set softtabstop=2 shiftwidth=2 expandtab
 set ignorecase smartcase
 set infercase           " smarter keyword completion
 set nowrap
@@ -152,8 +153,9 @@ endif
 if has('mouse') " mouse support?
   set mouse=a
 endif
+" }}}
 
-" === PLUGIN initialization start here
+" === PLUGINs initialization {{{1
 " Load up the match it built-in plugin which provides smart % XML/HTML matching.
 runtime macros/matchit.vim
 
@@ -177,54 +179,70 @@ Plug 'sainnhe/gruvbox-material'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-rsi'              " Gonna try that as I am also comfortable with readline and emacs
+" offload a bunch of my manual emacs-like mappings, remember <C-X><C-A> replaced for the old <C-A> in insert and command mode
+Plug 'tpope/vim-rsi'
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf',             { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/gv.vim',          { 'on': 'GV'}
+Plug 'junegunn/vim-easy-align'
 
 " ranger can do many things netrw can't
 Plug 'francoiscabrol/ranger.vim' | let g:ranger_map_keys = 0
 
 Plug 'voldikss/vim-floaterm'
 
-Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'mhinz/vim-grepper',        { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 Plug 'dyng/ctrlsf.vim'
 
-Plug 'romainl/vim-qf' | let g:qf_mapping_ack_style = 1
+Plug 'romainl/vim-qf'            | let g:qf_mapping_ack_style = 1
 
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}   " save 5ms startup if don't use
 
 Plug 'michaeljsmith/vim-indent-object'
 " Plug 'wellle/targets.vim'         " So many text objects, not used yet
 
-" TODO going to try these,
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'AndrewRadev/tagalong.vim', { 'for': 'html'}
+Plug 'mattn/emmet-vim',          { 'for': 'html'}
+Plug 'lifepillar/pgsql.vim',     { 'for': 'sql'}
 " Plug 'honza/vim-snippets'
-" Plug 'majutsushi/tagbar'
+
+Plug 'majutsushi/tagbar',        { 'on': 'TagbarToggle'}
+Plug 'mbbill/undotree',          { 'on': 'UndotreeToggle'}
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
-" Plug 'godlygeek/tabular'  " alignment (useful for markdown tables for example)
 " Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
 call plug#end()
-" === PLUGIN initialization end here
+" }}} === PLUGIN initialization end here
 
 " === THEMEs and COLORs
-set background=dark
-let g:gruvbox_material_palette = 'mix'
-let g:gruvbox_material_background = 'medium'
+set background                    =dark
+let g:gruvbox_material_palette    ='mix'
+let g:gruvbox_material_background ='medium'
 colorscheme gruvbox-material
 
 " My default settings for using netrw with :Lex
-let g:netrw_banner=0                " hide / unhide with Shift-I
-let g:netrw_liststyle=1             " multi-columns view for files
-let g:netrw_winsize=40
-let g:netrw_use_errorwindow=0       " fix an annoying netrw error displayed on top vim-8.2-1988
+let g:netrw_banner          =0 " hide / unhide with Shift-I
+let g:netrw_liststyle       =1 " multi-columns view for files
+let g:netrw_winsize         =40
+let g:netrw_use_errorwindow =0 " fix an annoying netrw error displayed on top vim-8.2-1988
+
+" DiffOrig convenient command to see the difference between the current buffer
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+    \ | wincmd p | diffthis
+endif
 
 " fugitive status line, this requires set ruler on
 set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 
 " === fzf plugin
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
+
 let $FZF_DEFAULT_COMMAND = 'find * -path "*/\.*"
   \ -prune -o -path "node_modules/**"
   \ -prune -o -path "target/**"
@@ -236,9 +254,15 @@ if executable('rg')
   let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob "!.git" --files --follow'
   set grepprg=rg\ --hidden\ --vimgrep\ --glob\ '!*{.git,node_modules,build,bin,obj,tags}'
 elseif executable('ag')
-  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+ https://github.com/junegunn/dotfiles/blob/master/vimrc let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
   set grepprg=ag\ --hidden\ --vimgrep
 endif
+
+" All files with `fd`, from https://github.com/junegunn/dotfiles/blob/master/vimrc
+command! -nargs=? -complete=dir AF
+  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \ })))
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
@@ -298,7 +322,7 @@ let g:ctrlsf_extra_backend_args = {
   \ 'ag': '--hidden'
   \ }
 
-"" LamT: integrate with ibus-bamboo
+" === LamT: integrate with ibus-bamboo {{{1
 "function! ibusoff()
 "  let g:ibus_prev_engine = system('ibus engine')
 "  execute 'silent !ibus engine xkb:us::eng'
@@ -320,12 +344,14 @@ let g:ctrlsf_extra_backend_args = {
 "augroup END
 "
 "call IBusOff()
-"" === end integration
+" === end integration }}}
 
-" ideally just one common augroup for vimrc!
-augroup vimrc
-  autocmd!
-augroup END
+" When editing a file, always jump to the last known cursor position.
+autocmd vimrc BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
+
 " Automatically reload .vimrc file on save
 autocmd vimrc BufWritePost .vimrc so ~/.vimrc
 
@@ -339,57 +365,102 @@ autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
 " Open images with feh->sxiv
 autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
 
-" === All my custom mappings start here
+" === All my custom and `steal` mappings start here {{{1
 " global map leader should come first
 let mapleader="\<space>"
 
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U>       <C-G>u<C-U>
+
 " === supercharge `valid` command-line mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
 " included a minor fix from https://github.com/sparkcanon/nvim/blob/9ef3e7399fc8006e5a1f14caec2cc6a7b18d4629/autoload/listcommands.vim
-cnoremap <expr> <CR>        ccr#CCR()
+cnoremap <expr> <cr> ccr#CCR()
 
-nnoremap Y                  y$
+nnoremap Y           y$
 
-nnoremap <Esc>j             <C-w>w
-nnoremap <Esc>k             <C-w>W
-tnoremap <Esc>j             <C-w>w
-tnoremap <Esc>k             <C-w>W
-
-" Simulate M-f and M-b as in emacs to replace for Shift Right and Left in Insert and Command mode
-noremap! <Esc>f             <S-Right>
-noremap! <Esc>b             <S-Left>
+" sane windows switching like `dwm`, must switch to <M-...> for `nvim`
+nnoremap <Esc>j      <C-w>w
+nnoremap <Esc>k      <C-w>W
+tnoremap <Esc>j      <C-w>w
+tnoremap <Esc>k      <C-w>W
 " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
-nnoremap <Esc><C-d>         <C-w>w<C-d><C-w>p
-nnoremap <Esc><C-u>         <C-w>w<C-u><C-w>p>
+nnoremap <Esc><C-d>  <C-w>w<C-d><C-w>p
+nnoremap <Esc><C-u>  <C-w>w<C-u><C-w>p>
 
 " Simulate Insert key for MacOS, rarely use anyway
-inoremap <C-F12>            <Insert>
+inoremap <C-F12>     <Insert>
+
+nnoremap <leader>w   :update<cr>
+" edit macro
+nnoremap <leader>M   :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 " Paste from existing selection (not from unnamedplus clipboard)
-nnoremap <leader>p                  "*p
+nnoremap <leader>p   "*p
 
 " Fuzzy search in `pwd` directory (current project)
-nnoremap <silent> <leader>,         :FZF<CR>
+nnoremap <silent> <leader>,         :FZF<cr>
 " Fuzzy search in curent buffer directory
-nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<CR>/<CR>
-nnoremap <silent> <leader>b         :Buffers<CR>
-nnoremap <silent> <leader><space>   :Rg<CR>
-xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<CR>
+nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<cr>/<cr>
+nnoremap <silent> <leader><Enter>   :Buffers<cr>
+nnoremap <silent> <Leader>L         :Lines<CR>
+nnoremap <silent> <Leader>`         :Marks<CR>
+nnoremap <silent> <leader><space>   :Rg<cr>
+xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<cr>
+" All files
+nnoremap <silent> <leader>af        :AF<cr>
+imap     <c-x><c-j>                 <plug>(fzf-complete-file-ag)
+imap     <c-x><c-l>                 <plug>(fzf-complete-line)
+
+"imap <c-x><c-k> <plug>(fzf-complete-word)
+"imap <c-x><c-f> <plug>(fzf-complete-path)
+"inoremap <expr> <c-x><c-d> fzf#vim#complete#path('blsd')
+
 " Git Grep
-nnoremap <silent> <leader>gg        :GGrep<CR>
+nnoremap <silent> <leader>gg        :GGrep<cr>
 
 " === convenient mappings
 " visual mode pressing * or # searches for the current selection, use `//` to resume that search pattern
-vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<CR>/<C-r>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<CR>?<C-r>=@/<CR><CR>
+vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<cr>/<C-r>=@/<cr><cr>
+vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<cr>?<C-r>=@/<cr><cr>
 
 " change to directory of current file
-nnoremap <leader>cd                 :cd %:p:h<CR>
+nnoremap <leader>cd                 :cd %:p:h<cr>
 " toggle maximum current window
-nnoremap <silent> <leader>zz        :call lamutils#ZoomToggle()<CR>
+nnoremap <silent> <leader>zz        :call lamutils#ZoomToggle()<cr>
 
 " maintain visual mode after shifting > and <
 vnoremap < <gv
 vnoremap > >gv
+
+" Quickfix
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+
+" move lines
+nnoremap <silent> <C-k> :move-2<cr>
+nnoremap <silent> <C-j> :move+<cr>
+xnoremap <silent> <C-k> :move-2<cr>gv
+xnoremap <silent> <C-j> :move'>+<cr>gv
+
+"" Markdown headings
+"nnoremap <leader>1 m`yypVr=``
+"nnoremap <leader>2 m`yypVr-``
+"nnoremap <leader>3 m`^i### <esc>``4l
+"nnoremap <leader>4 m`^i#### <esc>``5l
+"nnoremap <leader>5 m`^i##### <esc>``6l
+
+" #!! | Shebang, some good `steal`
+inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
+" <leader>bs | buf-search
+nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><right>
+
 " write even though you did not sudo to begin with: w!!
 cnoremap w!! w !sudo tee % >/dev/null
 " replace all for word under cursor, yank that word for later use anyway
@@ -398,12 +469,23 @@ nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
 xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 
 " Ranger mappings, default current buffer directory
-nnoremap <leader>rg                 :Ranger<CR>
+nnoremap <leader>rg                 :Ranger<cr>
 
 " vim-floaterm mappings
-nnoremap <leader>fr                 :RangerNvim<CR>
-nnoremap <leader>fl                 :LF<CR>
-nnoremap <leader>fn                 :NNN<CR>
+nnoremap <leader>fr                 :RangerNvim<cr>
+nnoremap <leader>fl                 :LF<cr>
+nnoremap <leader>fn                 :NNN<cr>
+
+" === vim-easy-align mappings
+" interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+" interactive EasyAlign in visual mode (e.g. vipga) and LiveEasyAlign (C-p)
+xmap ga <Plug>(EasyAlign)
+xmap <Leader>ga <Plug>(LiveEasyAlign)
+" from https://github.com/junegunn/dotfiles/blob/master/vimrc
+nnoremap <buffer> <leader>a[        vi[<c-v>$:EasyAlign\ g/^\S/<cr>gv=
+nnoremap <buffer> <leader>a{        vi{<c-v>$:EasyAlign\ g/^\S/<cr>gv=
+nnoremap <buffer> <leader>a(        vi(<c-v>$:EasyAlign\ <cr>gv=
 
 " === grepper mappings
 nnoremap <leader>gr :Grepper -tool git<cr>
@@ -413,14 +495,14 @@ xmap gs <Plug>(GrepperOperator)
 
 " after searching for text, this will do project wide find and replace.
 nnoremap <leader>R
-  \ :let @s='\<'.expand('<cword>').'\>'<CR>
-  \ :Grepper -noprompt -cword<CR>
+  \ :let @s='\<'.expand('<cword>').'\>'<cr>
+  \ :Grepper -noprompt -cword<cr>
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 " same as above except it works with a visual selection.
 xnoremap <leader>R                  "sy
-  \ :Grepper -noprompt -query '<C-r>s'<CR>
+  \ :Grepper -noprompt -query '<C-r>s'<cr>
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
@@ -430,8 +512,8 @@ vmap     <leader>sf <Plug>CtrlSFVwordPath
 vmap     <leader>sF <Plug>CtrlSFVwordExec
 nmap     <leader>sn <Plug>CtrlSFCwordPath
 nmap     <leader>sp <Plug>CtrlSFPwordPath
-nnoremap <leader>so :CtrlSFOpen<CR>
-nnoremap <leader>st :CtrlSFToggle<CR>
+nnoremap <leader>so :CtrlSFOpen<cr>
+nnoremap <leader>st :CtrlSFToggle<cr>
 
 "" === DEBUG with TermDebug
 "packadd termdebug
@@ -440,6 +522,6 @@ nnoremap <leader>st :CtrlSFToggle<CR>
 "noremap <silent> <leader>ts :Step<cr>
 "noremap <silent> <leader>to :Over<cr>
 
-" === My custom mapping end here
+" }}} === My custom mapping end here
 
 " vim:sts=2 sw=2 et:foldmethod=marker
