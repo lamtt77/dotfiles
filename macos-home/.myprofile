@@ -1,3 +1,6 @@
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 # for go lang
 export GOPATH=/opt/goworkspace
 export GOBIN=$GOPATH/bin
@@ -25,7 +28,13 @@ export PATH="~/.local/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # https://github.com/roxma/vim-hug-neovim-rpc/issues/47
-export PATH="/usr/local/opt/openssl/bin:/local/bin:/usr/local/opt/python@3.8/bin:$PATH"
+#export PATH="/usr/local/opt/openssl/bin:/local/bin:/usr/local/opt/python@3.8/bin:$PATH"
+# LamT: remove @3.8 here to use `pyenv`
+export PATH="/usr/local/opt/openssl/bin:/local/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
 
 # Lam changed to use gpg agent instead of macos ssh default agent
 # the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners
