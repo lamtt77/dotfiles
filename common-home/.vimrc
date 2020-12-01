@@ -42,9 +42,8 @@ set timeoutlen    =500  " change back to default 1000ms if got issue
 set ttimeout            " time out for key codes
 set ttimeoutlen   =10   " wait only up to 10ms after Esc for special key
 set ttyfast
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience. TODO Is it true in general or only for Coc plugin?
-set updatetime    =300
+" default 4000ms (4s) is not good for async operation
+set updatetime    =200
 
 set hidden
 " set autoread          " sometimes I like to know if buffer has changed
@@ -366,7 +365,8 @@ autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
 autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
 
 " === All my custom and `steal` mappings start here {{{1
-" global map leader should come first
+" global map leader should come first, dot NOT comment at the end of map
+" use `noremap` for almost everything, but `map` for `Plug` command
 let mapleader="\<space>"
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
@@ -426,7 +426,7 @@ vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<cr>?<C-r>=@/<cr>
 
 " change to directory of current file
 nnoremap <leader>cd                 :cd %:p:h<cr>
-" toggle maximum current window
+" toggle maximum current window, not fully work if having multiple tabs
 nnoremap <silent> <leader>zz        :call lamutils#ZoomToggle()<cr>
 
 " maintain visual mode after shifting > and <
@@ -438,11 +438,12 @@ nnoremap ]q :cnext<cr>zz
 nnoremap [q :cprev<cr>zz
 nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
-
 " Buffers
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprev<cr>
-
+" Tabs, only need to replace for gT, not really for gt
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
 " move lines
 nnoremap <silent> <C-k> :move-2<cr>
 nnoremap <silent> <C-j> :move+<cr>
@@ -456,12 +457,12 @@ xnoremap <silent> <C-j> :move'>+<cr>gv
 "nnoremap <leader>4 m`^i#### <esc>``5l
 "nnoremap <leader>5 m`^i##### <esc>``6l
 
-" #!! | Shebang, some good `steal`
+" #!! | Shebang, a good `steal`
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
 " <leader>bs | buf-search
 nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><right>
 
-" write even though you did not sudo to begin with: w!!
+" sudo write, will cause a minor cosmetic when typing `w` in command-line
 cnoremap w!! w !sudo tee % >/dev/null
 " replace all for word under cursor, yank that word for later use anyway
 nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
@@ -474,6 +475,7 @@ nnoremap <leader>rg                 :Ranger<cr>
 " vim-floaterm mappings
 nnoremap <leader>fr                 :RangerNvim<cr>
 nnoremap <leader>fl                 :LF<cr>
+" nnn is fastest with shortest hotkeys
 nnoremap <leader>fn                 :NNN<cr>
 
 " === vim-easy-align mappings
@@ -488,7 +490,7 @@ nnoremap <buffer> <leader>a{        vi{<c-v>$:EasyAlign\ g/^\S/<cr>gv=
 nnoremap <buffer> <leader>a(        vi(<c-v>$:EasyAlign\ <cr>gv=
 
 " === grepper mappings
-nnoremap <leader>gr :Grepper -tool git<cr>
+nnoremap <leader>gr                 :Grepper -tool git<cr>
 " this will support much more gs + motion
 nmap gs <plug>(GrepperOperator)
 xmap gs <Plug>(GrepperOperator)
