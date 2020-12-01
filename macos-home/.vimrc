@@ -56,10 +56,6 @@ set lazyredraw
 " set list              " a bit dizzy if always on
 set laststatus=2
 
-" LamT: default vim seems OK
-"set splitbelow
-"set splitright
-
 set nocursorline
 set guicursor=
 " set relativenumber
@@ -130,7 +126,7 @@ set signcolumn=yes
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 set nocursorcolumn
-set history=200
+set history=1000
 
 " Not needed if lightline is in-use
 set ruler		" show the cursor position all the time
@@ -163,10 +159,8 @@ if !filereadable(vimplug_exists)
 endif
 
 call plug#begin('~/.vim/plugged')
-" Plug 'joshdick/onedark.vim'
 Plug 'sainnhe/gruvbox-material'
 
-" Plug 'sheerun/vim-polyglot'
 "Plug 'prettier/vim-prettier', {
 "  \ 'do': 'yarn install',
 "  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -177,6 +171,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
+" Plug 'sheerun/vim-polyglot'
 " Plug 'ryanoasis/vim-devicons'
 
 " Plug 'justinmk/vim-dirvish'       " yet to see benefit vs built-in netrw
@@ -186,7 +181,6 @@ Plug 'itchyny/lightline.vim'
 " Match more stuff with % (html tag, LaTeX...)
 Plug 'andymass/vim-matchup'
 
-" Plug 'justinmk/vim-sneak' | let g:sneak#label = 1 | let g:sneak#map_netrw = 0
 " Plug 'easymotion/vim-easymotion'
 
 " easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
@@ -197,13 +191,14 @@ Plug 'tpope/vim-commentary'
 " Plug 'preservim/nerdcommenter'
 " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
 " Plug 'tpope/vim-sleuth'
-" Plug 'tpope/vim-fugitive'
+
 " Plug 'tpope/vim-projectionist'
 " " enhances the . operator to work as one would expect with a number of Vim plugins
 " Plug 'tpope/vim-repeat'
 " " provides a set of mappings for many operations that have natural pairings
 " Plug 'tpope/vim-unimpaired'
 
+Plug 'tpope/vim-fugitive'
 " Plug 'airblade/vim-gitgutter'
 
 " " provides additional text objects
@@ -246,8 +241,6 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'hashivim/vim-terraform'
 
 Plug 'majutsushi/tagbar'
-
-" Plug 'kana/vim-arpeggio'
 
 Plug 'romainl/vim-qf'
 
@@ -349,6 +342,7 @@ let g:limelight_conceal_ctermfg=244
 let g:netrw_banner=0      " hide / unhide with Shift-I
 let g:netrw_liststyle=2   " multi-columns view for files
 let g:netrw_winsize=40
+let g:netrw_use_errorwindow=0
 
 " === More USEFUL Plugins here
 
@@ -390,7 +384,7 @@ endif
 
 " customize by filetype
 augroup customizefiletype
-  au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+  autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
   " c & cpp
   autocmd FileType c setlocal ts=8 sw=4 noet
   autocmd FileType cpp setlocal ts=8 sw=4 noet
@@ -458,10 +452,6 @@ command! -nargs=+ -complete=file -bar LGrep lgetexpr functions#grep(<q-args>)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
-" arpeggio (chords) plugin
-" call arpeggio#load()
-" Arpeggio inoremap jk <Esc>
 
 " let g:UltiSnipsExpandTrigger="<c-s>"
 " let g:UltiSnipsJumpForwardTrigger="<c-b>"
@@ -559,7 +549,7 @@ if has('macunix')
   vmap <D-c> :w !pbcopy<CR><CR>
 endif
 
-"" Vmap for maintain Visual Mode after shifting > and <
+" maintain visual mode after shifting > and <
 vmap < <gv
 vmap > >gv
 
@@ -567,8 +557,6 @@ vmap > >gv
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-" vv to generate new vertical split
-nnoremap <silent> vv <C-w>v
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 45<CR>
 nnoremap <Leader>ps :Rg<SPACE>
 nnoremap <Leader>+ :vertical resize +5<CR>
@@ -589,15 +577,8 @@ nnoremap <F5> :UndotreeToggle<cr>
 " Change to Directory of Current file
 nnoremap <Leader>cd :cd %:p:h<CR>
 
-" === TODO: call function from ~/.vim/autoload/functions.vim
-function! TrimWhitespace()
-  let l:save = winsaveview()
-  keeppatterns %s/\s\+$//e
-  call winrestview(l:save)
-endfunction
-
 augroup trimwhitespace
-  autocmd BufWritePre * :call TrimWhitespace()
+  autocmd BufWritePre * :call lamutils#TrimWhitespace()
 augroup end
 
 " Automatically reload .vimrc file on save
