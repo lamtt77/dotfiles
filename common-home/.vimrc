@@ -246,7 +246,7 @@ Plug 'mattn/emmet-vim',             { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
 " Plug 'honza/vim-snippets'
 
-Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'} | let g:tagbar_sort = 0
+Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
 Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
@@ -254,6 +254,7 @@ Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_W
 call plug#end()
 " }}} === PLUGIN initialization end here
 
+" === Plugins specific settings, commands and autocmds {{{1
 " === THEMEs and COLORs
 set background                    =dark
 let g:gruvbox_material_palette    ='mix'
@@ -266,14 +267,14 @@ let g:netrw_liststyle       =1 " multi-columns view for files
 let g:netrw_winsize         =40
 let g:netrw_use_errorwindow =0 " fix an annoying netrw error displayed on top vim-8.2-1988
 
+" fugitive status line, this requires set ruler on
+set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+
 " DiffOrig convenient command to see the difference between the current buffer
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
     \ | wincmd p | diffthis
 endif
-
-" fugitive status line, this requires set ruler on
-set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 
 " === fzf plugin
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
@@ -357,6 +358,26 @@ let g:ctrlsf_extra_backend_args = {
   \ 'ag': '--hidden'
   \ }
 
+" When editing a file, always jump to the last known cursor position.
+autocmd vimrc BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
+
+" Automatically reload .vimrc file on save
+autocmd vimrc BufWritePost .vimrc so ~/.vimrc
+
+" customize by filetype
+autocmd vimrc FileType cpp,cxx,h,hpp,c setlocal ts=8 sw=4 noet
+autocmd vimrc FileType go,py setlocal ts=8 sw=4 expandtab
+autocmd vimrc Filetype vim,js,ts,html setlocal sts=2 sw=2 expandtab
+
+autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
+
+" Open images with feh->sxiv
+autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
+" }}}1
+
 " === LamT: integrate with ibus-bamboo {{{1
 "function! ibusoff()
 "  let g:ibus_prev_engine = system('ibus engine')
@@ -380,25 +401,6 @@ let g:ctrlsf_extra_backend_args = {
 "
 "call IBusOff()
 " === end integration }}}
-
-" When editing a file, always jump to the last known cursor position.
-autocmd vimrc BufReadPost *
-  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-  \ |   exe "normal! g`\""
-  \ | endif
-
-" Automatically reload .vimrc file on save
-autocmd vimrc BufWritePost .vimrc so ~/.vimrc
-
-" customize by filetype
-autocmd vimrc FileType cpp,cxx,h,hpp,c setlocal ts=8 sw=4 noet
-autocmd vimrc FileType go,py setlocal ts=8 sw=4 expandtab
-autocmd vimrc Filetype vim,js,ts,html setlocal sts=2 sw=2 expandtab
-
-autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
-
-" Open images with feh->sxiv
-autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
 
 " === All my custom and `steal` mappings start here {{{1
 " global map leader should come first, dot NOT comment at the end of map
@@ -520,7 +522,7 @@ xnoremap <silent> <C-j> :move'>+<cr>gv
 
 " #!! | Shebang, a good `steal`
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
-" <leader>bs | buf-search
+" <leader>bs | buf-search > quickfix
 nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><right>
 
 " use command `:Su<tab>` instead, w!! will cause a minor cosmetic when typing `w` in command-line
@@ -535,7 +537,7 @@ xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 " Ranger mappings, default current buffer directory
 nnoremap <leader>rg                 :Ranger<cr>
 
-" vim-floaterm mappings
+" vim-floaterm mappings, ranger only draw correctly in nvim unfortunately, thus use the above mapping
 nnoremap <leader>fr                 :RangerNvim<cr>
 nnoremap <leader>fl                 :LF<cr>
 " nnn is fastest with shortest hotkeys
