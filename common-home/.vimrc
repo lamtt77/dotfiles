@@ -180,13 +180,17 @@ Plug 'tpope/vim-repeat'
 " offload a bunch of my manual emacs-like mappings, remember <C-X><C-A> replaced for the old <C-A> in insert and command mode
 Plug 'tpope/vim-rsi'
 
-Plug 'junegunn/fzf',             { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/gv.vim',          { 'on': 'GV'}
+Plug 'junegunn/gv.vim',             { 'on': 'GV'}
 Plug 'junegunn/vim-easy-align'
 
+" bug if overwin-f2 switch to a `:terminal`
+Plug 'easymotion/vim-easymotion',   { 'on': '<plug>(easymotion-overwin-f2)' }
+  let g:EasyMotion_smartcase = 1
+
 " ranger can do many things netrw can't
-Plug 'francoiscabrol/ranger.vim' | let g:ranger_map_keys = 0
+Plug 'francoiscabrol/ranger.vim'    | let g:ranger_map_keys = 0
 
 Plug 'voldikss/vim-floaterm'
 
@@ -197,11 +201,11 @@ Plug 'mhinz/vim-signify'
   " let g:signify_sign_change       = '│'
   " let g:signify_sign_changedelete = '│'
 
-Plug 'mhinz/vim-grepper',        { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'mhinz/vim-grepper',           { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 
 Plug 'dyng/ctrlsf.vim'
 
-Plug 'romainl/vim-qf'            | let g:qf_mapping_ack_style = 1
+Plug 'romainl/vim-qf'               | let g:qf_mapping_ack_style = 1
 
 " Plug 'mg979/vim-visual-multi', {'branch': 'master'}   " save 5ms startup if don't use
 
@@ -209,13 +213,13 @@ Plug 'michaeljsmith/vim-indent-object'
 " Plug 'wellle/targets.vim'         " So many text objects, not used yet
 
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'AndrewRadev/tagalong.vim', { 'for': 'html'}
-Plug 'mattn/emmet-vim',          { 'for': 'html'}
-Plug 'lifepillar/pgsql.vim',     { 'for': 'sql'}
+Plug 'AndrewRadev/tagalong.vim',    { 'for': 'html'}
+Plug 'mattn/emmet-vim',             { 'for': 'html'}
+Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
 " Plug 'honza/vim-snippets'
 
-Plug 'majutsushi/tagbar',        { 'on': 'TagbarToggle'} | let g:tagbar_sort = 0
-Plug 'mbbill/undotree',          { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
+Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'} | let g:tagbar_sort = 0
+Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
 " Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
@@ -494,6 +498,9 @@ xmap <Leader>ga <Plug>(LiveEasyAlign)
 nnoremap <buffer> <leader>a[        vi[<c-v>$:EasyAlign\ g/^\S/<cr>gv=
 nnoremap <buffer> <leader>a{        vi{<c-v>$:EasyAlign\ g/^\S/<cr>gv=
 nnoremap <buffer> <leader>a(        vi(<c-v>$:EasyAlign\ <cr>gv=
+
+" === vim-easymotion mappings
+map <silent>s                       <plug>(easymotion-overwin-f2)
 
 " === grepper mappings
 nnoremap <leader>gr                 :Grepper -tool git<cr>
