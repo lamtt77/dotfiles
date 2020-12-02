@@ -41,7 +41,29 @@ set history       =1000 " keep 1000 lines of command line history
 
 set timeoutlen    =500  " change back to default 1000ms if got issue
 set ttimeout            " time out for key codes
-set ttimeoutlen   =10   " wait only up to 10ms after Esc for special key
+
+" from https://github.com/vim/vim/issues/2588 - workaround to make vim recognize meta key as <M...> similar to gvim or nvim
+" with some caveats, but this will fix a delay when press <Esc> in vim if using meta key mapping
+if !has('nvim') && !has('gui_running')
+  set ttimeoutlen=5
+  " set up Meta to work properly for most keys in terminal vim
+  " NOTE: these do not work: <m-space>,<m->>,<m-[>,<m-]>,<m-{up,down,left,right}>
+  " NOTE: <m-@>,<m-O> only work in xterm and gvim - not st, urxvt, etc
+  " NOTE: map <m-\|> or <m-bar>
+  for ord in range(33,61)+range(63,90)+range(92,126)
+    let char = ord is 34 ? '\"' : ord is 124 ? '\|' : nr2char(ord)
+    exec printf("set <m-%s>=\<esc>%s", char, char)
+    if exists(':tnoremap') " fix terminal control sequences
+      exec printf("tnoremap <silent> <m-%s> <esc>%s", char, char)
+    endif
+  endfor
+  " set up <c-left> and <c-right> properly
+  " NOTE: if below don't work, compare with ctrl-v + CTRL-{LEFT,RIGHT} in INSERT mode
+  " NOTE: <c-up>,<c-down> do not work in any terminal
+  exe "set <c-right>=\<esc>[1;5C"
+  exe "set <c-left>=\<esc>[1;5D"
+endif
+
 set ttyfast
 " default 4000ms (4s) is not good for async operation
 set updatetime    =200
@@ -267,7 +289,7 @@ if executable('rg')
   let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob "!.git" --files --follow'
   set grepprg=rg\ --hidden\ --vimgrep\ --glob\ '!*{.git,node_modules,build,bin,obj,tags}'
 elseif executable('ag')
- https://github.com/junegunn/dotfiles/blob/master/vimrc let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
   set grepprg=ag\ --hidden\ --vimgrep
 endif
 
@@ -385,57 +407,36 @@ let mapleader="\<space>"
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U>        <C-G>u<C-U>
+inoremap <C-U>          <C-G>u<C-U>
 
 " === supercharge `valid` command-line mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
 " included a minor fix from https://github.com/sparkcanon/nvim/blob/9ef3e7399fc8006e5a1f14caec2cc6a7b18d4629/autoload/listcommands.vim
-cnoremap <expr> <cr> ccr#CCR()
+cnoremap <expr> <cr>    ccr#CCR()
 
-nnoremap Y            y$
+nnoremap Y              y$
 
-" sane windows switching like `dwm`, switch to <M-...> for `gvim` or `nvim`
-if has("gui_running") || has('nvim')
-  nnoremap  <M-j>       <C-w>w
-  nnoremap  <M-k>       <C-w>W
-  tnoremap  <M-j>       <C-w>w
-  tnoremap  <M-k>       <C-w>W
-  " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
-  nnoremap  <M-C-d>     <C-w>w<C-d><C-w>p
-  nnoremap  <M-C-u>     <C-w>w<C-u><C-w>p>
-else
-  nnoremap  <Esc>j      <C-w>w
-  nnoremap  <Esc>k      <C-w>W
-  tnoremap  <Esc>j      <C-w>w
-  tnoremap  <Esc>k      <C-w>W
-  " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
-  nnoremap  <Esc><C-d>  <C-w>w<C-d><C-w>p
-  nnoremap  <Esc><C-u>  <C-w>w<C-u><C-w>p>
-endif
+" sane windows switching like `dwm`
+nnoremap  <M-j>         <C-w>w
+nnoremap  <M-k>         <C-w>W
+tnoremap  <M-j>         <C-w>w
+tnoremap  <M-k>         <C-w>W
+
+" C-M-u and C-M-d scroll up and down other window in normal mode
+" not perfect yet, should not do if reached top or bottom and only works with gvim or nvim to avoid mapping via <Esc>
+nnoremap  <C-M-d>       <C-w>w<C-d><C-w>p
+nnoremap  <C-M-u>       <C-w>w<C-u><C-w>p>
 
 " vim-rsi style, meta key in that plugin does not work properly under :terminal and `st`
-if has("gui_running") || has('nvim')
-  inoremap   <M-b>      <S-Left>
-  inoremap   <M-f>      <S-Right>
-  inoremap   <M-d>      <C-O>dw
-  inoremap   <M-n>      <Down>
-  inoremap   <M-p>      <Up>
-  cnoremap   <M-b>      <S-Left>
-  cnoremap   <M-f>      <S-Right>
-  cnoremap   <M-d>      <S-Right><C-W>
-  cnoremap   <M-n>      <Down>
-  cnoremap   <M-p>      <Up>
-else
-  inoremap   <Esc>b     <S-Left>
-  inoremap   <Esc>f     <S-Right>
-  inoremap   <Esc>d     <C-O>dw
-  inoremap   <Esc>n     <Down>
-  inoremap   <Esc>n     <Up>
-  cnoremap   <Esc>b     <S-Left>
-  cnoremap   <Esc>f     <S-Right>
-  cnoremap   <Esc>d     <S-Right><C-W>
-  cnoremap   <Esc>p     <Down>
-  cnoremap   <Esc>p     <Up>
-endif
+inoremap  <M-b>         <S-Left>
+inoremap  <M-f>         <S-Right>
+inoremap  <M-d>         <C-O>dw
+inoremap  <M-n>         <Down>
+inoremap  <M-p>         <Up>
+cnoremap  <M-b>         <S-Left>
+cnoremap  <M-f>         <S-Right>
+cnoremap  <M-d>         <S-Right><C-W>
+cnoremap  <M-n>         <Down>
+cnoremap  <M-p>         <Up>
 inoremap        <C-A>   <C-O>^
 inoremap   <C-X><C-A>   <C-A>
 cnoremap        <C-A>   <Home>
