@@ -132,12 +132,8 @@ set undoreload=10000
 set incsearch
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
-if has('unnamedplus')
-  if has('nvim')
-    set clipboard^=unnamedplus
-  else
-    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
-  endif
+if has('unnamedplus') && ! has('nvim')
+  set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
 else
   set clipboard^=unnamed
 endif
@@ -194,7 +190,15 @@ Plug 'francoiscabrol/ranger.vim' | let g:ranger_map_keys = 0
 
 Plug 'voldikss/vim-floaterm'
 
+Plug 'mhinz/vim-signify'
+  let g:signify_vcs_list          = ['git']
+  let g:signify_skip_filetype     = { 'journal': 1 }
+  " let g:signify_sign_add          = '│'
+  " let g:signify_sign_change       = '│'
+  " let g:signify_sign_changedelete = '│'
+
 Plug 'mhinz/vim-grepper',        { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+
 Plug 'dyng/ctrlsf.vim'
 
 Plug 'romainl/vim-qf'            | let g:qf_mapping_ack_style = 1
@@ -210,8 +214,8 @@ Plug 'mattn/emmet-vim',          { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',     { 'for': 'sql'}
 " Plug 'honza/vim-snippets'
 
-Plug 'majutsushi/tagbar',        { 'on': 'TagbarToggle'}
-Plug 'mbbill/undotree',          { 'on': 'UndotreeToggle'}
+Plug 'majutsushi/tagbar',        { 'on': 'TagbarToggle'} | let g:tagbar_sort = 0
+Plug 'mbbill/undotree',          { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
 " Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
@@ -462,8 +466,10 @@ inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype
 " <leader>bs | buf-search
 nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><right>
 
-" sudo write, will cause a minor cosmetic when typing `w` in command-line
-cnoremap w!! w !sudo tee % >/dev/null
+" use command `:Su<tab>` instead, w!! will cause a minor cosmetic when typing `w` in command-line
+" cnoremap w!! w !sudo tee % >/dev/null
+command! SudoWrite :w !sudo tee % >/dev/null
+
 " replace all for word under cursor, yank that word for later use anyway
 nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
 " replace all but in visual selection
@@ -516,6 +522,9 @@ nmap     <leader>sn <Plug>CtrlSFCwordPath
 nmap     <leader>sp <Plug>CtrlSFPwordPath
 nnoremap <leader>so :CtrlSFOpen<cr>
 nnoremap <leader>st :CtrlSFToggle<cr>
+
+" === Undotree mappings
+nnoremap U :UndotreeToggle<CR>
 
 "" === DEBUG with TermDebug
 "packadd termdebug
