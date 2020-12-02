@@ -438,8 +438,6 @@ nnoremap <silent> <leader>ee :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
 
-cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-
 " vim-qf plugin
 " Grep for quickfix list
 " taken from https://github.com/sparkcanon/nvim/blob/master/autoload/functions.vim
@@ -476,7 +474,7 @@ map <Leader>rf :wa<CR> :GolangTestFocused<CR>
 " mhinz/vim-grepper
 let g:grepper = {}
 " let g:grepper.tools = ['git', 'ag', 'rg']
-let g:grepper.tools = ["rg"]
+let g:grepper.tools = ["git"]
 let g:grepper.jump = 1
 " nnoremap <leader>G :Grepper -tool git<cr>
 nnoremap <leader>gg :Grepper -tool rg<cr>
@@ -494,11 +492,10 @@ nnoremap <Leader>R
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
-" The same as above except it works with a visual selection.
-xmap <Leader>R
-  \  "sy
-  \  gvgr
-  \  :cfdo %s/<C-r>s//g \| update
+" same as above except it works with a visual selection.
+xnoremap <leader>R                  "sy
+  \ :Grepper -noprompt -query '<C-r>s'<cr>
+  \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 "(R)eplace all - From
@@ -535,8 +532,7 @@ let g:gitgutter_sign_removed_first_line = '◥'
 " vim-surround delete a function shorter mapping
 nmap <silent> dsf ds)db
 
-" Write even though you did not sudo to begin with: w!!
-cmap w!! w !sudo tee % >/dev/null
+cmap W!! w !sudo tee % >/dev/null
 
 noremap YY "+y<CR>
 noremap <leader>p "+gP<CR>
