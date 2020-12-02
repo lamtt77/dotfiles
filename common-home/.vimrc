@@ -11,9 +11,10 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has('gui_running')
-  "let &guifont = 'Monaco:h13'
   set guioptions=a        " no toolbar and scrollbars
   set mousehide
+  set visualbell
+  "let &guifont = 'Monaco:h13'
   command! Bigger  let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)+1', '')
   command! Smaller let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)-1', '')
 endif
@@ -184,8 +185,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-" offload a bunch of my manual emacs-like mappings, remember <C-X><C-A> replaced for the old <C-A> in insert and command mode
-Plug 'tpope/vim-rsi'
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -386,22 +385,68 @@ let mapleader="\<space>"
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U>       <C-G>u<C-U>
+inoremap <C-U>        <C-G>u<C-U>
 
 " === supercharge `valid` command-line mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
 " included a minor fix from https://github.com/sparkcanon/nvim/blob/9ef3e7399fc8006e5a1f14caec2cc6a7b18d4629/autoload/listcommands.vim
 cnoremap <expr> <cr> ccr#CCR()
 
-nnoremap Y           y$
+nnoremap Y            y$
 
-" sane windows switching like `dwm`, must switch to <M-...> for `nvim`
-nnoremap <Esc>j      <C-w>w
-nnoremap <Esc>k      <C-w>W
-tnoremap <Esc>j      <C-w>w
-tnoremap <Esc>k      <C-w>W
-" C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
-nnoremap <Esc><C-d>  <C-w>w<C-d><C-w>p
-nnoremap <Esc><C-u>  <C-w>w<C-u><C-w>p>
+" sane windows switching like `dwm`, switch to <M-...> for `gvim` or `nvim`
+if has("gui_running") || has('nvim')
+  nnoremap  <M-j>       <C-w>w
+  nnoremap  <M-k>       <C-w>W
+  tnoremap  <M-j>       <C-w>w
+  tnoremap  <M-k>       <C-w>W
+  " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
+  nnoremap  <M-C-d>     <C-w>w<C-d><C-w>p
+  nnoremap  <M-C-u>     <C-w>w<C-u><C-w>p>
+else
+  nnoremap  <Esc>j      <C-w>w
+  nnoremap  <Esc>k      <C-w>W
+  tnoremap  <Esc>j      <C-w>w
+  tnoremap  <Esc>k      <C-w>W
+  " C-M-u and C-M-d scroll up and down other window in normal mode; not perfect yet, should not do if reached top or bottom
+  nnoremap  <Esc><C-d>  <C-w>w<C-d><C-w>p
+  nnoremap  <Esc><C-u>  <C-w>w<C-u><C-w>p>
+endif
+
+" vim-rsi style, meta key in that plugin does not work properly under :terminal and `st`
+if has("gui_running") || has('nvim')
+  inoremap   <M-b>      <S-Left>
+  inoremap   <M-f>      <S-Right>
+  inoremap   <M-d>      <C-O>dw
+  inoremap   <M-n>      <Down>
+  inoremap   <M-p>      <Up>
+  cnoremap   <M-b>      <S-Left>
+  cnoremap   <M-f>      <S-Right>
+  cnoremap   <M-d>      <S-Right><C-W>
+  cnoremap   <M-n>      <Down>
+  cnoremap   <M-p>      <Up>
+else
+  inoremap   <Esc>b     <S-Left>
+  inoremap   <Esc>f     <S-Right>
+  inoremap   <Esc>d     <C-O>dw
+  inoremap   <Esc>n     <Down>
+  inoremap   <Esc>n     <Up>
+  cnoremap   <Esc>b     <S-Left>
+  cnoremap   <Esc>f     <S-Right>
+  cnoremap   <Esc>d     <S-Right><C-W>
+  cnoremap   <Esc>p     <Down>
+  cnoremap   <Esc>p     <Up>
+endif
+inoremap        <C-A>   <C-O>^
+inoremap   <C-X><C-A>   <C-A>
+cnoremap        <C-A>   <Home>
+cnoremap   <C-X><C-A>   <C-A>
+inoremap <expr> <C-B>   getline('.')=~'^\s*$'&&col('.')>strlen(getline('.'))?"0\<Lt>C-D>\<Lt>Esc>kJs":"\<Lt>Left>"
+cnoremap        <C-B>   <Left>
+inoremap <expr> <C-D>   col('.')>strlen(getline('.'))?"\<Lt>C-D>":"\<Lt>Del>"
+cnoremap <expr> <C-D>   getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
+inoremap <expr> <C-E>   col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
+inoremap <expr> <C-F>   col('.')>strlen(getline('.'))?"\<Lt>C-F>":"\<Lt>Right>"
+cnoremap <expr> <C-F>   getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
 
 " Simulate Insert key for MacOS, rarely use anyway
 inoremap <C-F12>     <Insert>
