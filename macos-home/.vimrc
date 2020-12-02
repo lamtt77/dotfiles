@@ -61,6 +61,7 @@ set guicursor=
 " set relativenumber
 set number
 set incsearch nohlsearch
+set textwidth=79
 set tabstop=8 softtabstop=4  shiftwidth=4 expandtab
 set autoindent
 set nowrap
@@ -100,7 +101,7 @@ set undolevels=3000
 set undoreload=10000
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
-if has('unnamedplus')
+if has('unnamedplus') && ! has('nvim')
   set clipboard=unnamedplus,autoselect,exclude:cons\|linux
 else
   set clipboard=unnamed
@@ -544,8 +545,8 @@ vnoremap X "_d
 
 if has('macunix')
   " pbcopy for OSX copy/paste
-  vmap <C-x> :!pbcopy<CR>
-  vmap <C-c> :w !pbcopy<CR><CR>
+  vmap <D-x> :!pbcopy<CR>
+  vmap <D-c> :w !pbcopy<CR><CR>
 endif
 
 " maintain visual mode after shifting > and <
