@@ -130,12 +130,19 @@ set undolevels=3000
 set undoreload=10000
 
 set incsearch
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
-if has('unnamedplus') && ! has('nvim')
-  set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
-else
-  set clipboard^=unnamed
+if ! has('nvim')
+  if has('unnamedplus')
+    " indepedently use of `+` for clipboard and `*` for autoslect
+    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
+  else
+    set clipboard^=unnamed
+  endif
 endif
 
 " set shell
@@ -185,7 +192,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim',             { 'on': 'GV'}
 Plug 'junegunn/vim-easy-align'
 
-" bug if overwin-f2 switch to a `:terminal`
+" bug if overwin-f2 switch to a `:terminal`, only works in `nvim`
 Plug 'easymotion/vim-easymotion',   { 'on': '<plug>(easymotion-overwin-f2)' }
   let g:EasyMotion_smartcase = 1
 

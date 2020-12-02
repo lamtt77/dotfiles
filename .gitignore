@@ -3,3 +3,4 @@
 .lamprivate
 __init__.py
 __pycache__
+arch-home/.local/bin/nvr
