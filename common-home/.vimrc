@@ -153,10 +153,6 @@ set undolevels=3000
 set undoreload=10000
 
 set incsearch
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-endif
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if ! has('nvim')
@@ -175,7 +171,7 @@ endif
 "  set shell=bash
 "endif
 
-if has('mouse') " mouse support?
+if has('mouse')
   set mouse=a
 endif
 " }}}
@@ -424,7 +420,7 @@ tnoremap  <M-j>         <C-w>w
 tnoremap  <M-k>         <C-w>W
 
 " C-M-u and C-M-d scroll up and down other window in normal mode
-" not perfect yet, should not do if reached top or bottom and only works with gvim or nvim to avoid mapping via <Esc>
+" FIXME not perfect yet, should not do if reached top or bottom and only works with gvim or nvim to avoid mapping via <Esc>
 nnoremap  <C-M-d>       <C-w>w<C-d><C-w>p
 nnoremap  <C-M-u>       <C-w>w<C-u><C-w>p>
 
@@ -495,6 +491,11 @@ nnoremap <silent> <leader>zz        :call lamutils#ZoomToggle()<cr>
 " maintain visual mode after shifting > and <
 vnoremap < <gv
 vnoremap > >gv
+
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
 
 " Quickfix
 nnoremap ]q :cnext<cr>zz
