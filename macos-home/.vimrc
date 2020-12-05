@@ -124,7 +124,6 @@ set shortmess+=c
 set signcolumn=yes
 
 set colorcolumn=80
-highlight ColorColumn ctermbg=0 guibg=lightgrey
 set nocursorcolumn
 set history=1000
 
@@ -194,7 +193,7 @@ Plug 'tpope/vim-commentary'
 
 " Plug 'tpope/vim-projectionist'
 " " enhances the . operator to work as one would expect with a number of Vim plugins
-" Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 " " provides a set of mappings for many operations that have natural pairings
 " Plug 'tpope/vim-unimpaired'
 
@@ -215,7 +214,7 @@ Plug 'tpope/vim-fugitive'
 " endif
 " Plug 'Shougo/vimproc.vim', {'do': g:make}
 
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -392,12 +391,12 @@ augroup customizefiletype
   autocmd Filetype html setlocal ts=2 sw=2 expandtab
 augroup end
 
-" === ALE Plugin settings
-" let g:go_def_mapping_enabled = 1
-" set omnifunc=ale#completion#OmniFunc
-" let g:ale_completion_tsserver_autoimport = 1
-" " Only run linters named in ale_linters settings.
-let g:ale_linters_explicit = 1
+" " === ALE Plugin settings
+" " let g:go_def_mapping_enabled = 1
+" " set omnifunc=ale#completion#OmniFunc
+" " let g:ale_completion_tsserver_autoimport = 1
+" " " Only run linters named in ale_linters settings.
+" let g:ale_linters_explicit = 1
 
 " }}}1
 
