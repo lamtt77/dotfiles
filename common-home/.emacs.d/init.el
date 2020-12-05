@@ -1,3 +1,6 @@
+;; -*- lexical-binding: t; -*-
+(setq startup-time-tic (current-time))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -11,7 +14,23 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
 
-(setq startup-time-tic (current-time))
+;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
+;; probably % increase more if adding more packages, currently last package is avy
+(setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
+      gc-cons-percentage 0.6)
+
+;; replaced by gcmh package
+;; (defun doom-defer-garbage-collection-h ()
+;;   (setq gc-cons-threshold most-positive-fixnum))
+
+;; (defun doom-restore-garbage-collection-h ()
+;;   ;; Defer it so that commands launched immediately after will enjoy the benefits.
+;;   (run-at-time
+;;    1 nil (lambda () (setq gc-cons-threshold 16777216)))) ; 16mb
+
+;; (add-hook 'minibuffer-setup-hook #'doom-defer-garbage-collection-h)
+;; (add-hook 'minibuffer-exit-hook #'doom-restore-garbage-collection-h)
+;; ===
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -32,8 +51,13 @@
 ;; (add-to-list 'package-archives
 ;;	     '("melpa" . "https://melpa.org/packages/"))
 
-(straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
+
+(use-package benchmark-init
+  :config
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (column-number-mode t)
@@ -41,7 +65,7 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
 
-(setq truncate-lines t)			; nowrap equivalent, why only works when run 2nd time?
+(setq truncate-lines t) 		; nowrap equivalent, why only work if run manually with C-x C-e?
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
@@ -59,10 +83,10 @@
 (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
 (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 
-(use-package benchmark-init
+;; performance tuning: garbage collection hack
+(use-package gcmh
   :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  (gcmh-mode 1))
 
 (use-package gruvbox-theme
   :config (load-theme 'gruvbox-light-medium t))
@@ -134,6 +158,7 @@
 ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
   :config
+  ;; (global-set-key (kbd "C--") 'er/contract-region)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
 ; deletes all the whitespace when you hit backspace or delete
@@ -223,6 +248,13 @@
   (bind-key "M-g ("  'avy-goto-open-paren)
   (bind-key "M-g )"  'avy-goto-close-paren)
   (bind-key "M-g P"  'avy-pop-mar))
+
+;; === doom performance tuning tips
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (setq gc-cons-threshold 16777216 ; 16mb
+          gc-cons-percentage 0.1)))
+;; ===
 
 (setq startup-time-toc (current-time))
 (setq startup-time-seconds
