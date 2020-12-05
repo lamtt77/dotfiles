@@ -1,9 +1,9 @@
-# Option 0: do not use opt1&2, instead `killall xinit`, then getty.service
-# autologin will re-launch `dwm|i3`, won'k will apps, looks better than opt3
+# Option 0: do not use opt1&2, instead `killall .xinitrc`, then getty.service
+# autologin will re-launch `dwm|i3`, won't keep apps, looks better than opt3
 
 # Option 1: `mod+alt+q` will keep running apps
 while true; do
-    # Log stderror to a file 
+    # Log stderror to a file
     dwm 2> ~/.dwm.log
     # No error logging
     #dwm >/dev/null 2>&1
