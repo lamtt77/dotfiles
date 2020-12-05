@@ -4,3 +4,4 @@
 # add option `-nvv` to test first
 
 stow -vv --stow arch-home/ -t ~/
+stow -vv --stow common-home/ -t ~/

@@ -11,10 +11,18 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has('gui_running')
-  set guioptions=a        " no toolbar and scrollbars
+  set guioptions=a        " no toolbar and scrollbars, but autoselect on
   set mousehide
-  set visualbell
-  "let &guifont = 'Monaco:h13'
+  set antialias
+
+  if has("gui_gtk2") || has("gui_gtk3")
+    let &guifont = 'Liberation Mono 11'
+  elseif has("gui_macvim")
+    let &guifont = 'Monaco:h11'
+  else
+    let &guifont = 'Liberation Mono:h11'
+  endif
+
   command! Bigger  let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)+1', '')
   command! Smaller let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)-1', '')
 endif
