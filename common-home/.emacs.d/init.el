@@ -15,7 +15,7 @@
  '(default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
 
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
-;; probably % increase more if adding more packages, currently last package is avy
+;; will % increase if adding more packages? Currently last package is avy
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
@@ -65,6 +65,7 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
 
+(put 'downcase-region 'disabled nil)
 (setq truncate-lines t) 		; nowrap equivalent, why only work if run manually with C-x C-e?
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
@@ -118,9 +119,8 @@
 
 (use-package undo-fu-session
   :config
+  (global-undo-fu-session-mode)
   (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
-
-(global-undo-fu-session-mode)
 
 ;; Persistent-undo lost when close-then-open emacs!
 ;; (use-package undo-tree			
@@ -177,7 +177,7 @@
 
 (use-package org-pdftools
   :after org
-  :defer nil
+  :defer nil				; will trigger error without this line, reason?
   :custom
   (pdf-tools-install))
 
@@ -186,7 +186,6 @@
 
 (use-package org-download
   :after org
-  :defer nil
   :custom
   (org-download-method 'directory)
   (org-download-image-dir "images")
