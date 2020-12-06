@@ -15,6 +15,7 @@
  '(default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
 
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
+;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
 ;; will % increase if adding more packages? Currently last package is avy
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
@@ -73,9 +74,9 @@
 (setq delete-old-versions -1 )		; delete excess backup versions silently
 (setq version-control t )		; use version control
 (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
+(setq backup-directory-alist `(("." . "~/.config/emacs/backups")) ) ; which directory to put backups file
 
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
+(setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list/" t)) ) ;transform backups file name
 (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
 (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
 (setq coding-system-for-write 'utf-8 )
@@ -110,7 +111,7 @@
 ;; (use-package magit)
 (use-package evil-magit)
 
-;; Persistent undo-fu, will that be more reliable than undo-tree?
+;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
   :after evil 
   :config
