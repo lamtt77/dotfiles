@@ -5,8 +5,6 @@ alias l='ls -a'
 alias ll='ls -lAh'		# A: almost all except . and ..
 alias la='ls -laF'
 
-alias spacemacs='emacs --with-profile spacemacs &'
-
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 
 unset SSH_AGENT_PID

@@ -43,6 +43,7 @@ let g:loaded_spellfile_plugin = 1   " spellvim built-in plugin
 filetype plugin indent on
 set completefunc  =syntaxcomplete#Complete " Ctrl-X Ctrl-U: user complete
 set complete     +=d    " include #define or macro
+set completeopt   =longest,menuone,preview
 
 set pastetoggle   =<F2>
 set history       =1000 " keep 1000 lines of command line history
@@ -211,6 +212,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -248,7 +250,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'AndrewRadev/tagalong.vim',    { 'for': 'html'}
 Plug 'mattn/emmet-vim',             { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
-" Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 
 Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
 Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
@@ -505,17 +507,19 @@ if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 endif
 
-" Quickfix
-nnoremap ]q :cnext<cr>zz
-nnoremap [q :cprev<cr>zz
-nnoremap ]l :lnext<cr>zz
-nnoremap [l :lprev<cr>zz
-" Buffers
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprev<cr>
-" Tabs, only need to replace for gT, not really for gt
-nnoremap ]t :tabn<cr>
-nnoremap [t :tabp<cr>
+" replaced by vim-unimpaired
+"" Quickfix
+"nnoremap ]q :cnext<cr>zz
+"nnoremap [q :cprev<cr>zz
+"nnoremap ]l :lnext<cr>zz
+"nnoremap [l :lprev<cr>zz
+"" Buffers
+"nnoremap ]b :bnext<cr>
+"nnoremap [b :bprev<cr>
+"" Tabs, only need to replace for gT, not really for gt
+"nnoremap ]t :tabn<cr>
+"nnoremap [t :tabp<cr>
+
 " move lines
 nnoremap <silent> <C-k> :move-2<cr>
 nnoremap <silent> <C-j> :move+<cr>

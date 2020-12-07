@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;;; init.el -*- lexical-binding: t; -*-
 (setq startup-time-tic (current-time))
 
 (custom-set-variables
