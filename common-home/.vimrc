@@ -29,7 +29,7 @@ endif
 " }}}1
 
 " === ALL Settings {{{1
-" ideally just one common augroup for vimrc!
+" my default augroup for vimrc!
 augroup vimrc
   autocmd!
 augroup END
@@ -388,6 +388,17 @@ autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
 
 " Open images with feh->sxiv
 autocmd vimrc BufEnter *.png,*.jpg,*gif silent! exec "! sxiv ".expand("%") | :bw
+
+" a good `steal`, looking for this behaviour for a while
+augroup FORMATOPTIONS
+  autocmd!
+  autocmd BufWinEnter * set fo-=c fo-=r fo-=o " Disable continuation of comments to the next line
+  autocmd BufWinEnter * set formatoptions+=j  " Remove a comment leader when joining lines
+  autocmd BufWinEnter * set formatoptions+=l  " Don't break a line after a one-letter word
+  autocmd BufWinEnter * set formatoptions+=n  " Recognize numbered lists
+  autocmd BufWinEnter * set formatoptions-=q  " Don't format comments
+  autocmd BufWinEnter * set formatoptions-=t  " Don't autowrap text using 'textwidth'
+augroup END
 " }}}1
 
 " === LamT: integrate with ibus-bamboo {{{1
@@ -548,6 +559,13 @@ nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><ri
 " cnoremap w!! w !sudo tee % >/dev/null
 command! SudoWrite :w !sudo tee % >/dev/null
 
+" from https://github.com/Jorengarenar/dotfiles/blob/7444acdbf50affa3f38f5711ec890395f6a9e3a6/vim/vimrc#L75
+command! ExecCurrentLine normal :.w !sh<CR>
+command! -range=% Sort normal :<line1>,<line2>sort i<CR>
+command! SortBlock :normal! vip:sort i<CR>
+" simple version of vim-easyalign, support visual selection :)
+command! -range -nargs=+ Align <line1>,<line2>!column -Lts'<args>' -o'<args>'
+
 " replace all for word under cursor, yank that word for later use anyway
 nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
 " replace all but in visual selection
@@ -606,6 +624,10 @@ nnoremap <leader>st :CtrlSFToggle<cr>
 
 " === Undotree mappings
 nnoremap U :UndotreeToggle<CR>
+
+" === ultisnips mappings
+let g:UltiSnipsExpandTrigger="<C-x><C-s>"
+nnoremap <leader>us :Snippets<cr>
 
 "" === DEBUG with TermDebug
 "packadd termdebug
