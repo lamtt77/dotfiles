@@ -19,6 +19,10 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 # LamT: for suckless st only
 export COLORTERM=truecolor
 
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
 # LamT: only change here if using direclty xinitrc (i.e. not via LightDM)
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx ~/.xinitrc dwm

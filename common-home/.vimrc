@@ -250,7 +250,13 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'AndrewRadev/tagalong.vim',    { 'for': 'html'}
 Plug 'mattn/emmet-vim',             { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
+
 Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+  " below are the defaults ultisnips mappings
+  "let g:UltiSnipsExpandTrigger="<tab>"
+  "let g:UltiSnipsJumpForwardTrigger="<c-j>"
+  "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
 Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
