@@ -34,7 +34,7 @@ augroup vimrc
   autocmd!
 augroup END
 
-" Absolute Path for python3 and ruby (mainly to satisfy nvim)
+" Absolute path for python3 and ruby (mainly to satisfy nvim)
 let g:python3_host_prog = '/usr/bin/python3'
 
 let g:loaded_2html_plugin     = 1
@@ -42,8 +42,10 @@ let g:loaded_spellfile_plugin = 1   " spellvim built-in plugin
 
 filetype plugin indent on
 set completefunc  =syntaxcomplete#Complete " Ctrl-X Ctrl-U: user complete
-set complete     +=d    " include #define or macro
+set complete     +=kspell,d                " include #define or macro, and spelling suggestions if on
 set completeopt   =longest,menuone,preview
+
+set dictionary   +=/usr/share/dict/words   " sudo pacman -S words
 
 set pastetoggle   =<F2>
 set history       =1000 " keep 1000 lines of command line history
@@ -76,11 +78,6 @@ endif
 set ttyfast
 " default 4000ms (4s) is not good for async operation
 set updatetime    =200
-
-set hidden
-" set autoread          " sometimes I like to know if buffer has changed
-" set autowrite
-set nobackup nowritebackup
 
 set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
@@ -156,7 +153,12 @@ if ! isdirectory(expand(&g:viewdir))
   silent! call mkdir(expand(&g:viewdir), 'p', 0700)
 endif
 
+set hidden
+" set autoread          " sometimes I like to know if buffer has changed
+" set autowrite
+set nobackup nowritebackup
 set noswapfile
+
 set undofile
 set undolevels=3000
 set undoreload=10000
@@ -557,9 +559,10 @@ nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><ri
 
 " use command `:Su<tab>` instead, w!! will cause a minor cosmetic when typing `w` in command-line
 " cnoremap w!! w !sudo tee % >/dev/null
-command! SudoWrite :w !sudo tee % >/dev/null
+command! SudoWrite execute 'silent! write !sudo tee % >/dev/null' | edit!
 
 " from https://github.com/Jorengarenar/dotfiles/blob/7444acdbf50affa3f38f5711ec890395f6a9e3a6/vim/vimrc#L75
+" plus: some interesting mappings and manual statusline
 command! ExecCurrentLine normal :.w !sh<CR>
 command! -range=% Sort normal :<line1>,<line2>sort i<CR>
 command! SortBlock :normal! vip:sort i<CR>
@@ -596,7 +599,7 @@ map <silent>s                       <plug>(easymotion-overwin-f2)
 
 " === grepper mappings
 nnoremap <leader>gr                 :Grepper -tool git<cr>
-" this will support much more gs + motion
+" support much more gs + motion, use grepper because of this
 nmap gs <plug>(GrepperOperator)
 xmap gs <Plug>(GrepperOperator)
 
@@ -613,7 +616,7 @@ xnoremap <leader>R                  "sy
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
-" === CtrlSF mappings
+" === CtrlSF mappings, interactively replace-all in one buffer
 nmap     <leader>sf <Plug>CtrlSFPrompt
 vmap     <leader>sf <Plug>CtrlSFVwordPath
 vmap     <leader>sF <Plug>CtrlSFVwordExec
@@ -625,7 +628,7 @@ nnoremap <leader>st :CtrlSFToggle<cr>
 " === Undotree mappings
 nnoremap U :UndotreeToggle<CR>
 
-" === ultisnips mappings
+" === ultisnips mappings, type less for more
 let g:UltiSnipsExpandTrigger="<C-x><C-s>"
 nnoremap <leader>us :Snippets<cr>
 
