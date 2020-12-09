@@ -6,8 +6,9 @@
 function! ccr#CCR()
     let cmdline = getcmdline()
     command! -bar Z silent set more|delcommand Z
+    " LamT: fix a conflict issue with vim-lsp mappings: inoremap <expr> <cr> ...
     if getcmdtype() != ':'
-        return "\<CR>"
+        return "\<Esc>"
     endif
     if cmdline =~ '\v\C^(ls|files|buffers)'
         " like :ls but prompts for a buffer command

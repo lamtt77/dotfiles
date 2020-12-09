@@ -257,6 +257,8 @@ Plug 'SirVer/ultisnips'
   "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
 Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
@@ -274,10 +276,11 @@ let g:gruvbox_material_background ='medium'
 silent! colorscheme gruvbox-material
 
 " My default settings for using netrw with :Lex
-let g:netrw_banner          =0 " hide / unhide with Shift-I
-let g:netrw_liststyle       =1 " multi-columns view for files
+let g:netrw_banner          =0         " hide / unhide with Shift-I
+let g:netrw_liststyle       =3         " tree-view
 let g:netrw_winsize         =40
-let g:netrw_use_errorwindow =0 " fix an annoying netrw error displayed on top vim-8.2-1988
+let g:netrw_use_errorwindow =0         " fix an annoying netrw error displayed on top vim-8.2-1988
+let g:netrw_sort_sequence   ='[\/]$,*' " sort is affecting only: directories on the top, files below
 
 " fugitive status line, this requires set ruler on
 set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
@@ -371,8 +374,10 @@ let g:ctrlsf_extra_backend_args = {
   \ }
 
 " === vim-lsp: language server, TODO extract to a separate file once stable
+let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+
 if executable('ccls')
-  " sudo pacman -S ccls   " very good already, low memory footprint
+  " sudo pacman -S ccls               " very good already, low memory footprint
   au User lsp_setup call lsp#register_server({
       \ 'name': 'ccls',
       \ 'cmd': {server_info->['ccls']},
@@ -395,6 +400,7 @@ if executable('jdtls-lam')
   " yay -S jdtls
   " caveat: `pwd` needs to set correctly at the root of java project to work properly, because
   " `jdtls` will need to generate a `workspace` directory and option `-data` not work yet. TODO: any better way?
+  " Update: most language-server (gopls) needs to set `pwd` to work propertly, it seems
   au User lsp_setup call lsp#register_server({
       \ 'name': 'jdtls-lam',
       \ 'cmd': {server_info->['jdtls-lam']},
@@ -426,6 +432,11 @@ function! s:on_lsp_buffer_enabled() abort
   " LamT: some more mappings
   nmap <buffer> <leader>ln <plug>(lsp-next-error)
   nmap <buffer> <leader>lp <plug>(lsp-previous-error)
+  " auto-complete mappings
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 endfunction
 
 augroup lsp_install
