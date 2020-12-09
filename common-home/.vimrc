@@ -43,7 +43,7 @@ let g:loaded_spellfile_plugin = 1   " spellvim built-in plugin
 filetype plugin indent on
 set completefunc  =syntaxcomplete#Complete " Ctrl-X Ctrl-U: user complete
 set complete     +=kspell,d                " include #define or macro, and spelling suggestions if on
-set completeopt   =longest,menuone,preview
+set completeopt   =longest,menuone,noselect
 
 set dictionary   +=/usr/share/dict/words   " sudo pacman -S words
 
@@ -194,10 +194,6 @@ runtime macros/matchit.vim
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
 if !filereadable(vimplug_exists)
-  if !executable("curl")
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
   echo "Installing Vim-Plug..."
   echo ""
   silent exec "!\curl -fLo " . vimplug_exists . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -260,6 +256,8 @@ Plug 'SirVer/ultisnips'
   "let g:UltiSnipsJumpForwardTrigger="<c-j>"
   "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
+Plug 'prabirshrestha/vim-lsp'
+
 Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
 Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
 
@@ -273,7 +271,7 @@ call plug#end()
 set background                    =dark
 let g:gruvbox_material_palette    ='mix'
 let g:gruvbox_material_background ='medium'
-colorscheme gruvbox-material
+silent! colorscheme gruvbox-material
 
 " My default settings for using netrw with :Lex
 let g:netrw_banner          =0 " hide / unhide with Shift-I
@@ -371,6 +369,71 @@ let g:ctrlsf_extra_backend_args = {
   \ 'rg': '--hidden',
   \ 'ag': '--hidden'
   \ }
+
+" === vim-lsp: language server, TODO extract to a separate file once stable
+if executable('ccls')
+  " sudo pacman -S ccls   " very good already, low memory footprint
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'ccls',
+      \ 'cmd': {server_info->['ccls']},
+      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+      \ 'initialization_options': {'cache': {'directory': '/tmp/ccls/cache' }, 'clang': {'extraArgs': ['--gcc-toolchain=/usr'] } },
+      \ 'allowlist': [ 'c', 'cpp', 'objc', 'objcpp', 'cc' ],
+      \ })
+endif
+
+if executable('pyls')
+  " sudo pacman -S python-language-server yapf
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'pyls',
+      \ 'cmd': {server_info->['pyls']},
+      \ 'allowlist': ['python'],
+      \ })
+endif
+
+if executable('jdtls-lam')
+  " yay -S jdtls
+  " caveat: `pwd` needs to set correctly at the root of java project to work properly, because
+  " `jdtls` will need to generate a `workspace` directory and option `-data` not work yet. TODO: any better way?
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'jdtls-lam',
+      \ 'cmd': {server_info->['jdtls-lam']},
+      \ 'allowlist': [ 'java' ],
+      \ })
+endif
+
+if executable('gopls')
+  " sudo pacman -S gopls
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'gopls',
+      \ 'cmd': {server_info->['gopls']},
+      \ 'allowlist': [ 'go' ],
+      \ })
+endif
+
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> gr <plug>(lsp-references)
+  nmap <buffer> gi <plug>(lsp-implementation)
+  nmap <buffer> gt <plug>(lsp-type-definition)
+  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+  nmap <buffer> K <plug>(lsp-hover)
+  " LamT: some more mappings
+  nmap <buffer> <leader>ln <plug>(lsp-next-error)
+  nmap <buffer> <leader>lp <plug>(lsp-previous-error)
+endfunction
+
+augroup lsp_install
+  au!
+  " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+" === END vim-lsp
 
 " When editing a file, always jump to the last known cursor position.
 autocmd vimrc BufReadPost *
@@ -562,7 +625,7 @@ nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><ri
 command! SudoWrite execute 'silent! write !sudo tee % >/dev/null' | edit!
 
 " from https://github.com/Jorengarenar/dotfiles/blob/7444acdbf50affa3f38f5711ec890395f6a9e3a6/vim/vimrc#L75
-" plus: some interesting mappings and manual statusline
+" plus: some interesting mappings, cscope, lsp: ccls, pyls, java, sqls and manual statusline
 command! ExecCurrentLine normal :.w !sh<CR>
 command! -range=% Sort normal :<line1>,<line2>sort i<CR>
 command! SortBlock :normal! vip:sort i<CR>
