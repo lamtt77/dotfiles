@@ -128,7 +128,7 @@ set nocursorcolumn
 set history=1000
 
 " Not needed if lightline is in-use
-set ruler		" show the cursor position all the time
+" set ruler		" show the cursor position all the time
 
 set showcmd		" display incomplete commands
 set wildmenu		" display completion matches in a status line
@@ -138,6 +138,12 @@ set foldmethod=marker
 set foldopen-=hor
 set foldopen+=jump
 let g:vimsyn_folding = 'f'
+
+" if executable('zsh')
+"   set shell=zsh
+" else
+"   set shell=bash
+" endif
 " }}}
 
 " PLUG {{{1
@@ -145,10 +151,6 @@ let g:vimsyn_folding = 'f'
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
 if !filereadable(vimplug_exists)
-  if !executable("curl")
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
   echo "Installing Vim-Plug..."
   echo ""
   silent exec "!\curl -fLo " . vimplug_exists . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -170,6 +172,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
+" Plug 'godlygeek/tabular'
 " Plug 'sheerun/vim-polyglot'
 " Plug 'ryanoasis/vim-devicons'
 
@@ -178,7 +181,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'itchyny/lightline.vim'
 
 " Match more stuff with % (html tag, LaTeX...)
-Plug 'andymass/vim-matchup'
+" Plug 'andymass/vim-matchup'
 
 " Plug 'easymotion/vim-easymotion'
 
@@ -187,15 +190,15 @@ Plug 'andymass/vim-matchup'
 " surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-" Plug 'preservim/nerdcommenter'
+
 " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
 " Plug 'tpope/vim-sleuth'
-
 " Plug 'tpope/vim-projectionist'
-" " enhances the . operator to work as one would expect with a number of Vim plugins
+
+" enhances the . operator to work as one would expect with a number of Vim plugins
 Plug 'tpope/vim-repeat'
-" " provides a set of mappings for many operations that have natural pairings
-" Plug 'tpope/vim-unimpaired'
+" provides a set of mappings for many operations that have natural pairings
+Plug 'tpope/vim-unimpaired'
 
 Plug 'tpope/vim-fugitive'
 " Plug 'airblade/vim-gitgutter'
@@ -219,8 +222,6 @@ Plug 'tpope/vim-fugitive'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  " Way too big memory footprint with YCM -- may cause me drop vim for vscode
-  " Plug 'ycm-core/YouCompleteMe'
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
@@ -244,8 +245,7 @@ Plug 'majutsushi/tagbar'
 Plug 'romainl/vim-qf'
 
 " Multiple Plug commands can be written in a single line using | separators
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 "Plug 'lervag/vimtex'
 "if has('nvim')
@@ -254,7 +254,6 @@ Plug 'honza/vim-snippets'
 
 Plug 'vimwiki/vimwiki'
 
-Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'mbbill/undotree'
@@ -274,7 +273,7 @@ Plug 'mbbill/undotree'
 call plug#end()
 
 " Load up the match it built-in plugin which provides smart % XML/HTML matching.
-" runtime macros/matchit.vim
+runtime macros/matchit.vim
 
 " }}}1
 
@@ -339,7 +338,7 @@ let g:limelight_conceal_ctermfg=244
 
 " My default settings for using netrw with :Lex
 let g:netrw_banner=0      " hide / unhide with Shift-I
-let g:netrw_liststyle=2   " multi-columns view for files
+let g:netrw_liststyle=3   " tree-style
 let g:netrw_winsize=40
 let g:netrw_use_errorwindow=0
 
@@ -450,20 +449,14 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" let g:UltiSnipsExpandTrigger="<c-s>"
+let g:UltiSnipsExpandTrigger="<c-x><c-s>"
 " let g:UltiSnipsJumpForwardTrigger="<c-b>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" " If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
 
 " Vimux plugin
-" Prompt for a command to run
 map <Leader>vp :VimuxPromptCommand<CR>
-" Run last command executed by VimuxRunCommand
 map <Leader>vl :VimuxRunLastCommand<CR>
-" Inspect runner pane
 map <Leader>vi :VimuxInspectRunner<CR>
-" Zoom the tmux runner pane
 map <Leader>vz :VimuxZoomRunner<CR>
 
 map <Leader>ra :wa<CR> :GolangTestCurrentPackage<CR>
