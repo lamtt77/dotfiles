@@ -172,7 +172,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
-" Plug 'godlygeek/tabular'
 " Plug 'sheerun/vim-polyglot'
 " Plug 'ryanoasis/vim-devicons'
 
@@ -188,29 +187,26 @@ Plug 'itchyny/lightline.vim'
 " ranger can do many things netrw can't
 Plug 'francoiscabrol/ranger.vim'    | let g:ranger_map_keys = 0
 
+Plug 'tpope/vim-fugitive'
 " easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
 " Plug 'tpope/vim-abolish'
 " surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-
 " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
 " Plug 'tpope/vim-sleuth'
 " Plug 'tpope/vim-projectionist'
-
 " enhances the . operator to work as one would expect with a number of Vim plugins
 Plug 'tpope/vim-repeat'
 " provides a set of mappings for many operations that have natural pairings
 Plug 'tpope/vim-unimpaired'
 
-Plug 'tpope/vim-fugitive'
+" Plug 'airblade/vim-gitgutter'
 
 Plug 'mhinz/vim-signify'
   let g:signify_vcs_list          = ['git']
   let g:signify_skip_filetype     = { 'journal': 1 }
 Plug 'mhinz/vim-grepper'
-
-" Plug 'airblade/vim-gitgutter'
 
 Plug 'dyng/ctrlsf.vim'
 
@@ -220,13 +216,6 @@ Plug 'dyng/ctrlsf.vim'
 " Plug 'nelstrom/vim-visual-star-search'
 
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-" Let test if vimproc could impore VIM async call performance?
-" let g:make = 'gmake'
-" if exists('make')
-"   let g:make = 'make'
-" endif
-" Plug 'Shougo/vimproc.vim', {'do': g:make}
 
 " Plug 'dense-analysis/ale'
 
@@ -248,14 +237,16 @@ Plug 'romainl/vim-qf'
 " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'honza/vim-snippets'
 
-"Plug 'lervag/vimtex'
-"if has('nvim')
-"  let g:vimtex_compiler_progname = 'nvr'
-"endif
+Plug 'lervag/vimtex'
+if has('nvim')
+  let g:vimtex_compiler_progname = 'nvr'
+endif
 
 Plug 'vimwiki/vimwiki'
 
+Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+  let g:vim_markdown_folding_disabled = 1   " performance not great with big file
 
 Plug 'mbbill/undotree'
 " Plug 'ludovicchabant/vim-gutentags'
