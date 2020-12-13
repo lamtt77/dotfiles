@@ -112,8 +112,7 @@ set mouse=a
 " spell check comments
 "set spell
 
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
+" default 4000ms (4s) not good for async operations
 set updatetime=200
 
 " Don't pass messages to |ins-completion-menu|
@@ -199,7 +198,7 @@ Plug 'tpope/vim-commentary'
 " enhances the . operator to work as one would expect with a number of Vim plugins
 Plug 'tpope/vim-repeat'
 " provides a set of mappings for many operations that have natural pairings
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'
 
 " Plug 'airblade/vim-gitgutter'
 
@@ -336,15 +335,12 @@ let g:netrw_winsize         =40
 let g:netrw_use_errorwindow =0
 
 " === More USEFUL Plugins here
-
-" Sourcing for Coc settings
 source ~/.vim/plugged/coc-lam.vim
 
 " Plugin vim-go settings
 " let g:go_gopls_options = ['-remote=auto']
 let g:go_gopls_enabled = 0
 let g:go_def_mapping_enabled = 0
-" :CocEnable
 
 " customize by filetype
 augroup customizefiletype
@@ -435,8 +431,8 @@ nnoremap <silent> <leader>,         :FZF<cr>
 nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<cr>/<cr>
 
 nnoremap <silent> <leader><Enter>   :Buffers<cr>
-nnoremap <silent> <Leader>L         :Lines<CR>
-nnoremap <silent> <Leader>`         :Marks<CR>
+nnoremap <silent> <leader>L         :Lines<CR>
+nnoremap <silent> <leader>`         :Marks<CR>
 nnoremap <silent> <leader><space>   :Rg<cr>
 xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<cr>
 " All files
@@ -465,13 +461,13 @@ nmap ga <Plug>(EasyAlign)
 nnoremap <leader>rg                 :Ranger<cr>
 
 " Vimux plugin
-map <Leader>vp :VimuxPromptCommand<CR>
-map <Leader>vl :VimuxRunLastCommand<CR>
-map <Leader>vi :VimuxInspectRunner<CR>
-map <Leader>vz :VimuxZoomRunner<CR>
+map <leader>vp :VimuxPromptCommand<CR>
+map <leader>vl :VimuxRunLastCommand<CR>
+map <leader>vi :VimuxInspectRunner<CR>
+map <leader>vz :VimuxZoomRunner<CR>
 
-map <Leader>ra :wa<CR> :GolangTestCurrentPackage<CR>
-map <Leader>rf :wa<CR> :GolangTestFocused<CR>
+map <leader>ra :wa<CR> :GolangTestCurrentPackage<CR>
+map <leader>rf :wa<CR> :GolangTestFocused<CR>
 
 " === vim-grepper
 let g:grepper = {}
@@ -507,11 +503,11 @@ nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
 xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 
 " CtrlSF plugin mappings
-nmap <Leader>ff <Plug>CtrlSFPrompt
-vmap <Leader>ff <Plug>CtrlSFVwordPath
-vmap <Leader>fe <Plug>CtrlSFVwordExec
-nmap <Leader>fn <Plug>CtrlSFCwordPath
-nmap <Leader>fp <Plug>CtrlSFPwordPath
+nmap <leader>ff <Plug>CtrlSFPrompt
+vmap <leader>ff <Plug>CtrlSFVwordPath
+vmap <leader>fe <Plug>CtrlSFVwordExec
+nmap <leader>fn <Plug>CtrlSFCwordPath
+nmap <leader>fp <Plug>CtrlSFPwordPath
 
 " Plugin Git Gutter seting
 let g:gitgutter_grep                    = 'rg'
@@ -524,9 +520,9 @@ let g:gitgutter_sign_removed_first_line = '◥'
 " Comment out mapping as in conflicted with other plugins
 " nmap [g <Plug>GitGutterPrevHunkzz
 " nmap ]g <Plug>GitGutterNextHunkzz
-" nmap <Leader>+ <Plug>GitGutterStageHunk
-" nmap <Leader>- <Plug>GitGutterUndoHunk
-" nmap <Leader>p <Plug>GitGutterPreviewHunk
+" nmap <leader>+ <Plug>GitGutterStageHunk
+" nmap <leader>- <Plug>GitGutterUndoHunk
+" nmap <leader>p <Plug>GitGutterPreviewHunk
 
 " -----------------------------------------------------------------------------
 " Basic and frequent mappings
@@ -542,12 +538,6 @@ noremap <leader>p "+gP<CR>
 noremap XX "+x<CR>
 vnoremap X "_d
 
-if has('macunix')
-  " pbcopy for OSX copy/paste
-  vmap <D-x> :!pbcopy<CR>
-  vmap <D-c> :w !pbcopy<CR><CR>
-endif
-
 " maintain visual mode after shifting > and <
 vmap < <gv
 vmap > >gv
@@ -556,17 +546,15 @@ vmap > >gv
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 45<CR>
-nnoremap <Leader>ps :Rg<SPACE>
-nnoremap <Leader>+ :vertical resize +5<CR>
-nnoremap <Leader>- :vertical resize -5<CR>
+nnoremap <leader>+ :vertical resize +5<CR>
+nnoremap <leader>- :vertical resize -5<CR>
 
 nnoremap <F5> :UndotreeToggle<cr>
 
 " === Some shortcut commands here
 
 " Change to Directory of Current file
-nnoremap <Leader>cd :cd %:p:h<CR>
+nnoremap <leader>cd :cd %:p:h<CR>
 
 augroup trimwhitespace
   autocmd BufWritePre * :call lamutils#TrimWhitespace()
