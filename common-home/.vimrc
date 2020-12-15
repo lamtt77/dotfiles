@@ -249,6 +249,9 @@ Plug 'AndrewRadev/tagalong.vim',    { 'for': 'html'}
 Plug 'mattn/emmet-vim',             { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
 
+Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
+Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
+
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
   " below are the defaults ultisnips mappings
@@ -260,11 +263,13 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
-Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
-
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
 " Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
+
+Plug 'puremourning/vimspector'
+  let g:vimspector_base_dir        = expand('$HOME/.vim/plugged/vimspector')
+  let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools' ]
+  let g:vimspector_enable_mappings = 'HUMAN'
 call plug#end()
 " }}} === PLUGIN initialization end here
 
@@ -706,12 +711,12 @@ nnoremap U :UndotreeToggle<CR>
 let g:UltiSnipsExpandTrigger="<C-x><C-s>"
 nnoremap <leader>us :Snippets<cr>
 
-"" === DEBUG with TermDebug
-"packadd termdebug
-"let g:termdebug_wide=1
-"noremap <silent> <leader>td :Termdebug<cr>
-"noremap <silent> <leader>ts :Step<cr>
-"noremap <silent> <leader>to :Over<cr>
+" === DEBUG with TermDebug
+" packadd termdebug
+" let g:termdebug_wide=1
+" noremap <silent> <leader>td :Termdebug<cr>
+" noremap <silent> <leader>ts :Step<cr>
+" noremap <silent> <leader>to :Over<cr>
 
 " }}} === My custom mapping end here
 
