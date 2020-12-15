@@ -36,7 +36,7 @@ endif
 filetype plugin indent on
 
 " Absolute Path for python3 and ruby (mainly to satisfy nvim)
-let g:python3_host_prog = '/usr/local/opt/python@3.8/bin/python3'
+let g:python3_host_prog = '/Users/alam/.pyenv/shims/python'
 let g:ruby_host_prog = '/usr/local/lib/ruby/gems/2.7.0/bin/neovim-ruby-host'
 
 set nolangremap
@@ -128,7 +128,7 @@ set nocursorcolumn
 set history=1000
 
 " Not needed if lightline is in-use
-set ruler		" show the cursor position all the time
+" set ruler		" show the cursor position all the time
 
 set showcmd		" display incomplete commands
 set wildmenu		" display completion matches in a status line
@@ -138,6 +138,12 @@ set foldmethod=marker
 set foldopen-=hor
 set foldopen+=jump
 let g:vimsyn_folding = 'f'
+
+" if executable('zsh')
+"   set shell=zsh
+" else
+"   set shell=bash
+" endif
 " }}}
 
 " PLUG {{{1
@@ -145,10 +151,6 @@ let g:vimsyn_folding = 'f'
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
 if !filereadable(vimplug_exists)
-  if !executable("curl")
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
   echo "Installing Vim-Plug..."
   echo ""
   silent exec "!\curl -fLo " . vimplug_exists . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -170,6 +172,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
+" Plug 'godlygeek/tabular'
 " Plug 'sheerun/vim-polyglot'
 " Plug 'ryanoasis/vim-devicons'
 
@@ -178,27 +181,38 @@ Plug 'junegunn/vim-easy-align'
 Plug 'itchyny/lightline.vim'
 
 " Match more stuff with % (html tag, LaTeX...)
-Plug 'andymass/vim-matchup'
+" Plug 'andymass/vim-matchup'
 
 " Plug 'easymotion/vim-easymotion'
+
+" ranger can do many things netrw can't
+Plug 'francoiscabrol/ranger.vim'    | let g:ranger_map_keys = 0
 
 " easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
 " Plug 'tpope/vim-abolish'
 " surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-" Plug 'preservim/nerdcommenter'
+
 " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
 " Plug 'tpope/vim-sleuth'
-
 " Plug 'tpope/vim-projectionist'
-" " enhances the . operator to work as one would expect with a number of Vim plugins
+
+" enhances the . operator to work as one would expect with a number of Vim plugins
 Plug 'tpope/vim-repeat'
-" " provides a set of mappings for many operations that have natural pairings
-" Plug 'tpope/vim-unimpaired'
+" provides a set of mappings for many operations that have natural pairings
+Plug 'tpope/vim-unimpaired'
 
 Plug 'tpope/vim-fugitive'
+
+Plug 'mhinz/vim-signify'
+  let g:signify_vcs_list          = ['git']
+  let g:signify_skip_filetype     = { 'journal': 1 }
+Plug 'mhinz/vim-grepper'
+
 " Plug 'airblade/vim-gitgutter'
+
+Plug 'dyng/ctrlsf.vim'
 
 " " provides additional text objects
 " Plug 'wellle/targets.vim'
@@ -215,19 +229,6 @@ Plug 'tpope/vim-fugitive'
 " Plug 'Shougo/vimproc.vim', {'do': g:make}
 
 " Plug 'dense-analysis/ale'
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  " Way too big memory footprint with YCM -- may cause me drop vim for vscode
-  " Plug 'ycm-core/YouCompleteMe'
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
-Plug 'mhinz/vim-grepper'
-Plug 'dyng/ctrlsf.vim'
 
 " Dim paragraphs above and below the active paragraph.
 Plug 'junegunn/limelight.vim'
@@ -254,7 +255,6 @@ Plug 'honza/vim-snippets'
 
 Plug 'vimwiki/vimwiki'
 
-Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'mbbill/undotree'
@@ -274,7 +274,7 @@ Plug 'mbbill/undotree'
 call plug#end()
 
 " Load up the match it built-in plugin which provides smart % XML/HTML matching.
-" runtime macros/matchit.vim
+runtime macros/matchit.vim
 
 " }}}1
 
@@ -338,10 +338,11 @@ let g:limelight_conceal_ctermfg=244
 " .............................................................................
 
 " My default settings for using netrw with :Lex
-let g:netrw_banner=0      " hide / unhide with Shift-I
-let g:netrw_liststyle=2   " multi-columns view for files
-let g:netrw_winsize=40
-let g:netrw_use_errorwindow=0
+let g:netrw_banner          =0 " hide / unhide with Shift-I
+" let g:netrw_liststyle       =3 " tree-style, still has permission denied bug if follow link
+let g:netrw_liststyle       =1 " long-listing
+let g:netrw_winsize         =40
+let g:netrw_use_errorwindow =0
 
 " === More USEFUL Plugins here
 
@@ -351,35 +352,8 @@ source ~/.vim/plugged/coc-lam.vim
 " Plugin vim-go settings
 " let g:go_gopls_options = ['-remote=auto']
 let g:go_gopls_enabled = 0
-
-func GoDeoplete()
-  :silent CocDisable
-
-  let g:go_gopls_options = ['-remote=auto']
-  let g:go_def_mapping_enabled = 1
-  let g:go_gopls_enabled = 1
-
-  set completeopt+=noselect
-  call deoplete#enable()
-  call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
-  " close preview window after CompleteDone
-  autocmd CompleteDone * silent! pclose!
-endfun
-
-func GoCoc()
-  let g:go_def_mapping_enabled = 0
-  call deoplete#disable()
-  :CocEnable
-endfun
-
-if has('nvim')
-  " autocmd FileType go :call GoDeoplete()
-  autocmd FileType go,py,js,ts,cpp,cxx,h,hpp,c :call GoCoc()
-else
-  " autocmd FileType go :call GoYCM()
-  autocmd FileType go :call GoDeoplete()
-  autocmd FileType py,js,ts,cpp,cxx,h,hpp,c :call GoCoc()
-endif
+let g:go_def_mapping_enabled = 0
+" :CocEnable
 
 " customize by filetype
 augroup customizefiletype
@@ -391,11 +365,21 @@ augroup customizefiletype
   autocmd Filetype html setlocal ts=2 sw=2 expandtab
 augroup end
 
-" " === ALE Plugin settings
-" " let g:go_def_mapping_enabled = 1
-" " set omnifunc=ale#completion#OmniFunc
-" " let g:ale_completion_tsserver_autoimport = 1
-" " " Only run linters named in ale_linters settings.
+augroup FORMATOPTIONS
+  autocmd!
+  autocmd BufWinEnter * set fo-=c fo-=r fo-=o " Disable continuation of comments to the next line
+  autocmd BufWinEnter * set formatoptions+=j  " Remove a comment leader when joining lines
+  autocmd BufWinEnter * set formatoptions+=l  " Don't break a line after a one-letter word
+  autocmd BufWinEnter * set formatoptions+=n  " Recognize numbered lists
+  autocmd BufWinEnter * set formatoptions-=q  " Don't format comments
+  autocmd BufWinEnter * set formatoptions-=t  " Don't autowrap text using 'textwidth'
+augroup END
+
+" === ALE Plugin settings
+" let g:go_def_mapping_enabled = 1
+" set omnifunc=ale#completion#OmniFunc
+" let g:ale_completion_tsserver_autoimport = 1
+" " Only run linters named in ale_linters settings.
 " let g:ale_linters_explicit = 1
 
 " }}}1
@@ -405,34 +389,70 @@ augroup end
 " tmux plugin customize
 "autocmd VimEnter,VimLeave * silent !tmux set status off
 
-" fzf plugin
-let $FZF_DEFAULT_COMMAND = "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+" === fzf plugin
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
+
+let $FZF_DEFAULT_COMMAND = 'find * -path "*/\.*"
+  \ -prune -o -path "node_modules/**"
+  \ -prune -o -path "target/**"
+  \ -prune -o -path "dist/**"
+  \ -prune -o -type f -print -o -type l -print 2> /dev/null'
 
 " ripgrep then ag silver search
 if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-  set grepprg=rg\ --vimgrep
-  let g:rg_derive_root='true'
-  set grepformat=%f:%l:%c:%m,%f:%l:%m,%f
-  command! -bang -nargs=* Find call fzf#vim#grep(
-    \ 'rg --column --line-number --no-heading --fixed-strings --smart-case
-    \ --hidden --follow --glob "!.git/*" --color "always"
-    \ '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+  let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob "!.git" --files --follow'
+  set grepprg=rg\ --hidden\ --vimgrep\ --glob\ '!*{.git,node_modules,build,bin,obj,tags}'
 elseif executable('ag')
   let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-  set grepprg=ag\ --nogroup\ --nocolor
+  set grepprg=ag\ --hidden\ --vimgrep
 endif
+
+" All files with `fd`, from https://github.com/junegunn/dotfiles/blob/master/vimrc
+command! -nargs=? -complete=dir AF
+  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \ })))
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --glob "!.git" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --hidden --glob "!.git" --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 
 " visual mode pressing * or # searches for the current selection
 vnoremap <silent> * :<C-u>call functions#VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call functions#VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-" Fuzzy search in `pwd` directory
-nnoremap <silent> <leader>, :Files<CR>
+" Fuzzy search in `pwd` directory (current project)
+nnoremap <silent> <leader>,         :FZF<cr>
 " Fuzzy search in curent buffer directory
-nnoremap <silent> <Leader>. :Files <C-r>=expand("%:h")<CR>/<CR>
+nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<cr>/<cr>
 
-nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader><Enter>   :Buffers<cr>
+nnoremap <silent> <Leader>L         :Lines<CR>
+nnoremap <silent> <Leader>`         :Marks<CR>
+nnoremap <silent> <leader><space>   :Rg<cr>
+xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<cr>
+" All files
+nnoremap <silent> <leader>af        :AF<cr>
+imap     <c-x><c-j>                 <plug>(fzf-complete-file-ag)
+imap     <c-x><c-l>                 <plug>(fzf-complete-line)
+
 nnoremap <silent> <leader>ee :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
@@ -450,44 +470,37 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" let g:UltiSnipsExpandTrigger="<c-s>"
-" let g:UltiSnipsJumpForwardTrigger="<c-b>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" " If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
+" Ranger mappings, default current buffer directory
+nnoremap <leader>rg                 :Ranger<cr>
 
 " Vimux plugin
-" Prompt for a command to run
 map <Leader>vp :VimuxPromptCommand<CR>
-" Run last command executed by VimuxRunCommand
 map <Leader>vl :VimuxRunLastCommand<CR>
-" Inspect runner pane
 map <Leader>vi :VimuxInspectRunner<CR>
-" Zoom the tmux runner pane
 map <Leader>vz :VimuxZoomRunner<CR>
 
 map <Leader>ra :wa<CR> :GolangTestCurrentPackage<CR>
 map <Leader>rf :wa<CR> :GolangTestFocused<CR>
 
-" .............................................................................
-" mhinz/vim-grepper
+" === vim-grepper
 let g:grepper = {}
-" let g:grepper.tools = ['git', 'ag', 'rg']
-let g:grepper.tools = ["git"]
+let g:grepper.tools = ['git', 'rg', 'ag']
 let g:grepper.jump = 1
-" nnoremap <leader>G :Grepper -tool git<cr>
-nnoremap <leader>gg :Grepper -tool rg<cr>
-" nnoremap gs :Grepper -cword -noprompt<CR>
-" this will support much more gs + motion
+let g:grepper.next_tool     = '<leader>gp'
+let g:grepper.simple_prompt = 1
+let g:grepper.quickfix      = 0
+command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
+
+" === grepper mappings
+nnoremap <leader>gp                 :Grepper -tool git<cr>
+" support much more gs + motion, use grepper because of this
 nmap gs <plug>(GrepperOperator)
 xmap gs <Plug>(GrepperOperator)
 
-" After searching for text, press this mapping to do a project wide find and
-" replace. It's similar to <leader>r except this one applies to all matches
-" across all files instead of just the current file.
-nnoremap <Leader>R
-  \ :let @s='\<'.expand('<cword>').'\>'<CR>
-  \ :Grepper -cword -noprompt<CR>
+" after searching for text, this will do project wide find and replace.
+nnoremap <leader>R
+  \ :let @s='\<'.expand('<cword>').'\>'<cr>
+  \ :Grepper -noprompt -cword<cr>
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
@@ -497,10 +510,10 @@ xnoremap <leader>R                  "sy
   \ :cfdo %s/<C-r>s//g \| update
   \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
-"(R)eplace all - From
-"https://vi.stackexchange.com/questions/13689/how-to-find-and-replace-in-vim-without-having-to-type-the-original-word
-" nnoremap <leader>r yiw:%s/\<<C-r>"\>//g<left><left>
-nnoremap <leader>r yiw:%s/\<<C-r><C-w>\>//g<left><left>
+" replace all for word under cursor, yank that word for later use anyway
+nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
+" replace all but in visual selection
+xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 
 " CtrlSF plugin mappings
 nmap <Leader>ff <Plug>CtrlSFPrompt
@@ -556,14 +569,6 @@ nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 45<CR>
 nnoremap <Leader>ps :Rg<SPACE>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
-
-" Simulate M-f and M-b as in emacs to replace for Shift Right and Left
-noremap! <Esc>f <S-Right>
-noremap! <Esc>b <S-Left>
-
-" C-M-u and C-M-d scroll up and down other window; not perfect yet, should not do if reached top or bottom
-nnoremap <Esc><C-d> <C-w>w<C-d><C-w>p
-nnoremap <Esc><C-u> <C-w>w<C-u><C-w>p
 
 nnoremap <F5> :UndotreeToggle<cr>
 

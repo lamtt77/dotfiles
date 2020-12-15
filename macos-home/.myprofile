@@ -19,12 +19,12 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Add .NET Core SDK tools
 export PATH="$PATH:/Users/alam/.dotnet/tools"
 
-export PATH="~/.local/bin:/usr/local/opt/ruby/bin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # https://github.com/roxma/vim-hug-neovim-rpc/issues/47

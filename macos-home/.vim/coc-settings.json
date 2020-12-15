@@ -18,5 +18,13 @@
     "typescript",
     "typescriptreact"
   ],
-  "html.format.enable": true
+  "html.format.enable": true,
+  "languageserver": {
+    "golang": {
+      "command": "/opt/goworkspace/bin/gopls",
+      "args": ["-remote=auto"],
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  }
 }
