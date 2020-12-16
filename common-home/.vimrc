@@ -237,6 +237,9 @@ Plug 'mhinz/vim-grepper',           { 'on': ['Grepper', '<plug>(GrepperOperator)
 
 Plug 'dyng/ctrlsf.vim'
 
+" LeaderF introduces by vim github wiki, let's try it
+Plug 'Yggdroot/LeaderF',            { 'do': ':LeaderfInstallCExtension' }
+
 Plug 'romainl/vim-qf'               | let g:qf_mapping_ack_style = 1
 
 " Plug 'mg979/vim-visual-multi', {'branch': 'master'}   " save 5ms startup if don't use
@@ -264,7 +267,8 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
-" Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
+Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
+  let g:lexical#thesaurus = ['~/.vim/thesaurus/mthesaur.txt',]
 
 Plug 'puremourning/vimspector'
   let g:vimspector_base_dir        = expand('$HOME/.vim/plugged/vimspector')
@@ -282,7 +286,7 @@ silent! colorscheme gruvbox-material
 
 " My default settings for using netrw with :Lex
 let g:netrw_banner          =0         " hide / unhide with Shift-I
-let g:netrw_liststyle       =3         " tree-view
+let g:netrw_liststyle       =1         " 1=long-listing 3=tree-view
 let g:netrw_winsize         =40
 let g:netrw_use_errorwindow =0         " fix an annoying netrw error displayed on top vim-8.2-1988
 let g:netrw_sort_sequence   ='[\/]$,*' " sort is affecting only: directories on the top, files below
@@ -480,6 +484,13 @@ augroup FORMATOPTIONS
   autocmd BufWinEnter * set formatoptions-=q  " Don't format comments
   autocmd BufWinEnter * set formatoptions-=t  " Don't autowrap text using 'textwidth'
 augroup END
+
+augroup lexical
+  autocmd!
+  autocmd FileType markdown,mkd call lexical#init()
+  autocmd FileType textile call lexical#init()
+  autocmd FileType text call lexical#init({ 'spell': 0 })
+augroup END
 " }}}1
 
 " === LamT: integrate with ibus-bamboo {{{1
@@ -586,6 +597,34 @@ imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 " Git Grep
 nnoremap <silent> <leader>gg        :GGrep<cr>
 
+" === LeaderF mappings
+" don't show the help in normal mode
+let g:Lf_HideHelp = 1
+let g:Lf_UseCache = 0
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+" popup mode
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
+
+let g:Lf_ShortcutF = "<leader>ff"
+noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+
+" should use `Leaderf gtags --update` first, and `sudo pacman -S global`
+let g:Lf_GtagsAutoGenerate = 0
+let g:Lf_Gtagslabel = 'native-pygments'
+noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+" === END LeaderF mappings
+
 " === convenient mappings
 " visual mode pressing * or # searches for the current selection, use `//` to resume that search pattern
 vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<cr>/<C-r>=@/<cr><cr>
@@ -657,10 +696,10 @@ xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 nnoremap <leader>rg                 :Ranger<cr>
 
 " vim-floaterm mappings, ranger only draw correctly in nvim unfortunately, thus use the above mapping
-nnoremap <leader>fr                 :RangerNvim<cr>
-nnoremap <leader>fl                 :LF<cr>
+nnoremap <leader>tr                 :RangerNvim<cr>
+nnoremap <leader>tl                 :LF<cr>
 " nnn is fastest with shortest hotkeys
-nnoremap <leader>fn                 :NNN<cr>
+nnoremap <leader>tn                 :NNN<cr>
 
 " === vim-easy-align mappings
 " interactive EasyAlign for a motion/text object (e.g. gaip)
