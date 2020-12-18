@@ -82,6 +82,7 @@ set updatetime    =200
 set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
 set suffixes     +=.a,.1,.class
+set suffixesadd  +=.lua
 set wildignore   +=*.o,*.so,*.zip,*.png
 set wildoptions   =tagfile
 
@@ -262,9 +263,14 @@ Plug 'SirVer/ultisnips'
   "let g:UltiSnipsJumpForwardTrigger="<c-j>"
   "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+if has('nvim')
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/completion-nvim'
+else
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+endif
 
 " from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
 Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
@@ -426,14 +432,52 @@ if executable('gopls')
       \ })
 endif
 
+if executable('bash-language-server')
+  " sudo pacman -S bash-language-server
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'bash-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+      \ 'allowlist': ['sh'],
+      \ })
+endif
+
+if executable('typescript-language-server')
+  " npm install -g typescript typescript-language-server
+  " \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'typescript-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+      \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact', 'typescript', 'typescript.tsx'],
+      \ })
+endif
+
+if executable('yaml-language-server')
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'yaml-language-server',
+      \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+      \ 'whitelist': ['yaml', 'yaml.ansible'],
+      \ 'workspace_config': {
+      \   'yaml': {
+      \     'validate': v:true,
+      \     'hover': v:true,
+      \     'completion': v:true,
+      \     'customTags': [],
+      \     'schemas': {},
+      \     'schemaStore': { 'enable': v:true },
+      \   }
+      \ }
+      \})
+endif
+
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> gr <plug>(lsp-references)
-  nmap <buffer> gi <plug>(lsp-implementation)
-  nmap <buffer> gt <plug>(lsp-type-definition)
+  nmap <buffer> <leader>li <plug>(lsp-implementation)
+  nmap <buffer> <leader>lt <plug>(lsp-type-definition)
   nmap <buffer> <leader>rn <plug>(lsp-rename)
   nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
@@ -581,12 +625,13 @@ nnoremap <silent> <leader>,         :FZF<cr>
 " Fuzzy search in curent buffer directory
 nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<cr>/<cr>
 nnoremap <silent> <leader><Enter>   :Buffers<cr>
-nnoremap <silent> <Leader>L         :Lines<CR>
-nnoremap <silent> <Leader>`         :Marks<CR>
+nnoremap <silent> <leader>L         :Lines<CR>
+nnoremap <silent> <leader>H         :History<CR>
+nnoremap <silent> <leader>`         :Marks<CR>
 nnoremap <silent> <leader><space>   :Rg<cr>
 xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<cr>
 " All files
-nnoremap <silent> <leader>af        :AF<cr>
+nnoremap <silent> <leader>A         :AF<cr>
 imap     <c-x><c-j>                 <plug>(fzf-complete-file-ag)
 imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 
