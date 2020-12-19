@@ -265,6 +265,9 @@ Plug 'SirVer/ultisnips'
   "let g:UltiSnipsJumpForwardTrigger="<c-j>"
   "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
+Plug 'editorconfig/editorconfig-vim'
+  let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/completion-nvim'
@@ -274,8 +277,8 @@ else
   Plug 'prabirshrestha/asyncomplete-lsp.vim'
 endif
 
-" from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
-Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
+" Dictionnary, thesaurus... https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
+Plug 'reedes/vim-lexical'
   let g:lexical#thesaurus = ['~/.vim/thesaurus/mthesaur.txt',]
 
 Plug 'puremourning/vimspector'
