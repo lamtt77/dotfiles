@@ -167,13 +167,15 @@ set undoreload=10000
 set incsearch
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
-if ! has('nvim')
-  if has('unnamedplus')
-    " indepedently use of `+` for clipboard and `*` for autoslect
-    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
+if has('unnamedplus')
+  " indepedently use of `+` for clipboard and `*` for autoslect
+  if has('nvim')
+    set clipboard^=unnamedplus
   else
-    set clipboard^=unnamed
+    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
   endif
+else
+  set clipboard^=unnamed
 endif
 
 " set shell
@@ -211,7 +213,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'       " startup time a bit slow nowadays (>20ms), replaced by manual mappings
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -448,7 +450,7 @@ if executable('typescript-language-server')
       \ 'name': 'typescript-language-server',
       \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
       \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-      \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact', 'typescript', 'typescript.tsx'],
+      \ 'allowlist': ['javascript', 'javascript.jsx', 'javascriptreact', 'typescript', 'typescript.tsx'],
       \ })
 endif
 
@@ -456,7 +458,7 @@ if executable('yaml-language-server')
   au User lsp_setup call lsp#register_server({
       \ 'name': 'yaml-language-server',
       \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
-      \ 'whitelist': ['yaml', 'yaml.ansible'],
+      \ 'allowlist': ['yaml', 'yaml.ansible'],
       \ 'workspace_config': {
       \   'yaml': {
       \     'validate': v:true,
@@ -689,18 +691,18 @@ if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 endif
 
-" replaced by vim-unimpaired
-"" Quickfix
-"nnoremap ]q :cnext<cr>zz
-"nnoremap [q :cprev<cr>zz
-"nnoremap ]l :lnext<cr>zz
-"nnoremap [l :lprev<cr>zz
-"" Buffers
-"nnoremap ]b :bnext<cr>
-"nnoremap [b :bprev<cr>
-"" Tabs, only need to replace for gT, not really for gt
-"nnoremap ]t :tabn<cr>
-"nnoremap [t :tabp<cr>
+" replaced for vim-unimpaired
+" Quickfix
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+" Tabs, only need to replace for gT, not really for gt
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
 
 " move lines
 nnoremap <silent> <C-k> :move-2<cr>
@@ -752,10 +754,6 @@ nmap ga <Plug>(EasyAlign)
 " interactive EasyAlign in visual mode (e.g. vipga) and LiveEasyAlign (C-p)
 xmap ga <Plug>(EasyAlign)
 xmap <Leader>ga <Plug>(LiveEasyAlign)
-" from https://github.com/junegunn/dotfiles/blob/master/vimrc
-nnoremap <buffer> <leader>a[        vi[<c-v>$:EasyAlign\ g/^\S/<cr>gv=
-nnoremap <buffer> <leader>a{        vi{<c-v>$:EasyAlign\ g/^\S/<cr>gv=
-nnoremap <buffer> <leader>a(        vi(<c-v>$:EasyAlign\ <cr>gv=
 
 " === vim-easymotion mappings
 map <silent>s                       <plug>(easymotion-overwin-f2)
