@@ -12,6 +12,8 @@ endif
 
 if has('gui_running')
   set guioptions=a        " no toolbar and scrollbars, but autoselect on
+  set vb t_vb=            " no beep nor flash please
+  set guiheadroom=0
   set mousehide
   set antialias
 
