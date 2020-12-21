@@ -198,7 +198,7 @@ Plug 'tpope/vim-commentary'
 " enhances the . operator to work as one would expect with a number of Vim plugins
 Plug 'tpope/vim-repeat'
 " provides a set of mappings for many operations that have natural pairings
-" Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 " Plug 'airblade/vim-gitgutter'
 

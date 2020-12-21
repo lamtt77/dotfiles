@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# To restart: brew services restart spacebar
+
 spacebar -m config position           bottom
 spacebar -m config height             26
 spacebar -m config spacing_left       25
