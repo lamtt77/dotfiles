@@ -54,6 +54,9 @@ export QT4_IM_MODULE=ibus
 export CLUTTER_IM_MODULE=ibus
 # ibus-daemon -rdx      # LamT: do not like to load permanently for now
 
+# hide cursor when typing, not hide 100%, still show a dot in vnc session
+# xbanish &
+
 # Default DM is set here
 session=${1:-dwm}
 

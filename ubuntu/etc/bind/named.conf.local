@@ -6,5 +6,5 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
-// Lam added
+// LamT
 include "/var/lib/samba/private/named.conf";

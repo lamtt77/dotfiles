@@ -11,10 +11,6 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has('gui_running')
-  set guioptions=a        " no toolbar and scrollbars, but autoselect on
-  set mousehide
-  set antialias
-
   if has("gui_gtk2") || has("gui_gtk3")
     let &guifont = 'Liberation Mono 11'
   elseif has("gui_macvim")
@@ -25,6 +21,12 @@ if has('gui_running')
 
   command! Bigger  let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)+1', '')
   command! Smaller let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)-1', '')
+
+  set guioptions=a        " no toolbar and scrollbars, but autoselect on
+  set vb t_vb=            " no beep nor flash please
+  set guiheadroom=0
+  set mousehide
+  set antialias
 endif
 " }}}1
 
@@ -82,6 +84,7 @@ set updatetime    =200
 set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
 set suffixes     +=.a,.1,.class
+set suffixesadd  +=.lua
 set wildignore   +=*.o,*.so,*.zip,*.png
 set wildoptions   =tagfile
 
@@ -166,13 +169,15 @@ set undoreload=10000
 set incsearch
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
-if ! has('nvim')
-  if has('unnamedplus')
-    " indepedently use of `+` for clipboard and `*` for autoslect
-    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
+if has('unnamedplus')
+  " indepedently use of `+` for clipboard and `*` for autoslect
+  if has('nvim')
+    set clipboard^=unnamedplus
   else
-    set clipboard^=unnamed
+    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
   endif
+else
+  set clipboard^=unnamed
 endif
 
 " set shell
@@ -210,7 +215,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'       " startup time a bit slow nowadays (>20ms), replaced by manual mappings
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -237,6 +242,9 @@ Plug 'mhinz/vim-grepper',           { 'on': ['Grepper', '<plug>(GrepperOperator)
 
 Plug 'dyng/ctrlsf.vim'
 
+" LeaderF introduces by vim github wiki, let's try it
+Plug 'Yggdroot/LeaderF',            { 'do': ':LeaderfInstallCExtension' }
+
 Plug 'romainl/vim-qf'               | let g:qf_mapping_ack_style = 1
 
 " Plug 'mg979/vim-visual-multi', {'branch': 'master'}   " save 5ms startup if don't use
@@ -249,6 +257,9 @@ Plug 'AndrewRadev/tagalong.vim',    { 'for': 'html'}
 Plug 'mattn/emmet-vim',             { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
 
+Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
+Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
+
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
   " below are the defaults ultisnips mappings
@@ -256,15 +267,26 @@ Plug 'SirVer/ultisnips'
   "let g:UltiSnipsJumpForwardTrigger="<c-j>"
   "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'editorconfig/editorconfig-vim'
+  let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
-Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
+if has('nvim')
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/completion-nvim'
+else
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+endif
 
-" from https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
-" Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
+" Dictionnary, thesaurus... https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
+Plug 'reedes/vim-lexical'
+  let g:lexical#thesaurus = ['~/.vim/thesaurus/mthesaur.txt',]
+
+Plug 'puremourning/vimspector'
+  let g:vimspector_base_dir        = expand('$HOME/.vim/plugged/vimspector')
+  let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools' ]
+  let g:vimspector_enable_mappings = 'HUMAN'
 call plug#end()
 " }}} === PLUGIN initialization end here
 
@@ -277,7 +299,7 @@ silent! colorscheme gruvbox-material
 
 " My default settings for using netrw with :Lex
 let g:netrw_banner          =0         " hide / unhide with Shift-I
-let g:netrw_liststyle       =3         " tree-view
+let g:netrw_liststyle       =1         " 1=long-listing 3=tree-view
 let g:netrw_winsize         =40
 let g:netrw_use_errorwindow =0         " fix an annoying netrw error displayed on top vim-8.2-1988
 let g:netrw_sort_sequence   ='[\/]$,*' " sort is affecting only: directories on the top, files below
@@ -417,14 +439,52 @@ if executable('gopls')
       \ })
 endif
 
+if executable('bash-language-server')
+  " sudo pacman -S bash-language-server
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'bash-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+      \ 'allowlist': ['sh'],
+      \ })
+endif
+
+if executable('typescript-language-server')
+  " npm install -g typescript typescript-language-server
+  " \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'typescript-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+      \ 'allowlist': ['javascript', 'javascript.jsx', 'javascriptreact', 'typescript', 'typescript.tsx'],
+      \ })
+endif
+
+if executable('yaml-language-server')
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'yaml-language-server',
+      \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+      \ 'allowlist': ['yaml', 'yaml.ansible'],
+      \ 'workspace_config': {
+      \   'yaml': {
+      \     'validate': v:true,
+      \     'hover': v:true,
+      \     'completion': v:true,
+      \     'customTags': [],
+      \     'schemas': {},
+      \     'schemaStore': { 'enable': v:true },
+      \   }
+      \ }
+      \})
+endif
+
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> gr <plug>(lsp-references)
-  nmap <buffer> gi <plug>(lsp-implementation)
-  nmap <buffer> gt <plug>(lsp-type-definition)
+  nmap <buffer> <leader>li <plug>(lsp-implementation)
+  nmap <buffer> <leader>lt <plug>(lsp-type-definition)
   nmap <buffer> <leader>rn <plug>(lsp-rename)
   nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
@@ -474,6 +534,13 @@ augroup FORMATOPTIONS
   autocmd BufWinEnter * set formatoptions+=n  " Recognize numbered lists
   autocmd BufWinEnter * set formatoptions-=q  " Don't format comments
   autocmd BufWinEnter * set formatoptions-=t  " Don't autowrap text using 'textwidth'
+augroup END
+
+augroup lexical
+  autocmd!
+  autocmd FileType markdown,mkd call lexical#init()
+  autocmd FileType textile call lexical#init()
+  autocmd FileType text call lexical#init({ 'spell': 0 })
 augroup END
 " }}}1
 
@@ -565,12 +632,13 @@ nnoremap <silent> <leader>,         :FZF<cr>
 " Fuzzy search in curent buffer directory
 nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<cr>/<cr>
 nnoremap <silent> <leader><Enter>   :Buffers<cr>
-nnoremap <silent> <Leader>L         :Lines<CR>
-nnoremap <silent> <Leader>`         :Marks<CR>
+nnoremap <silent> <leader>L         :Lines<CR>
+nnoremap <silent> <leader>H         :History<CR>
+nnoremap <silent> <leader>`         :Marks<CR>
 nnoremap <silent> <leader><space>   :Rg<cr>
 xnoremap <silent> <leader><space>   "sy:Rg <C-r>s<cr>
 " All files
-nnoremap <silent> <leader>af        :AF<cr>
+nnoremap <silent> <leader>A         :AF<cr>
 imap     <c-x><c-j>                 <plug>(fzf-complete-file-ag)
 imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 
@@ -580,6 +648,34 @@ imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 
 " Git Grep
 nnoremap <silent> <leader>gg        :GGrep<cr>
+
+" === LeaderF mappings
+" don't show the help in normal mode
+let g:Lf_HideHelp = 1
+let g:Lf_UseCache = 0
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+" popup mode
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
+
+let g:Lf_ShortcutF = "<leader>ff"
+noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+
+" should use `Leaderf gtags --update` first, and `sudo pacman -S global`
+let g:Lf_GtagsAutoGenerate = 0
+let g:Lf_Gtagslabel = 'native-pygments'
+noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+" === END LeaderF mappings
 
 " === convenient mappings
 " visual mode pressing * or # searches for the current selection, use `//` to resume that search pattern
@@ -600,18 +696,18 @@ if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 endif
 
-" replaced by vim-unimpaired
-"" Quickfix
-"nnoremap ]q :cnext<cr>zz
-"nnoremap [q :cprev<cr>zz
-"nnoremap ]l :lnext<cr>zz
-"nnoremap [l :lprev<cr>zz
-"" Buffers
-"nnoremap ]b :bnext<cr>
-"nnoremap [b :bprev<cr>
-"" Tabs, only need to replace for gT, not really for gt
-"nnoremap ]t :tabn<cr>
-"nnoremap [t :tabp<cr>
+" replaced for vim-unimpaired
+" Quickfix
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+" Tabs, only need to replace for gT, not really for gt
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
 
 " move lines
 nnoremap <silent> <C-k> :move-2<cr>
@@ -652,10 +748,10 @@ xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
 nnoremap <leader>rg                 :Ranger<cr>
 
 " vim-floaterm mappings, ranger only draw correctly in nvim unfortunately, thus use the above mapping
-nnoremap <leader>fr                 :RangerNvim<cr>
-nnoremap <leader>fl                 :LF<cr>
+nnoremap <leader>tr                 :RangerNvim<cr>
+nnoremap <leader>tl                 :LF<cr>
 " nnn is fastest with shortest hotkeys
-nnoremap <leader>fn                 :NNN<cr>
+nnoremap <leader>tn                 :NNN<cr>
 
 " === vim-easy-align mappings
 " interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -663,10 +759,6 @@ nmap ga <Plug>(EasyAlign)
 " interactive EasyAlign in visual mode (e.g. vipga) and LiveEasyAlign (C-p)
 xmap ga <Plug>(EasyAlign)
 xmap <Leader>ga <Plug>(LiveEasyAlign)
-" from https://github.com/junegunn/dotfiles/blob/master/vimrc
-nnoremap <buffer> <leader>a[        vi[<c-v>$:EasyAlign\ g/^\S/<cr>gv=
-nnoremap <buffer> <leader>a{        vi{<c-v>$:EasyAlign\ g/^\S/<cr>gv=
-nnoremap <buffer> <leader>a(        vi(<c-v>$:EasyAlign\ <cr>gv=
 
 " === vim-easymotion mappings
 map <silent>s                       <plug>(easymotion-overwin-f2)
@@ -706,12 +798,12 @@ nnoremap U :UndotreeToggle<CR>
 let g:UltiSnipsExpandTrigger="<C-x><C-s>"
 nnoremap <leader>us :Snippets<cr>
 
-"" === DEBUG with TermDebug
-"packadd termdebug
-"let g:termdebug_wide=1
-"noremap <silent> <leader>td :Termdebug<cr>
-"noremap <silent> <leader>ts :Step<cr>
-"noremap <silent> <leader>to :Over<cr>
+" === DEBUG with TermDebug
+" packadd termdebug
+" let g:termdebug_wide=1
+" noremap <silent> <leader>td :Termdebug<cr>
+" noremap <silent> <leader>ts :Step<cr>
+" noremap <silent> <leader>to :Over<cr>
 
 " }}} === My custom mapping end here
 

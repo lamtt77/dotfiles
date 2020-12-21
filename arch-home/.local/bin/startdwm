@@ -1,5 +1,5 @@
 # Option 0: do not use opt1&2, instead `killall .xinitrc`, then getty.service
-# autologin will re-launch `dwm|i3`, won't keep apps, looks better than opt3
+# autologin will re-launch `dwm|i3`, won't keep apps, looks better than opt2
 
 # Option 1: `mod+alt+q` will keep running apps
 while true; do
