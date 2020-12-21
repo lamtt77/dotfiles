@@ -11,12 +11,6 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has('gui_running')
-  set guioptions=a        " no toolbar and scrollbars, but autoselect on
-  set vb t_vb=            " no beep nor flash please
-  set guiheadroom=0
-  set mousehide
-  set antialias
-
   if has("gui_gtk2") || has("gui_gtk3")
     let &guifont = 'Liberation Mono 11'
   elseif has("gui_macvim")
@@ -27,6 +21,12 @@ if has('gui_running')
 
   command! Bigger  let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)+1', '')
   command! Smaller let &guifont = substitute(&guifont, '\d\+', '\=submatch(0)-1', '')
+
+  set guioptions=a        " no toolbar and scrollbars, but autoselect on
+  set vb t_vb=            " no beep nor flash please
+  set guiheadroom=0
+  set mousehide
+  set antialias
 endif
 " }}}1
 
