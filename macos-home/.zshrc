@@ -94,9 +94,8 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 ### LamT personalization start here
-[[ -e ~/.profile ]] && source ~/.profile
+[[ -e ~/.myprofile ]] && source ~/.myprofile
 [[ -e ~/.aliases ]] && source ~/.aliases
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 export MONO_GAC_PREFIX="/usr/local"
 
