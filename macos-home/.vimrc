@@ -161,42 +161,40 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/gruvbox-material'
 
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+" easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
+" Plug 'tpope/vim-abolish'
+" automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
+" Plug 'tpope/vim-sleuth'
+" Plug 'tpope/vim-projectionist'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align'
+
+" Plug 'easymotion/vim-easymotion'
+
+Plug 'itchyny/lightline.vim'
+
 "Plug 'prettier/vim-prettier', {
 "  \ 'do': 'yarn install',
 "  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
-
 " Plug 'sheerun/vim-polyglot'
 " Plug 'ryanoasis/vim-devicons'
 
 " Plug 'justinmk/vim-dirvish'       " yet to see benefit vs built-in netrw
 
-Plug 'itchyny/lightline.vim'
-
 " Match more stuff with % (html tag, LaTeX...)
 " Plug 'andymass/vim-matchup'
 
-" Plug 'easymotion/vim-easymotion'
-
 " ranger can do many things netrw can't
 Plug 'francoiscabrol/ranger.vim'    | let g:ranger_map_keys = 0
-
-Plug 'tpope/vim-fugitive'
-" easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
-" Plug 'tpope/vim-abolish'
-" surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-" automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation"
-" Plug 'tpope/vim-sleuth'
-" Plug 'tpope/vim-projectionist'
-" enhances the . operator to work as one would expect with a number of Vim plugins
-Plug 'tpope/vim-repeat'
 
 " Plug 'airblade/vim-gitgutter'
 
@@ -252,7 +250,7 @@ Plug 'mbbill/undotree'
 " Plug 'amiorin/vim-project' | Plug 'mhinz/vim-startify'
 
 " Plug 'sgur/vim-editorconfig'
-" Plug 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim'
 
 " Plug 'vim-vdebug/vdebug'
 
@@ -508,13 +506,13 @@ nmap <leader>fn <Plug>CtrlSFCwordPath
 nmap <leader>fp <Plug>CtrlSFPwordPath
 
 " Plugin Git Gutter seting
-let g:gitgutter_grep                    = 'rg'
-let g:gitgutter_map_keys                = 0
-let g:gitgutter_sign_added              = '▎'
-let g:gitgutter_sign_modified           = '▎'
-let g:gitgutter_sign_modified_removed   = '▶'
-let g:gitgutter_sign_removed            = '▶'
-let g:gitgutter_sign_removed_first_line = '◥'
+" let g:gitgutter_grep                    = 'rg'
+" let g:gitgutter_map_keys                = 0
+" let g:gitgutter_sign_added              = '▎'
+" let g:gitgutter_sign_modified           = '▎'
+" let g:gitgutter_sign_modified_removed   = '▶'
+" let g:gitgutter_sign_removed            = '▶'
+" let g:gitgutter_sign_removed_first_line = '◥'
 " Comment out mapping as in conflicted with other plugins
 " nmap [g <Plug>GitGutterPrevHunkzz
 " nmap ]g <Plug>GitGutterNextHunkzz
@@ -561,8 +559,6 @@ nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
 
 nnoremap <F5> :UndotreeToggle<cr>
-
-" === Some shortcut commands here
 
 " Change to Directory of Current file
 nnoremap <leader>cd :cd %:p:h<CR>
