@@ -197,8 +197,6 @@ Plug 'tpope/vim-commentary'
 " Plug 'tpope/vim-projectionist'
 " enhances the . operator to work as one would expect with a number of Vim plugins
 Plug 'tpope/vim-repeat'
-" provides a set of mappings for many operations that have natural pairings
-Plug 'tpope/vim-unimpaired'
 
 " Plug 'airblade/vim-gitgutter'
 
@@ -545,6 +543,19 @@ vmap > >gv
 "" Move visual block
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
+
+" replaced for vim-unimpaired
+" Quickfix
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+" Tabs, only need to replace for gT, not really for gt
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
 
 nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
