@@ -27,6 +27,8 @@ export PATH="/Applications/VMware OVF Tool:$PATH"
 
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
@@ -37,4 +39,4 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 # Lam: should I change to `gpg-agent --daemon`?
 gpgconf --launch gpg-agent
 
-# vim:ft=sh
+# vim: ft=sh
