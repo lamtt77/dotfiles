@@ -157,7 +157,7 @@ if ! isdirectory(expand(&g:viewdir))
 endif
 
 set hidden
-" set autoread          " sometimes I like to know if buffer has changed
+set autoread
 " set autowrite
 set nobackup nowritebackup
 set noswapfile
@@ -705,7 +705,7 @@ nnoremap [l :lprev<cr>zz
 " Buffers
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprev<cr>
-" Tabs, only need to replace for gT, not really for gt
+" Tabs
 nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
 
@@ -807,4 +807,4 @@ nnoremap <leader>us :Snippets<cr>
 
 " }}} === My custom mapping end here
 
-" vim:sts=2 sw=2 et:foldmethod=marker
+" vim: sts=2 sw=2 et:foldmethod=marker
