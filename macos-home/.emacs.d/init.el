@@ -18,6 +18,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
    '(evil-collection evil dired+ zenburn-theme which-key web-mode virtualenvwrapper use-package undo-tree try tabbar posframe pcre2el ox-reveal org-bullets noflet jedi iedit hydra hungry-delete htmlize ggtags flycheck expand-region emmet-mode elpy elfeed dumb-jump counsel-projectile beacon ace-window)))
 (custom-set-faces

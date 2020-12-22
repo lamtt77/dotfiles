@@ -25,9 +25,12 @@ export PATH="$PATH:/Users/alam/.dotnet/tools"
 export PATH="$HOME/.local/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="/Applications/VMware OVF Tool:$PATH"
 
+export PATH="/Applications/MacPorts/EmacsMac.app/Contents/MacOS:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+[[ -f /opt/local/etc/profile.d/autojump.sh ]] && . /opt/local/etc/profile.d/autojump.sh
+
+# [[ -f /opt/local/share/fzf/shell/key-bindings.zsh ]] && . /opt/local/share/fzf/shell/key-bindings.zsh
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
