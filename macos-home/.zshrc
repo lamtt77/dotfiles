@@ -94,8 +94,8 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 ### LamT personalization start here
-[[ -e ~/.myprofile ]] && source ~/.myprofile
 [[ -e ~/.aliases ]] && source ~/.aliases
+[[ -e ~/.myprofile ]] && source ~/.myprofile
 
 export MONO_GAC_PREFIX="/usr/local"
 
@@ -105,7 +105,7 @@ complete -C /usr/local/bin/mc mc
 # LamT: prevent nested ranger loading
 ranger() {
     if [ -z "$RANGER_LEVEL" ]; then
-        /opt/local/bin/ranger "$@"
+        ~/.nix-profile/bin/ranger "$@"
     else
         exit
     fi
