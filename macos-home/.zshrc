@@ -105,7 +105,7 @@ complete -C /usr/local/bin/mc mc
 # LamT: prevent nested ranger loading
 ranger() {
     if [ -z "$RANGER_LEVEL" ]; then
-        /usr/local/bin/ranger "$@"
+        /opt/local/bin/ranger "$@"
     else
         exit
     fi

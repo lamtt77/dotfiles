@@ -1,5 +1,6 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export TERM=xterm-256color
 
 # for go lang
 export GOPATH=/opt/goworkspace
@@ -10,31 +11,26 @@ export PATH="$GOBIN:$PATH"
 export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
 export PACKER_CACHE_DIR=~/.packer.d/packer_cache
 
-export TERM=xterm-256color
+# Add .NET Core SDK tools
+export PATH="$PATH:/Users/alam/.dotnet/tools"
+
+export PATH="/Applications/VMware OVF Tool:$PATH"
+export PATH="/Applications/MacPorts/EmacsMac.app/Contents/MacOS:$PATH"
 
 # MacPorts Installer addition on 2020-06-02_at_22:04:23: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 # If you come from bash you might have to change your $PATH.
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
-# Add .NET Core SDK tools
-export PATH="$PATH:/Users/alam/.dotnet/tools"
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
-export PATH="$HOME/.local/bin:/usr/local/opt/ruby/bin:$PATH"
-export PATH="/Applications/VMware OVF Tool:$PATH"
-
-export PATH="/Applications/MacPorts/EmacsMac.app/Contents/MacOS:$PATH"
-export PATH="/usr/local/opt/openssl/bin:$PATH"
+eval "$(rbenv init -)"
 
 [[ -f /opt/local/etc/profile.d/autojump.sh ]] && . /opt/local/etc/profile.d/autojump.sh
-
-# [[ -f /opt/local/share/fzf/shell/key-bindings.zsh ]] && . /opt/local/share/fzf/shell/key-bindings.zsh
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
 
 # Lam changed to use gpg agent instead of macos ssh default agent
 # the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners
