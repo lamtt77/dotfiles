@@ -538,10 +538,6 @@ vnoremap X "_d
 vmap < <gv
 vmap > >gv
 
-"" Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
 " replaced for vim-unimpaired
 " Quickfix
 nnoremap ]q :cnext<cr>zz

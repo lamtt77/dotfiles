@@ -95,12 +95,7 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 ### LamT personalization start here
 [[ -e ~/.aliases ]] && source ~/.aliases
-[[ -e ~/.myprofile ]] && source ~/.myprofile
-
-export MONO_GAC_PREFIX="/usr/local"
-
-# minio autocomplete
-complete -C /usr/local/bin/mc mc
+[[ -e ~/.myrc ]] && source ~/.myrc
 
 # LamT: prevent nested ranger loading
 ranger() {

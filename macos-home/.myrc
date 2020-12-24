@@ -1,0 +1,14 @@
+# Only execute this file once per shell.
+if [ -n "${__MYRC_SOURCED:-}" ]; then return; fi
+__MYRC_SOURCED=1
+
+# LamT: TODO a bit uglier than MacPorts, is there a better way?
+[[ -f /nix/store/2l07xfmxzyp3ka3cz9kzi8vv42kl7khk-autojump-22.5.3/etc/profile.d/autojump.sh ]] && . /nix/store/2l07xfmxzyp3ka3cz9kzi8vv42kl7khk-autojump-22.5.3/etc/profile.d/autojump.sh
+
+# Lam changed to use gpg agent instead of macos ssh default agent
+# the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+# Lam: should I change to `gpg-agent --daemon`?
+gpgconf --launch gpg-agent
+
+# vim: ft=sh
