@@ -37,6 +37,7 @@
       pkgs.openssl
       pkgs.packer
       pkgs.perl
+      pkgs.pinentry_mac
       # pkgs.python3
       pkgs.python39
       pkgs.ranger
