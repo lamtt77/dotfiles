@@ -2,6 +2,8 @@
 if [ -n "${__MYRC_SOURCED:-}" ]; then return; fi
 __MYRC_SOURCED=1
 
+export EDITOR='vim'
+
 # LamT: TODO a bit uglier than MacPorts, is there a better way?
 [[ -f /nix/store/2l07xfmxzyp3ka3cz9kzi8vv42kl7khk-autojump-22.5.3/etc/profile.d/autojump.sh ]] && . /nix/store/2l07xfmxzyp3ka3cz9kzi8vv42kl7khk-autojump-22.5.3/etc/profile.d/autojump.sh
 

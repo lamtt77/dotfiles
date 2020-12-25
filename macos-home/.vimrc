@@ -35,10 +35,6 @@ endif
 " {{{1 VIM SETTINGS
 filetype plugin indent on
 
-" Absolute Path for python3 and ruby (mainly to satisfy nvim)
-let g:python3_host_prog = '/Users/alam/.pyenv/shims/python'
-let g:ruby_host_prog = '/usr/local/lib/ruby/gems/2.7.0/bin/neovim-ruby-host'
-
 set nolangremap
 set encoding=utf8
 set ttyfast

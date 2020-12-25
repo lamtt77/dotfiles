@@ -26,18 +26,14 @@ export PATH="~/.nix-profile/Applications/Emacs.app/Contents/MacOS:$PATH"
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+# LamT: does not need this if installing nix-darwin, this will automatically source from /etc/static/zshenv
 # Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
+# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+# fi
 # End Nix
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
-
-# export PATH="$HOME/.pyenv/bin:$PATH"
-# eval "$(pyenv init -)"
-# eval "$(pyenv virtualenv-init -)"
-# eval "$(rbenv init -)"
 
 # vim: ft=sh

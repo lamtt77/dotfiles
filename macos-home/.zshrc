@@ -100,7 +100,7 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 # LamT: prevent nested ranger loading
 ranger() {
     if [ -z "$RANGER_LEVEL" ]; then
-        ~/.nix-profile/bin/ranger "$@"
+        /run/current-system/sw/bin/ranger "$@"
     else
         exit
     fi
