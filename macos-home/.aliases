@@ -2,7 +2,7 @@ alias l='ls -a'
 alias ll='ls -lAh'
 alias la='ls -laF'
 
-# Lam alias for doom-emacs and spacemacs
+# LamT alias for doom-emacs and spacemacs
 #alias doom-emacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --with-profile doom-emacs &'
 #alias spacemacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --with-profile spacemacs &'
 alias doom-emacs='/run/current-system/Applications/Emacs.app/Contents/MacOS/emacs --with-profile doom-emacs &'

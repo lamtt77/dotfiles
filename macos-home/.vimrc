@@ -252,6 +252,8 @@ Plug 'editorconfig/editorconfig-vim'
 
 " Plug 'lifepillar/vim-cheat40'
 
+Plug 'Lnl7/vim-nix'
+
 " Initialize plugin system
 call plug#end()
 

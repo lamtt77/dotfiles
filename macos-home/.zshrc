@@ -98,10 +98,10 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 [[ -e ~/.myrc ]] && source ~/.myrc
 
 # LamT: prevent nested ranger loading, comment to test if this causes ranger freezing?
-# ranger() {
-#     if [ -z "$RANGER_LEVEL" ]; then
-#         /run/current-system/sw/bin/ranger "$@"
-#     else
-#         exit
-#     fi
-# }
+ranger() {
+    if [ -z "$RANGER_LEVEL" ]; then
+        /run/current-system/sw/bin/ranger "$@"
+    else
+        exit
+    fi
+}

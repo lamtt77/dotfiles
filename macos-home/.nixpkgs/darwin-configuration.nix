@@ -6,16 +6,18 @@
   environment.systemPackages =
     [ pkgs.macvim
       pkgs.ansible
+      pkgs.asciinema
       pkgs.aspell
       pkgs.aspellDicts.en
       pkgs.autojump
+      pkgs.awscli
       pkgs.bash
       pkgs.bat
       pkgs.bfg-repo-cleaner
       pkgs.curl
+      pkgs.docker
       pkgs.emacs-all-the-icons-fonts
       pkgs.emacsMacport
-      # pkgs.emacs27-nox
       pkgs.fd
       pkgs.fzf
       pkgs.gcc10
@@ -27,18 +29,21 @@
       pkgs.htop
       pkgs.jq
       pkgs.lua
+      pkgs.lynx
       pkgs.man-db
       pkgs.minio
       pkgs.ncdu
+      pkgs.neofetch
       pkgs.neovim
       pkgs.nodejs
+      pkgs.nmap
       pkgs.nox
       pkgs.openssh
       pkgs.openssl
       pkgs.packer
       pkgs.perl
       pkgs.pinentry_mac
-      # pkgs.python3
+      pkgs.powershell
       pkgs.python39
       pkgs.ranger
       pkgs.rclone
@@ -46,17 +51,24 @@
       pkgs.ripgrep
       pkgs.ruby
       pkgs.silver-searcher
+      pkgs.skhd
       pkgs.source-code-pro
+      pkgs.spacebar
       pkgs.sqlite
       pkgs.stow
       pkgs.terraform
       pkgs.tmux
       pkgs.tmuxinator
+      pkgs.tree
+      pkgs.vagrant
+      pkgs.wget
       pkgs.wireguard-go
       pkgs.wireguard-tools
       pkgs.xquartz
+      pkgs.yabai
       pkgs.yarn
       pkgs.youtube-dl
+      pkgs.unzip
       pkgs.zsh
     ];
 
