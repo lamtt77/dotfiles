@@ -4,3 +4,4 @@
 __init__.py
 __pycache__
 arch-home/.local/bin/nvr
+.authinfo.gpg

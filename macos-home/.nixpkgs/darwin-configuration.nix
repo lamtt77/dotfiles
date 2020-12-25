@@ -15,6 +15,7 @@
       pkgs.curl
       pkgs.emacs-all-the-icons-fonts
       pkgs.emacsMacport
+      # pkgs.emacs27-nox
       pkgs.fd
       pkgs.fzf
       pkgs.gcc10
@@ -36,7 +37,8 @@
       pkgs.openssl
       pkgs.packer
       pkgs.perl
-      pkgs.python3
+      # pkgs.python3
+      pkgs.python39
       pkgs.ranger
       pkgs.rclone
       pkgs.restic
@@ -44,6 +46,7 @@
       pkgs.ruby
       pkgs.silver-searcher
       pkgs.source-code-pro
+      pkgs.sqlite
       pkgs.stow
       pkgs.terraform
       pkgs.tmux
@@ -71,4 +74,7 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+
+  # LamT: for xquartz
+  nixpkgs.config.allowUnfree = true;
 }

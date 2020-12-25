@@ -1,0 +1,9 @@
+#+CAPTION: cap5
+[[file:./images/img5.png]]
+
+Test paste image from clipboard in newline is here:
+#+CAPTION: cap6
+[[file:./images/img6.png]]
+
+
+
