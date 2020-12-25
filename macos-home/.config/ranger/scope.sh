@@ -306,11 +306,11 @@ handle_mime() {
                 --out-format="${highlight_format}" \
                 --force -- "${FILE_PATH}" && exit 5
 
-            ## LamT: prevent preview freezing issue, at the cost of losing preview highlight see: https://github.com/ranger/ranger/issues/1787
+            ## LamT: prevent preview freezing issue, at the cost of losing pygmentize format or highlight see: https://github.com/ranger/ranger/issues/1787
             env COLORTERM=8bit bat --color=always --style="plain" \
                 -- "${FILE_PATH}" && exit 5
-            pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}"\
-                -- "${FILE_PATH}" && exit 5
+            # pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}"\
+            #     -- "${FILE_PATH}" && exit 5
 
             exit 2;;
 
