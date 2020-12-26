@@ -12,7 +12,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
+ '(default ((t (:family "Liberation" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
 
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
 ;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
@@ -108,8 +108,8 @@
   :config
   (evil-collection-init))
 
-;; (use-package magit)
-(use-package evil-magit)
+(use-package magit)
+;; (use-package evil-magit)
 
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
@@ -170,7 +170,7 @@
 ;;(use-package auctex)
 (use-package gnuplot)
 (use-package org-roam)
-(use-package ox-report)
+;; (use-package ox-report)
 
 (setq org-agenda-files "~/org-lam/lam-arch-notes.org")
 (setq org-directory "/home/lam/org-lam/")

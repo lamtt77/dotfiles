@@ -15,9 +15,6 @@ export PATH="$GOBIN:$PATH"
 export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
 export PACKER_CACHE_DIR=~/.packer.d/packer_cache
 
-# Add .NET Core SDK tools
-export PATH="$PATH:/Users/alam/.dotnet/tools"
-
 export PATH="/Applications/VMware OVF Tool:$PATH"
 # export PATH="/Applications/MacPorts/EmacsMac.app/Contents/MacOS:$PATH"
 export PATH="/run/current-system/Applications/Emacs.app/Contents/MacOS:$PATH"

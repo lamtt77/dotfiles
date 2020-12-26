@@ -3,73 +3,88 @@
 {
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [ pkgs.macvim
-      pkgs.ansible
-      pkgs.asciinema
-      pkgs.aspell
-      pkgs.aspellDicts.en
-      pkgs.autojump
-      pkgs.awscli
-      pkgs.bash
-      pkgs.bat
-      pkgs.bfg-repo-cleaner
-      pkgs.curl
-      pkgs.docker
-      pkgs.emacs-all-the-icons-fonts
-      pkgs.emacsMacport
-      pkgs.fd
-      pkgs.fzf
-      pkgs.gcc10
-      pkgs.gdb
-      pkgs.git
-      pkgs.gnupg
-      pkgs.gnutls
-      pkgs.go
-      pkgs.htop
-      pkgs.jq
-      pkgs.lua
-      pkgs.lynx
-      pkgs.man-db
-      pkgs.minio
-      pkgs.ncdu
-      pkgs.neofetch
-      pkgs.neovim
-      pkgs.nodejs
-      pkgs.nmap
-      pkgs.nox
-      pkgs.openssh
-      pkgs.openssl
-      pkgs.packer
-      pkgs.perl
-      pkgs.pinentry_mac
-      pkgs.powershell
-      pkgs.python39
-      pkgs.ranger
-      pkgs.rclone
-      pkgs.restic
-      pkgs.ripgrep
-      pkgs.ruby
-      pkgs.silver-searcher
-      pkgs.skhd
-      pkgs.source-code-pro
-      pkgs.spacebar
-      pkgs.sqlite
-      pkgs.stow
-      pkgs.terraform
-      pkgs.tmux
-      pkgs.tmuxinator
-      pkgs.tree
-      pkgs.vagrant
-      pkgs.wget
-      pkgs.wireguard-go
-      pkgs.wireguard-tools
-      pkgs.xquartz
-      pkgs.yabai
-      pkgs.yarn
-      pkgs.youtube-dl
-      pkgs.unzip
-      pkgs.zsh
+  environment.systemPackages = with pkgs; [
+      # source-code-pro
+      ansible
+      asciinema
+      aspell
+      aspellDicts.en
+      autojump
+      awscli
+      bash
+      bat
+      bfg-repo-cleaner
+      borgbackup
+      coreutils
+      curl
+      direnv
+      docker
+      dotnet-sdk_5
+      emacs-all-the-icons-fonts
+      emacsMacport
+      fasd
+      fd
+      fish
+      fzf
+      gcc10
+      gdb
+      git
+      gnupg
+      gnutls
+      go
+      google-cloud-sdk
+      htop
+      jq
+      kubectl
+      links
+      lua
+      lynx
+      macvim
+      man-db
+      minio
+      ncdu
+      neofetch
+      neovim
+      nmap
+      nodejs
+      nox
+      openssh
+      openssl
+      packer
+      perl
+      pinentry_mac
+      powershell
+      python39
+      ranger
+      rclone
+      restic
+      ripgrep
+      ruby
+      silver-searcher
+      speedtest-cli
+      sqlite
+      stow
+      terraform
+      tasksh
+      taskwarrior
+      tmux
+      tmuxinator
+      tldr
+      tree
+      unzip
+      vagrant
+      wget
+      wireguard-go
+      wireguard-tools
+      xquartz
+      yarn
+      youtube-dl
+      zsh
+
+      # tiling windows manager
+      # yabai
+      # skhd
+      # spacebar
     ];
 
   # Use a custom configuration.nix location.

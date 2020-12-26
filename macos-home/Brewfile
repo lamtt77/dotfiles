@@ -1,14 +1,18 @@
-tap "cmacrae/formulae"
 tap "homebrew/bundle"
+tap "homebrew/core"
+tap "homebrew/services"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
-tap "homebrew/core"
-tap "homebrew/services"
+
 tap "koekeishiya/formulae"
-tap "minio/stable"
+tap "cmacrae/formulae"
+
 brew "cmacrae/formulae/spacebar"
 brew "koekeishiya/formulae/skhd"
 brew "koekeishiya/formulae/yabai"
+
+cask "font-source-code-pro"
 cask "iterm2"
+cask "alfred"
 cask "qutebrowser"
