@@ -1,5 +1,5 @@
 {
-  description = "LamT's darwin configuration";
+  description = "TODO WIP LamT's flake: nix-darwin, home-manager configuration";
 
   inputs = {
     # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-20.09-darwin";
@@ -17,6 +17,7 @@
     {
     darwinConfigurations."lamt-macbookpro" = darwin.lib.darwinSystem {
       modules = [
+        # LamT: darwin config not working yet
         ./darwin-configuration.nix
         home-manager.darwinModules.home-manager
       ];

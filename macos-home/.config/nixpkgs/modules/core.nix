@@ -88,5 +88,4 @@ in
     vim.enable = true;
   };
 
-
 }

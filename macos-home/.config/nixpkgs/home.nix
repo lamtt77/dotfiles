@@ -62,7 +62,7 @@ in
     # only need these if not managed by nix-darwin
     username = "alam";
     homeDirectory = "/Users/alam";
-    stateVersion = "20.09";
+    # stateVersion = "20.09";
     packages = with pkgs; [
       # source-code-pro
       ansible
@@ -99,7 +99,7 @@ in
       links
       lua
       lynx
-      macvim
+      # macvim
       man-db
       minio
       ncdu

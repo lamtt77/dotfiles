@@ -436,7 +436,7 @@ imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 
 nnoremap <silent> <leader>ee :FZF -m<CR>
 "Recovery commands from history through FZF
-nmap <leader>y :History:<CR>
+nmap <leader>H :History:<CR>
 
 " vim-qf plugin
 " Grep for quickfix list
