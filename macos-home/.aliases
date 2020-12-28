@@ -5,8 +5,8 @@ alias la='ls -laF'
 # LamT alias for doom-emacs and spacemacs
 #alias doom-emacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --with-profile doom-emacs &'
 #alias spacemacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --with-profile spacemacs &'
-alias doom-emacs='~/.nix-profile/Applications/Emacs.app/Contents/MacOS/emacs --with-profile doom-emacs &'
-alias spacemacs='~/.nix-profile/Applications/Emacs.app/Contents/MacOS/emacs --with-profile spacemacs &'
+alias doom-emacs='/run/current-system/Applications/Emacs.app/Contents/MacOS/Emacs --with-profile doom-emacs &'
+alias spacemacs='/run/current-system/Applications/Emacs.app/Contents/MacOS/Emacs--with-profile spacemacs &'
 
 # From https://github.com/nickjj/dotfiles/blob/master/.aliases
 #alias dew="docker-compose exec web"
