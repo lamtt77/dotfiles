@@ -28,9 +28,9 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 
 # LamT: does not need this if installing nix-darwin, this will automatically source from /etc/static/zshenv
 # Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
+# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+# fi
 # End Nix
 
 eval "$(fasd --init auto)"

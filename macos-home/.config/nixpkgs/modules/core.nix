@@ -84,8 +84,8 @@ in
     #     };
     # }
 
+    # vim.enable = true;
     fzf.enable = true;
-    vim.enable = true;
   };
 
 }

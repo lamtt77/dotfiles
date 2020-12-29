@@ -23,7 +23,7 @@
 
   };
 
-  # LamT: home-manager package a bit too old
+  # LamT: home-manager packages a bit too old
   environment.systemPackages = with pkgs; [
     # source-code-pro
     ansible
@@ -101,6 +101,9 @@
     yarn
     youtube-dl
     zsh
+
+    # trying new
+    tmuxp
 
     # tiling windows manager
     # yabai
