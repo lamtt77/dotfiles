@@ -67,84 +67,84 @@ in
       # source-code-pro
       ansible
       asciinema
-      # aspell
-      # aspellDicts.en
-      # autojump
-      # awscli
-      # bash
-      # bat
-      # bfg-repo-cleaner
-      # borgbackup
-      # coreutils       # replace tools `du` so that `ranger` can call
-      # curl
-      # direnv
-      # docker
-      # dotnet-sdk_5
-      # emacs-all-the-icons-fonts
-      # emacsMacport
-      # fasd
-      # fd
-      # fish
-      # fzf
-      # gcc10
-      # gdb
-      # git
-      # gnupg
-      # gnutls
-      # go
-      # google-cloud-sdk
-      # htop
-      # jq
-      # kubectl
-      # links
-      # lua
-      # lynx
-      # macvim
-      # man-db
-      # minio
-      # ncdu
-      # neofetch
-      # neovim
-      # nmap
-      # nodejs
-      # nox
-      # openssh
-      # openssl
-      # packer
-      # perl
-      # pinentry_mac
-      # powershell
-      # python39
-      # ranger
-      # rclone
-      # restic
-      # ripgrep
-      # ruby
-      # silver-searcher
-      # speedtest-cli
-      # sqlite
-      # stow
-      # terraform
-      # tasksh
-      # taskwarrior
-      # tmux
-      # tmuxinator
-      # tldr
-      # tree
-      # unzip
-      # vagrant
-      # wget
-      # wireguard-go
-      # wireguard-tools
-      # xquartz
-      # yarn
-      # youtube-dl
-      # zsh
+      aspell
+      aspellDicts.en
+      autojump
+      awscli
+      bash
+      bat
+      bfg-repo-cleaner
+      borgbackup
+      coreutils       # replace tools `du` so that `ranger` can call
+      curl
+      direnv
+      docker
+      dotnet-sdk_5
+      emacs-all-the-icons-fonts
+      emacsMacport
+      fasd
+      fd
+      fish
+      fzf
+      gcc10
+      gdb
+      git
+      gnupg
+      gnutls
+      go
+      google-cloud-sdk
+      htop
+      jq
+      kubectl
+      links
+      lua
+      lynx
+      macvim
+      man-db
+      minio
+      ncdu
+      neofetch
+      neovim
+      nmap
+      nodejs
+      nox
+      openssh
+      openssl
+      packer
+      perl
+      pinentry_mac
+      powershell
+      python39
+      ranger
+      rclone
+      restic
+      ripgrep
+      ruby
+      silver-searcher
+      speedtest-cli
+      sqlite
+      stow
+      terraform
+      tasksh
+      taskwarrior
+      tmux
+      tmuxinator
+      tldr
+      tree
+      unzip
+      vagrant
+      wget
+      wireguard-go
+      wireguard-tools
+      xquartz
+      yarn
+      youtube-dl
+      zsh
 
-      # # tiling windows manager
-      # # yabai
-      # # skhd
-      # # spacebar
+      # tiling windows manager
+      # yabai
+      # skhd
+      # spacebar
     ] ++ scripts;
   };
 }

@@ -26,7 +26,8 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
-# LamT: does not need this if installing nix-darwin, this will automatically source from /etc/static/zshenv
+# LamT: does not need this if installing nix-darwin or flake
+# nix-darwin will automatically source from /etc/static/zshenv, nix flake will also automatically source
 # Nix
 # if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 #   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
