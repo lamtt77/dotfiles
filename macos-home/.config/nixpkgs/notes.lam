@@ -1,0 +1,5 @@
+To switch profile:
+nix-env --switch-profile ~/.config/nixpkgs/result/etc/profiles/per-user/alam
+
+How about this?
+nix-env --switch-profile /nix/var/nix/profiles/per-user/alam

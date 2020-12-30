@@ -27,11 +27,11 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # LamT: does not need this if installing nix-darwin or flake
-# nix-darwin will automatically source from /etc/static/zshenv, nix flake will also automatically source
+# nix-darwin will automatically source from /etc/static/zshenv, nix flake will NOT automatically source
 # Nix
-# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-# fi
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
 # End Nix
 
 eval "$(fasd --init auto)"
