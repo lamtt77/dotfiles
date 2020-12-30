@@ -60,8 +60,8 @@ in
 
   home = {
     # only need these if not managed by nix-darwin
-    username = "alam";
-    homeDirectory = "/Users/alam";
+    # username = "alam";
+    # homeDirectory = "/Users/alam";
     stateVersion = "20.09";
     packages = with pkgs; [
       # source-code-pro
@@ -75,7 +75,6 @@ in
       bat
       bfg-repo-cleaner
       borgbackup
-      coreutils       # replace tools `du` so that `ranger` can call
       curl
       direnv
       docker
@@ -124,7 +123,7 @@ in
       speedtest-cli
       sqlite
       stow
-      terraform
+      terraform_0_14
       tasksh
       taskwarrior
       tmux
@@ -140,6 +139,16 @@ in
       yarn
       youtube-dl
       zsh
+
+      # trying new
+      # cachix  # this requires to add an cachix.org item
+      cmake
+      coreutils # replace tools `du` so that `ranger` can call
+      exa
+      httpie
+      lorri     # Easy Nix shell
+      rsync
+      xsv       # CSV file parsing utility
 
       # tiling windows manager
       # yabai

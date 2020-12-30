@@ -224,6 +224,8 @@ Plug 'majutsushi/tagbar'
 
 Plug 'romainl/vim-qf'
 
+Plug 'michaeljsmith/vim-indent-object'
+
 " Multiple Plug commands can be written in a single line using | separators
 " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'honza/vim-snippets'

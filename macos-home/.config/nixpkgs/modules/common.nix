@@ -12,7 +12,10 @@ in with pkgs.stdenv; with lib; {
   #####################
 
   nixpkgs.config = import ../config.nix;
-  # nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+  nixpkgs.overlays = [
+    inputs.nur.overlay
+    # inputs.emacs-overlay.overlay
+  ];
 
   nix = {
     package = pkgs.nixFlakes;
@@ -27,8 +30,9 @@ in with pkgs.stdenv; with lib; {
       automatic = true;
       options = "--delete-older-than 30d";
     };
-    buildCores = 2;
-    maxJobs = 2;
+    # buildCores = 2;
+    # maxJobs = 2;
+    buildCores = 0;
     readOnlyStore = true;
     nixPath = [
       "nixpkgs=/etc/${config.environment.etc.nixpkgs.target}"
@@ -36,13 +40,13 @@ in with pkgs.stdenv; with lib; {
     ];
     binaryCaches = [
       https://cache.nixos.org
-      https://mjlbach.cachix.org
-      https://gccemacs-darwin.cachix.org
+      # https://mjlbach.cachix.org
+      # https://gccemacs-darwin.cachix.org
     ];
     binaryCachePublicKeys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "mjlbach.cachix.org-1:dR0V90mvaPbXuYria5mXvnDtFibKYqYc2gtl9MWSkqI="
-      "gccemacs-darwin.cachix.org-1:E0Q1uCBvxw58kfgoWtlletUjzINF+fEIkWknAKBnPhs="
+      # "mjlbach.cachix.org-1:dR0V90mvaPbXuYria5mXvnDtFibKYqYc2gtl9MWSkqI="
+      # "gccemacs-darwin.cachix.org-1:E0Q1uCBvxw58kfgoWtlletUjzINF+fEIkWknAKBnPhs="
     ];
   };
 
