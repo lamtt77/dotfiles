@@ -75,6 +75,7 @@ in
       bat
       bfg-repo-cleaner
       borgbackup
+      coreutils # replace tools `du` so that `ranger` can call
       curl
       direnv
       docker
@@ -143,7 +144,6 @@ in
       # trying new
       # cachix  # this requires to add an cachix.org item
       cmake
-      coreutils # replace tools `du` so that `ranger` can call
       exa
       httpie
       lorri     # Easy Nix shell

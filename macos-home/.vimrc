@@ -418,8 +418,8 @@ command! -bang -nargs=* GGrep
 
 
 " visual mode pressing * or # searches for the current selection
-vnoremap <silent> * :<C-u>call functions#VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call functions#VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+vnoremap <silent> * :<C-u>call lamutils#VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call lamutils#VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " Fuzzy search in `pwd` directory (current project)
 nnoremap <silent> <leader>,         :FZF<cr>
@@ -440,12 +440,22 @@ nnoremap <silent> <leader>ee :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>H :History:<CR>
 
-" vim-qf plugin
-" Grep for quickfix list
-" taken from https://github.com/sparkcanon/nvim/blob/master/autoload/functions.vim
-command! -nargs=+ -complete=file -bar Grep  cgetexpr functions#grep(<q-args>)
-" Grep for location list
-command! -nargs=+ -complete=file -bar LGrep lgetexpr functions#grep(<q-args>)
+" === supercharge default `:grep`, from https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3#file-grep-vim
+" this would require properly set grepprg; alternatively type `:gr` or `:lgr` to use the legacy ones
+function! Grep(...)
+  return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
+endfunction
+
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
+cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
+
+augroup quickfix
+  autocmd!
+  autocmd QuickFixCmdPost cgetexpr cwindow
+  autocmd QuickFixCmdPost lgetexpr lwindow
+augroup END
 
 " EasyAlign plugin
 " Start interactive EasyAlign in visual mode (e.g. vipga)

@@ -1,5 +1,18 @@
 To switch profile:
 nix-env --switch-profile ~/.config/nixpkgs/result/etc/profiles/per-user/alam
+nix-env --switch-profile /nix/var/nix/profiles/per-user/$USER/home-manager/home-path
 
-How about this?
-nix-env --switch-profile /nix/var/nix/profiles/per-user/alam
+My customer profile:
+nix-env --switch-profile /etc/profiles/per-user/alam
+
+Default profile:
+/nix/var/nix/profiles/default
+
+Switch to user default profile
+nix-env --switch-profile /nix/var/nix/profiles/per-user/$USER/profile
+
+Manually link to /etc/static ?
+/Users/alam/.config/nixpkgs/result/etc
+ln -sfn "$(readlink -f $systemConfig/etc)" /etc/static
+->
+ln -sfn "/Users/alam/.config/nixpkgs/result/etc" /etc/static

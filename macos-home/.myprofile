@@ -16,9 +16,6 @@ export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
 export PACKER_CACHE_DIR=~/.packer.d/packer_cache
 
 export PATH="/Applications/VMware OVF Tool:$PATH"
-# export PATH="/Applications/MacPorts/EmacsMac.app/Contents/MacOS:$PATH"
-export PATH="~/.nix-profile/Applications/Emacs.app/Contents/MacOS:$PATH"
-
 # MacPorts Installer addition on 2020-06-02_at_22:04:23: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
@@ -31,8 +28,19 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Nix
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+  # . '/nix/var/nix/profiles/per-user/alam/profile/etc/profile.d/nix-daemon.sh'
 fi
 # End Nix
+
+if [ ! -e ~/.nix-home-path ]; then
+  ln -sfn /nix/var/nix/profiles/per-user/alam/home-manager/home-path ~/.nix-home-path
+fi
+
+export NIX_HOME_BIN="$HOME/.nix-home-path/bin"
+export PATH="$NIX_HOME_BIN:$PATH"
+
+# export PATH="~/.nix-profile/Applications/Emacs.app/Contents/MacOS:$PATH"
+export PATH="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS:$PATH"
 
 eval "$(fasd --init auto)"
 
