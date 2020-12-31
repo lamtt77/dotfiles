@@ -4,10 +4,6 @@ export PATH=~/.local/bin:~/.gem/ruby/2.7.0/bin:$PATH
 export EDITOR='vim'
 export COLORTERM=truecolor      # LamT: for suckless st only
 
-alias l='ls -a'
-alias ll='ls -lAh'              # A: almost all except . and ..
-alias la='ls -laF'
-
 # LamT: use fasd in parallel with autojump
 eval "$(fasd --init auto)"
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh

@@ -1,3 +1,7 @@
+alias l='ls -a'
+alias ll='ls -lAh'              # A: almost all except . and ..
+alias la='ls -laF'
+
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
@@ -12,5 +16,8 @@ if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx ~/.xinitrc dwm
   #exec startx ~/.xinitrc i3
 fi
+
+# LamT: use this temporarily till reboot
+source /etc/profile.d/nix{,-daemon}.sh
 
 # vim: ft=sh
