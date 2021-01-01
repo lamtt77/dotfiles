@@ -89,6 +89,11 @@ in
       ripgrep
       silver-searcher
 
+      # emacs and required tools
+      emacs-all-the-icons-fonts
+      emacsMacport
+      # libtool       # GNU Libtool, use brew for now, libvterm requires this on MacOS, see https://github.com/neovim/homebrew-neovim/issues/164
+
       # alphabet sorted
       ansible
       asciinema
@@ -100,8 +105,6 @@ in
       direnv
       docker
       dotnet-sdk_5
-      emacs-all-the-icons-fonts
-      emacsMacport
       gcc10
       gdb
       go

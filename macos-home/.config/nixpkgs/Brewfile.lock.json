@@ -5,13 +5,13 @@
         "revision": "573e7d8965fc1557d0774497cf5c0180e6ff3f98"
       },
       "homebrew/core": {
-        "revision": "0728a9c3de7d5011e594d98e03efe593feea0247"
+        "revision": "eb988db0841d9f814dcbf6caf049bb8e1415da3d"
       },
       "homebrew/services": {
         "revision": "3b3a81e5617eef07ed38bf9e12d5ea9fea915f37"
       },
       "homebrew/cask": {
-        "revision": "ce6351803589f4c57c35f644aae5a384fec66b11"
+        "revision": "150d5e7fc418ecee747c4d3d7e450473a0574f38"
       },
       "homebrew/cask-fonts": {
         "revision": "9aa9d8c72b9a9d6d8f7969a5eeedc03cba4c230f"
@@ -29,7 +29,36 @@
     "brew": {
       "cmacrae/formulae/spacebar": null,
       "koekeishiya/formulae/skhd": null,
-      "koekeishiya/formulae/yabai": null
+      "koekeishiya/formulae/yabai": null,
+      "libtool": {
+        "version": "2.4.6_2",
+        "bottle": {
+          "cellar": ":any",
+          "prefix": "/usr/local",
+          "files": {
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/libtool-2.4.6_2.big_sur.bottle.tar.gz",
+              "sha256": "b5dba5a59ae66f42b012998e08edbeaed9e2456c0d1670307b8f46be5ef3b9fa"
+            },
+            "arm64_big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/libtool-2.4.6_2.arm64_big_sur.bottle.tar.gz",
+              "sha256": "c4f95f52617ef0d9a6ec19b5c581241be4593497cd120e42621f55b0ae9548b6"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/libtool-2.4.6_2.catalina.bottle.tar.gz",
+              "sha256": "af317b35d0a394b7ef55fba4950735b0392d9f31bececebf9c412261c23a01fc"
+            },
+            "mojave": {
+              "url": "https://homebrew.bintray.com/bottles/libtool-2.4.6_2.mojave.bottle.tar.gz",
+              "sha256": "77ca68934e7ed9b9b0b8ce17618d7f08fc5d5a95d7b845622bf57345ffb1c0d6"
+            },
+            "high_sierra": {
+              "url": "https://homebrew.bintray.com/bottles/libtool-2.4.6_2.high_sierra.bottle.tar.gz",
+              "sha256": "60c7d86f9364e166846f8d3fb2ba969e6ca157e7ecbbb42a1de259116618c2ba"
+            }
+          }
+        }
+      }
     },
     "cask": {
       "font-source-code-pro": {
@@ -63,7 +92,7 @@
       "high_sierra": {
         "HOMEBREW_VERSION": "2.7.1",
         "HOMEBREW_PREFIX": "/usr/local",
-        "Homebrew/homebrew-core": "0728a9c3de7d5011e594d98e03efe593feea0247",
+        "Homebrew/homebrew-core": "eb988db0841d9f814dcbf6caf049bb8e1415da3d",
         "CLT": "10.1.0.0.1.1539992718",
         "Xcode": "10.1",
         "macOS": "10.13.6"

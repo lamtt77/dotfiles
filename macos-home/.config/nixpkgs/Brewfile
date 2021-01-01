@@ -12,6 +12,9 @@ brew "cmacrae/formulae/spacebar"
 brew "koekeishiya/formulae/skhd"
 brew "koekeishiya/formulae/yabai"
 
+# This requires for libvterm -> vterm on emacs
+brew "libtool"
+
 cask "font-source-code-pro"
 cask "iterm2"
 cask "alfred"

@@ -286,7 +286,7 @@ Plug 'SirVer/ultisnips'
 Plug 'editorconfig/editorconfig-vim'
   let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-if has('mac')
+if has('mac') && !has('nvim-0.5')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   source ~/.vim/coc-lam.vim
 elseif has('nvim-0.5')
@@ -414,7 +414,7 @@ let g:ctrlsf_extra_backend_args = {
   \ 'ag': '--hidden'
   \ }
 
-" === vim-lsp: language server, TODO place a more valid place in ~/.vim
+" === vim-lsp: language server, TODO find a more valid place in ~/.vim
 source ~/.vim/vim-lsp-lam.vim
 " === END vim-lsp
 
