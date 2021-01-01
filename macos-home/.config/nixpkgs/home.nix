@@ -118,6 +118,7 @@ in
       ncdu
       neofetch
       neovim
+      neovim-remote
       nmap
       nodejs
       nox
