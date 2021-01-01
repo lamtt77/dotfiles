@@ -108,8 +108,8 @@
   :config
   (evil-collection-init))
 
-;; (use-package magit)
-(use-package evil-magit)
+(use-package magit)
+;; (use-package evil-magit)    ; got issue in MacOS, does it move completely to evil-collection?
 
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
@@ -168,9 +168,9 @@
   (global-hungry-delete-mode))
 
 ;;(use-package auctex)
+;;(use-package ox-report)    ; got issue in MacOS
 (use-package gnuplot)
 (use-package org-roam)
-(use-package ox-report)
 
 (setq org-agenda-files "~/org-lam/lam-arch-notes.org")
 (setq org-directory "/home/lam/org-lam/")
