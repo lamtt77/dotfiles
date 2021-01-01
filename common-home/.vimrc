@@ -319,7 +319,7 @@ silent! colorscheme gruvbox-material
 " My default settings for using netrw with :Lex
 let g:netrw_banner          =0         " hide / unhide with Shift-I
 let g:netrw_liststyle       =1         " 1=long-listing 3=tree-view
-let g:netrw_winsize         =40
+" let g:netrw_winsize         =40       " default 50% seems to best alignment in most cases
 let g:netrw_use_errorwindow =0         " fix an annoying netrw error displayed on top vim-8.2-1988
 let g:netrw_sort_sequence   ='[\/]$,*' " sort is affecting only: directories on the top, files below
 
