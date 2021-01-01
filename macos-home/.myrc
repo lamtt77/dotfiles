@@ -4,7 +4,8 @@ __MYRC_SOURCED=1
 
 export EDITOR='vim'
 
-[[ -f ~/.nix-profile/etc/profile.d/autojump.sh ]] && . ~/.nix-profile/etc/profile.d/autojump.sh
+[[ -f ~/.nix-home-path/etc/profile.d/autojump.sh ]] && . ~/.nix-home-path/etc/profile.d/autojump.sh
+eval "$(fasd --init auto)"
 
 # Lam changed to use gpg agent instead of macos ssh default agent
 # the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners

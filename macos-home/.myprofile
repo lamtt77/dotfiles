@@ -46,6 +46,4 @@ export PATH="$NIX_HOME_BIN:$PATH"
 # export PATH="~/.nix-profile/Applications/Emacs.app/Contents/MacOS:$PATH"
 export PATH="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS:$PATH"
 
-eval "$(fasd --init auto)"
-
 # vim: ft=sh
