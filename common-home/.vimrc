@@ -87,7 +87,7 @@ set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
 set suffixes     +=.a,.1,.class
 set suffixesadd  +=.lua
-set wildignore   +=*.o,*.so,*.zip,*.png
+set wildignore   +=*.o,*.so,*.zip,*.png,*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 set wildoptions   =tagfile
 
 set laststatus    =2
@@ -131,6 +131,8 @@ set softtabstop=2 shiftwidth=2 expandtab
 set ignorecase smartcase
 set infercase           " smarter keyword completion
 set nowrap
+set incsearch
+" set textwidth=79
 
 " LamT: taken from Arch
 " Move temporary files to a secure location to protect against CVE-2017-1000382
@@ -167,8 +169,6 @@ set noswapfile
 set undofile
 set undolevels=3000
 set undoreload=10000
-
-set incsearch
 
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if has('unnamedplus')
@@ -218,6 +218,9 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 " Plug 'tpope/vim-unimpaired'       " startup time a bit slow nowadays (>20ms), replaced by manual mappings
+" Plug 'tpope/vim-abolish'          " easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
+" Plug 'tpope/vim-sleuth'           " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation
+" Plug 'tpope/vim-projectionist'
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -240,9 +243,18 @@ Plug 'mhinz/vim-signify'
   " let g:signify_sign_change       = '│'
   " let g:signify_sign_changedelete = '│'
 Plug 'mhinz/vim-grepper',           { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
-Plug 'mhinz/vim-startify'
 " TODO vim project for one specific vimrc / project + startify for startup cow
 " Plug 'amiorin/vim-project' | Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
+  " " LamT: not working yet
+  " function! GetUniqueSessionName()
+  "   let path = fnamemodify(getcwd(), ':~:t')
+  "   let path = empty(path) ? 'no-project' : path
+  "   let branch = gitbranch#name()
+  "   let branch = empty(branch) ? '' : '-' . branch
+  "   return substitute(path . branch, '/', '-', 'g')
+  " endfunction
+  " autocmd VimLeavePre * silent execute 'SSave! ' . GetUniqueSessionName()
 
 Plug 'dyng/ctrlsf.vim'
 
@@ -250,8 +262,6 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'Yggdroot/LeaderF',            { 'do': ':LeaderfInstallCExtension' }
 
 Plug 'romainl/vim-qf'               | let g:qf_mapping_ack_style = 1
-
-" Plug 'mg979/vim-visual-multi', {'branch': 'master'}   " save 5ms startup if don't use
 
 Plug 'michaeljsmith/vim-indent-object'
 " Plug 'wellle/targets.vim'         " So many text objects, not used yet
@@ -262,16 +272,28 @@ Plug 'mattn/emmet-vim',             { 'for': 'html'}
 Plug 'lifepillar/pgsql.vim',        { 'for': 'sql'}
 Plug 'Lnl7/vim-nix'
 
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}   " save 5ms startup if don't use
+" Plug 'nelstrom/vim-visual-star-search'  " allows * and # searches to occur on the current visual selection
+" Plug 'junegunn/limelight.vim'   " Dim paragraphs above and below the active paragraph
 " Plug 'vimwiki/vimwiki'
 " Plug 'lervag/vimtex'
 "   if has('nvim')
 "     let g:vimtex_compiler_progname = 'nvr'
 "   endif
+
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'dense-analysis/ale'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'christoomey/vim-tmux-navigator'
+" Plug 'benmills/vimux'
+" Plug 'benmills/vimux-golang'
 " Plug 'ekalinin/Dockerfile.vim'
 " Plug 'hashivim/vim-terraform'
 " Plug 'godlygeek/tabular'
 " Plug 'plasticboy/vim-markdown'
 "   let g:vim_markdown_folding_disabled = 1   " performance not great with big file
+" Plug 'vim-vdebug/vdebug'
+" Plug 'lifepillar/vim-cheat40'
 
 Plug 'majutsushi/tagbar',           { 'on': 'TagbarToggle'}   | let g:tagbar_sort = 0
 Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_WindowLayout = 2
@@ -286,6 +308,7 @@ Plug 'SirVer/ultisnips'
 Plug 'editorconfig/editorconfig-vim'
   let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
+" fact-check: surprisingly coc-nvim performs fastest in my 10-year old MacbookPro, thus keeping despite annoying nodejs services
 if has('mac') && !has('nvim-0.5')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   source ~/.vim/coc-lam.vim
