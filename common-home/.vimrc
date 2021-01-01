@@ -308,6 +308,7 @@ Plug 'SirVer/ultisnips'
 Plug 'editorconfig/editorconfig-vim'
   let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
+" fact-check: surprisingly coc-nvim performs fastest in my 10-year old MacbookPro, thus keeping despite annoying nodejs services
 if has('mac') && !has('nvim-0.5')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   source ~/.vim/coc-lam.vim
