@@ -36,8 +36,8 @@ augroup vimrc
   autocmd!
 augroup END
 
-" Absolute path for python3 and ruby (mainly to satisfy nvim)
-" let g:python3_host_prog = '/usr/bin/python3'
+" global map leader should come first (before plugins)
+let mapleader="\<space>"
 
 let g:loaded_2html_plugin     = 1
 let g:loaded_spellfile_plugin = 1   " spellvim built-in plugin
@@ -132,7 +132,7 @@ set ignorecase smartcase
 set infercase           " smarter keyword completion
 set nowrap
 set incsearch
-" set textwidth=79
+set textwidth=78
 
 " LamT: taken from Arch
 " Move temporary files to a secure location to protect against CVE-2017-1000382
@@ -319,6 +319,7 @@ else
   Plug 'prabirshrestha/vim-lsp'
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  source ~/.vim/vim-lsp-lam.vim
 endif
 
 " Dictionnary, thesaurus... https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
@@ -438,7 +439,7 @@ let g:ctrlsf_extra_backend_args = {
   \ }
 
 " === vim-lsp: language server, TODO find a more valid place in ~/.vim
-source ~/.vim/vim-lsp-lam.vim
+" refer to mappings in ~/.vim/vim-lsp-lam.vim
 " === END vim-lsp
 
 " When editing a file, always jump to the last known cursor position.
@@ -504,9 +505,7 @@ augroup END
 " === end integration }}}
 
 " === All my custom and `steal` mappings start here {{{1
-" global map leader should come first, dot NOT comment at the end of map
-" use `noremap` for almost everything, but `map` for `Plug` command
-let mapleader="\<space>"
+" use `noremap` for almost everything, but `map` for `Plug` command, dot NOT comment at the end of map
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
