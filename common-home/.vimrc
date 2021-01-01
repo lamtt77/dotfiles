@@ -63,7 +63,7 @@ if !has('nvim') && !has('gui_running')
   " NOTE: these do not work: <m-space>,<m->>,<m-[>,<m-]>,<m-{up,down,left,right}>
   " NOTE: <m-@>,<m-O> only work in xterm and gvim - not st, urxvt, etc
   " NOTE: map <m-\|> or <m-bar>
-  " LamT NOTE: reduce some keys for macvim 8.2-Patches:1-1719
+  " LamT NOTE: reduce some keys to avoid issue for macvim 8.2-Patches:1-1719 on iTerm2
   " for ord in range(33,61)+range(63,90)+range(92,126)
   for ord in range(33,61)+range(63,90)+range(94,126)
     let char = ord is 34 ? '\"' : ord is 124 ? '\|' : nr2char(ord)
@@ -221,6 +221,9 @@ Plug 'tpope/vim-repeat'
 " Plug 'tpope/vim-abolish'          " easily search, substitute, abbreviate multiple version of words, coercion to camel case / snake case / dote case / title case...
 " Plug 'tpope/vim-sleuth'           " automatically adjusts shiftwidth and expandtab intelligently based on the existing indentation
 " Plug 'tpope/vim-projectionist'
+
+" Plug 'moll/vim-bbye'                " optional dependency for vim-symlink, delete buffers (close files) without closing your windows or messing up your layout
+Plug 'aymericbeaumet/vim-symlink'   " fix an annoying vim-fugitive symlink issue
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
