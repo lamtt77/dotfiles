@@ -64,33 +64,46 @@ in
     # homeDirectory = "/Users/alam";
     stateVersion = "20.09";
     packages = with pkgs; [
-      # source-code-pro
+      # essential utils
+      coreutils # replace tools `du` so that `ranger` can call
+      curl
+      findutils
+      git
+      gnupg
+      gnutls
+      tree
+      stow
+
+      # shells
+      bash
+      fish
+      zsh
+
+      # productivity boost
+      autojump
+      bat
+      fasd
+      fd
+      fzf
+      ranger
+      ripgrep
+      silver-searcher
+
+      # alphabet sorted
       ansible
       asciinema
       aspell
       aspellDicts.en
-      autojump
       awscli
-      bash
-      bat
       bfg-repo-cleaner
       borgbackup
-      coreutils # replace tools `du` so that `ranger` can call
-      curl
       direnv
       docker
       dotnet-sdk_5
       emacs-all-the-icons-fonts
       emacsMacport
-      fasd
-      fd
-      fish
-      fzf
       gcc10
       gdb
-      git
-      gnupg
-      gnutls
       go
       google-cloud-sdk
       htop
@@ -111,26 +124,22 @@ in
       openssh
       openssl
       packer
+      pandoc
       perl
       pinentry_mac
       powershell
       python39
-      ranger
       rclone
       restic
-      ripgrep
       ruby
-      silver-searcher
       speedtest-cli
       sqlite
-      stow
-      terraform_0_14
       tasksh
       taskwarrior
+      terraform_0_14
+      tldr
       tmux
       tmuxinator
-      tldr
-      tree
       unzip
       vagrant
       wget
@@ -139,7 +148,6 @@ in
       xquartz
       yarn
       youtube-dl
-      zsh
 
       # trying new
       # cachix  # this requires to add an cachix.org item
@@ -149,6 +157,8 @@ in
       lorri     # Easy Nix shell
       rsync
       xsv       # CSV file parsing utility
+
+      # source-code-pro
 
       # tiling windows manager
       # yabai

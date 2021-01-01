@@ -23,16 +23,20 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
+# fix missing ca cert when reboot, from https://luca.cambiaghi.me/nix-package-manager
+export NIX_SSL_CERT_FILE="/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
+export NIX_PATH=~/.nix-defexpr/channels:$NIX_PATH
+
 # LamT: does not need this if installing nix-darwin or flake
 # nix-darwin will automatically source from /etc/static/zshenv, nix flake will NOT automatically source
 # Nix
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-  # . '/nix/var/nix/profiles/per-user/alam/profile/etc/profile.d/nix-daemon.sh'
+  # . '/nix/var/nix/profiles/per-user/$USER/profile/etc/profile.d/nix-daemon.sh'
 fi
 # End Nix
 
-if [ ! -e ~/.nix-home-path ]; then
+if [ ! -e '~/.nix-home-path' ]; then
   ln -sfn /nix/var/nix/profiles/per-user/alam/home-manager/home-path ~/.nix-home-path
 fi
 

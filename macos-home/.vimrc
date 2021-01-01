@@ -198,6 +198,16 @@ Plug 'mhinz/vim-signify'
   let g:signify_vcs_list          = ['git']
   let g:signify_skip_filetype     = { 'journal': 1 }
 Plug 'mhinz/vim-grepper'
+Plug 'mhinz/vim-startify'
+  " " LamT: not working yet
+  " function! GetUniqueSessionName()
+  "   let path = fnamemodify(getcwd(), ':~:t')
+  "   let path = empty(path) ? 'no-project' : path
+  "   let branch = gitbranch#name()
+  "   let branch = empty(branch) ? '' : '-' . branch
+  "   return substitute(path . branch, '/', '-', 'g')
+  " endfunction
+  " autocmd VimLeavePre * silent execute 'SSave! ' . GetUniqueSessionName()
 
 Plug 'dyng/ctrlsf.vim'
 
@@ -327,7 +337,7 @@ let g:limelight_conceal_ctermfg=244
 let g:netrw_banner          =0 " hide / unhide with Shift-I
 " let g:netrw_liststyle       =3 " tree-style, still has permission denied bug if follow link
 let g:netrw_liststyle       =1 " long-listing
-let g:netrw_winsize         =40
+" let g:netrw_winsize         =40
 let g:netrw_use_errorwindow =0
 
 " === More USEFUL Plugins here

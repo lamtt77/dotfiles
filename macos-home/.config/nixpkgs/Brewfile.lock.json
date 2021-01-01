@@ -1,0 +1,73 @@
+{
+  "entries": {
+    "tap": {
+      "homebrew/bundle": {
+        "revision": "573e7d8965fc1557d0774497cf5c0180e6ff3f98"
+      },
+      "homebrew/core": {
+        "revision": "0728a9c3de7d5011e594d98e03efe593feea0247"
+      },
+      "homebrew/services": {
+        "revision": "3b3a81e5617eef07ed38bf9e12d5ea9fea915f37"
+      },
+      "homebrew/cask": {
+        "revision": "ce6351803589f4c57c35f644aae5a384fec66b11"
+      },
+      "homebrew/cask-fonts": {
+        "revision": "9aa9d8c72b9a9d6d8f7969a5eeedc03cba4c230f"
+      },
+      "homebrew/cask-versions": {
+        "revision": "1c47483ce0335b3f9427cd33c4a1025beb6cc75c"
+      },
+      "koekeishiya/formulae": {
+        "revision": "4688b1a683a682718eb69a80afdbaa3124d1384c"
+      },
+      "cmacrae/formulae": {
+        "revision": "2817af56bfb50bbc9c699b4fccb50c4e1c056f9b"
+      }
+    },
+    "brew": {
+      "cmacrae/formulae/spacebar": null,
+      "koekeishiya/formulae/skhd": null,
+      "koekeishiya/formulae/yabai": null
+    },
+    "cask": {
+      "font-source-code-pro": {
+        "version": "2.032R-ro-1.052R-it-1.012R-VAR",
+        "options": {
+          "full_name": "font-source-code-pro"
+        }
+      },
+      "iterm2": {
+        "version": "3.3.12",
+        "options": {
+          "full_name": "iterm2"
+        }
+      },
+      "alfred": {
+        "version": "4.3_1205",
+        "options": {
+          "full_name": "alfred"
+        }
+      },
+      "qutebrowser": {
+        "version": "1.14.1",
+        "options": {
+          "full_name": "qutebrowser"
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "high_sierra": {
+        "HOMEBREW_VERSION": "2.7.1",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "0728a9c3de7d5011e594d98e03efe593feea0247",
+        "CLT": "10.1.0.0.1.1539992718",
+        "Xcode": "10.1",
+        "macOS": "10.13.6"
+      }
+    }
+  }
+}

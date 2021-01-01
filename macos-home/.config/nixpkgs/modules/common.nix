@@ -48,6 +48,10 @@ in with pkgs.stdenv; with lib; {
       # "mjlbach.cachix.org-1:dR0V90mvaPbXuYria5mXvnDtFibKYqYc2gtl9MWSkqI="
       # "gccemacs-darwin.cachix.org-1:E0Q1uCBvxw58kfgoWtlletUjzINF+fEIkWknAKBnPhs="
     ];
+    # LamT: TODO
+    # registry = {
+    #   nixpkgs.flake = nixpkgs;
+    # };
   };
 
   ################

@@ -75,7 +75,7 @@ fn + alt - space : yabai -m window --toggle float
 fn + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # Rotate windows clockwise and anticlockwise
-fn + alt - r         : yabai -m space --rotate 90
+fn + alt - r   : yabai -m space --rotate 90
 fn + shift - r : yabai -m space --rotate 270
 
 # Rotate on X and Y Axis
@@ -99,4 +99,4 @@ fn - z         : yabai -m window --toggle zoom-fullscreen
 fn + alt - z   : yabai -m window --toggle native-fullscreen
 # Deck Mode!
 fn + shift - z : yabai -m window --toggle zoom-parent
-fn + shift - s         : yabai -m window --toggle split
+fn + shift - s : yabai -m window --toggle split
