@@ -747,7 +747,6 @@ nnoremap <leader>st :CtrlSFToggle<cr>
 nnoremap U :UndotreeToggle<CR>
 
 " === ultisnips mappings, type less for more
-let g:UltiSnipsExpandTrigger="<C-x><C-s>"
 nnoremap <leader>us :Snippets<cr>
 
 " === DEBUG with TermDebug
