@@ -316,6 +316,10 @@ Plug 'editorconfig/editorconfig-vim'
 if has('mac') && !has('nvim-0.5')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   source ~/.vim/coc-lam.vim
+  " hack to avoid conflicting issue with vim-endwise, see https://github.com/tpope/vim-endwise/issues/22
+  let g:endwise_no_mappings = v:true
+  inoremap <expr> <Plug>CustomCocCR pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  imap <CR> <Plug>CustomCocCR<Plug>DiscretionaryEnd
 elseif has('nvim-0.5')
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/completion-nvim'
