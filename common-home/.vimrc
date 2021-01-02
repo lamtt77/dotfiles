@@ -304,10 +304,9 @@ Plug 'mbbill/undotree',             { 'on': 'UndotreeToggle'} | let g:undotree_W
 
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
-  " below are the defaults ultisnips mappings
-  "let g:UltiSnipsExpandTrigger="<tab>"
-  "let g:UltiSnipsJumpForwardTrigger="<c-j>"
-  "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<Tab>"
+  let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
 Plug 'editorconfig/editorconfig-vim'
   let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
