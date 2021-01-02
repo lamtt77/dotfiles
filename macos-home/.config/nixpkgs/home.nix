@@ -89,10 +89,28 @@ in
       ripgrep
       silver-searcher
 
+      # vim and its complementaries
+      macvim
+      neovim
+      neovim-remote
+      cscope
+      universal-ctags  # require by vim tagbar
+
       # emacs and required tools
       emacs-all-the-icons-fonts
       emacsMacport
-      # libtool       # GNU Libtool, use brew for now, libvterm requires this on MacOS, see https://github.com/neovim/homebrew-neovim/issues/164
+      # libtool  # GNU Libtool, use brew for now, libvterm requires this on MacOS, see https://github.com/neovim/homebrew-neovim/issues/164
+
+      # coder stuffs
+      bfg-repo-cleaner
+      direnv
+      docker
+      dotnet-sdk_5
+      gcc10
+      gdb
+      go
+      jq
+      # valgrind  # auto detect memory management and threading bugs
 
       # alphabet sorted
       ansible
@@ -100,28 +118,17 @@ in
       aspell
       aspellDicts.en
       awscli
-      bfg-repo-cleaner
       borgbackup
-      direnv
-      docker
-      dotnet-sdk_5
-      gcc10
-      gdb
-      go
       google-cloud-sdk
       htop
-      jq
       kubectl
       links
       lua
       lynx
-      macvim
       man-db
       minio
       ncdu
       neofetch
-      neovim
-      neovim-remote
       nmap
       nodejs
       nox

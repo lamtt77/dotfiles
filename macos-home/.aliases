@@ -2,6 +2,9 @@ alias l='ls -a'
 alias ll='ls -lAh'
 alias la='ls -laF'
 
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias yt2mp3='youtube-dl -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
+
 # LamT alias for doom-emacs and spacemacs
 alias doom-emacs='~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs --with-profile doom-emacs &'
 alias spacemacs='~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs --with-profile spacemacs &'

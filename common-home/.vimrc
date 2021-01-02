@@ -172,6 +172,9 @@ set undofile
 set undolevels=3000
 set undoreload=10000
 
+set sessionoptions-=options
+set sessionoptions+=localoptions
+
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if has('unnamedplus')
   " indepedently use of `+` for clipboard and `*` for autoslect
@@ -250,6 +253,12 @@ Plug 'mhinz/vim-grepper',           { 'on': ['Grepper', '<plug>(GrepperOperator)
 " TODO vim project for one specific vimrc / project + startify for startup cow
 " Plug 'amiorin/vim-project' | Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-startify'
+  let g:startify_change_to_dir       = 0
+  let g:startify_custom_header       = 'startify#pad(startify#fortune#boxed())'
+  let g:startify_enable_special      = 0
+  let g:startify_fortune_use_unicode = 1
+  let g:startify_update_oldfiles     = 1
+  let g:startify_use_env             = 1
   " " LamT: not working yet
   " function! GetUniqueSessionName()
   "   let path = fnamemodify(getcwd(), ':~:t')
@@ -269,6 +278,7 @@ Plug 'romainl/vim-qf'               | let g:qf_mapping_ack_style = 1
 
 Plug 'michaeljsmith/vim-indent-object'
 " Plug 'wellle/targets.vim'         " So many text objects, not used yet
+" for more text objects visit https://github.com/kana/vim-textobj-user/wiki
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'AndrewRadev/tagalong.vim',    { 'for': 'html'}
@@ -747,6 +757,10 @@ nnoremap U :UndotreeToggle<CR>
 
 " === ultisnips mappings, type less for more
 nnoremap <leader>us :Snippets<cr>
+
+" === vim-signify mappings
+nnoremap <silent><leader>hd :SignifyHunkDiff<cr>
+nnoremap <silent><leader>hu :SignifyHunkUndo<cr>
 
 " === DEBUG with TermDebug
 " packadd termdebug

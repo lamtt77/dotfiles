@@ -166,19 +166,15 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
-" Show all diagnostics.
 nnoremap <silent><nowait> <leader>ca  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
 nnoremap <silent><nowait> <leader>ce  :<C-u>CocList extensions<cr>
-" Show commands.
 nnoremap <silent><nowait> <leader>cc  :<C-u>CocList commands<cr>
+
 " Find symbol of current document.
 nnoremap <silent><nowait> <leader>co  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent><nowait> <leader>cs  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
+
 nnoremap <silent><nowait> <leader>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
 nnoremap <silent><nowait> <leader>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
 nnoremap <silent><nowait> <leader>cr  :<C-u>CocListResume<CR>
