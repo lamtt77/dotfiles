@@ -97,6 +97,11 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 [[ -e ~/.aliases ]] && source ~/.aliases
 [[ -e ~/.myrc ]] && source ~/.myrc
 
+# zsh4humans seems not set this yet
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
 # LamT: prevent nested ranger loading, comment to test if this causes ranger freezing?
 # ranger() {
 #     if [ -z "$RANGER_LEVEL" ]; then

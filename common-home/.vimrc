@@ -499,6 +499,9 @@ augroup lexical
   autocmd FileType textile call lexical#init()
   autocmd FileType text call lexical#init({ 'spell': 0 })
 augroup END
+
+" fugitive
+autocmd BufReadPost fugitive:// setlocal bufhidden=delete
 " }}}1
 
 " === LamT: integrate with ibus-bamboo {{{1
@@ -599,6 +602,9 @@ imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 "imap <c-x><c-k> <plug>(fzf-complete-word)
 "imap <c-x><c-f> <plug>(fzf-complete-path)
 "inoremap <expr> <c-x><c-d> fzf#vim#complete#path('blsd')
+
+" === vim-startify mappings
+nnoremap <silent> <leader>S         :Startify<cr>
 
 " Git Grep
 nnoremap <silent> <leader>gg        :GGrep<cr>
