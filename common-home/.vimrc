@@ -45,9 +45,11 @@ let g:loaded_spellfile_plugin = 1   " spellvim built-in plugin
 filetype plugin indent on
 set completefunc  =syntaxcomplete#Complete " Ctrl-X Ctrl-U: user complete
 set complete     +=kspell,d                " include #define or macro, and spelling suggestions if on
+" set complete-=i                            " disable scanning included files
+" set complete-=t                            " disable searching tags
 set completeopt   =longest,menuone,noselect
 
-set dictionary   +=/usr/share/dict/words   " sudo pacman -S words
+set dictionary   +=/usr/share/dict/words    " sudo pacman -S words
 
 set pastetoggle   =<F2>
 set history       =1000 " keep 1000 lines of command line history
@@ -195,8 +197,7 @@ endif
 " }}}
 
 " === PLUGINs initialization {{{1
-" Load up the match it built-in plugin which provides smart % XML/HTML matching.
-runtime macros/matchit.vim
+packadd! matchit    " built-in plugin which provides smart % XML/HTML matching.
 
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
@@ -459,6 +460,10 @@ autocmd vimrc FileType cpp,cxx,h,hpp,c setlocal ts=8 sw=4 noet
 autocmd vimrc FileType go,py setlocal ts=8 sw=4 expandtab
 autocmd vimrc Filetype vim,js,ts,html setlocal sts=2 sw=2 expandtab
 
+" quickly jump to header or source filetype, TODO add more filetype when needed
+autocmd BufLeave *.{c,cpp} mark C
+autocmd BufLeave *.h       mark H
+
 autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
 
 " Open images with feh->sxiv
@@ -510,8 +515,7 @@ augroup END
 " === All my custom and `steal` mappings start here {{{1
 " use `noremap` for almost everything, but `map` for `Plug` command, dot NOT comment at the end of map
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo, so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U>          <C-G>u<C-U>
 
 " === supercharge `valid` command-line mode <CR>, from https://gist.github.com/romainl/5b2cfb2b81f02d44e1d90b74ef555e31
@@ -646,11 +650,18 @@ nnoremap [b :bprev<cr>
 nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
 
+" open newline above and below
+nnoremap [<space>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
+
 " move lines
-nnoremap <silent> <C-k> :move-2<cr>
-nnoremap <silent> <C-j> :move+<cr>
-xnoremap <silent> <C-k> :move-2<cr>gv
-xnoremap <silent> <C-j> :move'>+<cr>gv
+nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
+nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
+" " save C-j and C-k for other things
+" nnoremap <silent> <C-k> :move-2<cr>
+" nnoremap <silent> <C-j> :move+<cr>
+" xnoremap <silent> <C-k> :move-2<cr>gv
+" xnoremap <silent> <C-j> :move'>+<cr>gv
 
 "" Markdown headings
 "nnoremap <leader>1 m`yypVr=``
