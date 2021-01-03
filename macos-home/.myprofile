@@ -43,7 +43,15 @@ fi
 export NIX_HOME_BIN="$HOME/.nix-home-path/bin"
 export PATH="$NIX_HOME_BIN:$PATH"
 
-# export PATH="~/.nix-profile/Applications/Emacs.app/Contents/MacOS:$PATH"
-export PATH="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS:$PATH"
+# for nix home-manager updated manual
+export MANPATH="$HOME/.nix-home-path/share/man":$MANPATH
+# for emacs full manual
+export INFOPATH="$HOME/.nix-home-path/share/info":$INFOPATH
+
+# for emacs daemon
+export EMACS="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs"
+alias emacs="$EMACS"
+alias emacsnw="$EMACS -nw"
+alias em="emacsclient -n"
 
 # vim: ft=sh
