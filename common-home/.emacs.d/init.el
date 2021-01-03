@@ -131,9 +131,6 @@
 
 (use-package magit)
 
-;; (use-package evil-magit
-;;   :after magit)
-
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
   :after evil 
