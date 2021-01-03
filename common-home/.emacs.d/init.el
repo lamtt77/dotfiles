@@ -9,8 +9,9 @@
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
 
-;; I use `st` terminal which has different default font size
-(when IS-LINUX (default ((t (:family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal)))))
+;; I use `dwm` terminal which has different default font size
+;;(when IS-LINUX (set-face-attribute 'default nil :family "Inconsolata" :foundry "CYRE" :slant normal :weight normal :height 120 :width normal))
+(when IS-LINUX (set-face-attribute 'default t :family "Inconsolata" :height 120 :foundry "CYRE"))
 
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
 ;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
