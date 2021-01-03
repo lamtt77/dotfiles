@@ -217,6 +217,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/gruvbox-material'
 
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
@@ -767,6 +768,10 @@ nnoremap <leader>us :Snippets<cr>
 " === vim-signify mappings
 nnoremap <silent><leader>hd :SignifyHunkDiff<cr>
 nnoremap <silent><leader>hu :SignifyHunkUndo<cr>
+
+" === vim-dispatch mappings - to add async for fugitive
+nnoremap <leader>gps :Dispatch! git push<cr>
+nnoremap <leader>gpl :Dispatch! git pull<cr>
 
 " === DEBUG with TermDebug
 " packadd termdebug
