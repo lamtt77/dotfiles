@@ -1,4 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
+
 (setq startup-time-tic (current-time))
 
 (custom-set-variables
@@ -58,8 +59,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; only need if package-selected-packages is in-use, but leave it here so that we could use package-list-packages
-;; ref: https://github.crookster.org/switching-to-straight.el-from-emacs-26-builtin-package.el/
+;; leave it here so that we could use package-list-packages
+;; ref: emacs-from-scratch, https://github.crookster.org/switching-to-straight.el-from-emacs-26-builtin-package.el/
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
@@ -98,6 +99,9 @@
 (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
 (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 
+;; Make ESC quit prompts
+;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 ;; performance tuning: garbage collection hack
 (use-package gcmh
   :config
@@ -106,30 +110,45 @@
 (use-package doom-themes
   :config (load-theme 'doom-gruvbox-light t))
 
+(use-package all-the-icons)
+
 (use-package which-key
   :config
   (which-key-mode))
-
 (use-package evil
   :init
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1))
 
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-single)
+
+(use-package direx
+  :bind (("C-x C-j" . dired-jump)
+	 ("C-x 4 C-j" . dired-jump-other-window))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))) 
+
 (use-package evil-collection
   :after evil 
   :config
   (evil-collection-init)
-  ;; Use visual line motions even outside of visual-line-mode buffers, from emacs-from-scratch
+  ;; Use visual line motions even outside of visual-line-mode buffers, 'cherry-pick' from emacs-from-scratch
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+  (evil-set-initial-state 'dashboard-mode 'normal)
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "l" 'dired-single-buffer))
 
-;; TODO
-;; (use-package evil-commentary)
+(use-package evil-commentary
+  :config
+  (evil-commentary-mode))
 
-(use-package magit)
+(use-package magit)			; evil-magit is now part of evil-collection
 
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
@@ -153,7 +172,10 @@
 (use-package company
   :config
   (company-mode 1)
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
 
 ;; turn on flycheck-mode on demand, global-flycheck-mode is a bit too much, do I still need flycheck if used lsp-mode?
 (use-package flycheck)
@@ -255,6 +277,10 @@
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
 
 (use-package avy
   :config
