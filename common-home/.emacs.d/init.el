@@ -149,6 +149,9 @@
 
 (use-package magit)			; evil-magit is now part of evil-collection
 
+(if IS-LINUX (use-package evil-magit	; but gccemacs linux still requires it
+	       :after magit))
+
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
   :after evil 
