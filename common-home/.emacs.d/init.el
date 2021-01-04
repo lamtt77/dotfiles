@@ -121,9 +121,6 @@
   :config
   (evil-mode 1))
 
-(use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
-
 (use-package dired-single)
 
 (use-package direx
