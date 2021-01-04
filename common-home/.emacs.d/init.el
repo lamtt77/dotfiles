@@ -120,14 +120,14 @@
   :config
   (evil-mode 1))
 
+(use-package ranger)
+
 (use-package dired-single)
 
 (use-package direx
   :bind (("C-x C-j" . dired-jump)
 	 ("C-x 4 C-j" . dired-jump-other-window))
   :custom ((dired-listing-switches "-agho --group-directories-first"))) 
-
-(use-package ranger)
 
 (use-package evil-collection
   :after evil 
@@ -203,7 +203,7 @@
 ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
   :config
-  ;; (global-set-key (kbd "C--") 'er/contract-region)
+  (global-set-key (kbd "C--") 'er/contract-region)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
 ; deletes all the whitespace when you hit backspace or delete
@@ -212,7 +212,7 @@
   (global-hungry-delete-mode))
 
 ;;(use-package auctex)
-;;(use-package ox-report)    ; got issue in MacOS
+;;(use-package ox-report)    ; got issue in gccemacs MacOS
 (use-package gnuplot)
 (use-package org-roam)
 
@@ -220,18 +220,28 @@
 (setq org-directory "/home/lam/org-lam/")
 (setq org-default-notes-file (concat org-directory "capture.org"))
 
-;; on-going issue: https://github.com/politza/pdf-tools/pull/588
-;; from https://emacs.stackexchange.com/questions/13314/install-pdf-tools-on-emacs-macosx
-(use-package pdf-tools
-  :config
-  (pdf-tools-install)
-  (setq-default pdf-view-display-size 'fit-width)
-  ;; (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  :custom
-  (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
+;; ;; on-going issue: https://github.com/politza/pdf-tools/pull/588
+;; ;; also refer to https://emacs.stackexchange.com/questions/13314/install-pdf-tools-on-emacs-macosx
+;; (use-package pdf-tools
+;;   :config
+;;   (pdf-tools-install)
+;;   (setq-default pdf-view-display-size 'fit-width)
+;;   ;; (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+;;   :custom
+;;   (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
 
-(use-package org-pdftools
-  :after org)
+;; ;; original from http://alberto.am/2020-04-11-pdf-tools-as-default-pdf-viewer.html
+;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+;;       TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+;;       TeX-source-correlate-start-server t)
+
+;; (add-hook 'TeX-after-compilation-finished-functions
+;; 	  #'TeX-revert-document-buffer)
+
+;; (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+
+;; (use-package org-pdftools
+;;   :after org)
 
 ;; not working yet
 ;; (setq image-use-external-converter t)
