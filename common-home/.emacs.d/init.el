@@ -217,11 +217,18 @@
 (setq org-directory "/home/lam/org-lam/")
 (setq org-default-notes-file (concat org-directory "capture.org"))
 
-(use-package org-pdftools
-  :after org
-  :defer nil				; will trigger error without this line, reason?
+;; on-going issue: https://github.com/politza/pdf-tools/pull/588
+;; from https://emacs.stackexchange.com/questions/13314/install-pdf-tools-on-emacs-macosx
+(use-package pdf-tools
+  :config
+  (pdf-tools-install)
+  (setq-default pdf-view-display-size 'fit-width)
+  ;; (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
   :custom
-  (pdf-tools-install))
+  (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
+
+(use-package org-pdftools
+  :after org)
 
 ;; not working yet
 ;; (setq image-use-external-converter t)
@@ -293,15 +300,6 @@
   (bind-key "M-g ("  'avy-goto-open-paren)
   (bind-key "M-g )"  'avy-goto-close-paren)
   (bind-key "M-g P"  'avy-pop-mar))
-
-;; from https://emacs.stackexchange.com/questions/13314/install-pdf-tools-on-emacs-macosx
-(use-package pdf-tools
-  :config
-  (pdf-tools-install)
-  (setq-default pdf-view-display-size 'fit-width)
-  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  :custom
-  (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
 
 ;; === doom performance tuning tips
 (add-hook 'emacs-startup-hook
