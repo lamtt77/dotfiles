@@ -88,6 +88,7 @@
 (setq version-control t )		; use version control
 (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
+(setq vc-follow-symlinks t )            ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
 
 (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
@@ -101,13 +102,21 @@
 ;; Make ESC quit prompts
 ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; Make frame transparency overridable
+(defvar efs/frame-transparency '(90 . 90))
+;; Set frame transparency
+(set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
+(add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; performance tuning: garbage collection hack
 (use-package gcmh
   :config
   (gcmh-mode 1))
 
 (use-package doom-themes
-  :config (load-theme 'doom-gruvbox-light t))
+  :config (load-theme 'doom-gruvbox t))
 
 (use-package all-the-icons)
 
@@ -120,7 +129,9 @@
   :config
   (evil-mode 1))
 
-(use-package ranger)
+(use-package ranger
+  :config
+  (setq ranger-show-hidden t))
 
 (use-package dired-single)
 

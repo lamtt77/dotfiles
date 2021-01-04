@@ -99,6 +99,8 @@ in
       # emacs and required tools
       emacs-all-the-icons-fonts
       emacsMacport
+      poppler
+      zathura
       # libtool  # GNU Libtool, use brew for now, libvterm requires this on MacOS, see https://github.com/neovim/homebrew-neovim/issues/164
 
       # coder stuffs

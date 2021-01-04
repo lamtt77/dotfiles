@@ -50,7 +50,8 @@ export INFOPATH="$HOME/.nix-home-path/share/info":$INFOPATH
 
 # for emacs daemon
 export EMACS="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs"
-alias emacs="$EMACS"
+export EMACSAPP="~/.nix-home-path/Applications/Emacs.app"
+alias emacs="open $EMACSAPP"
 alias emacsnw="$EMACS -nw"
 alias em="emacsclient -n"
 
