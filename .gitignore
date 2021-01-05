@@ -7,3 +7,4 @@ arch-home/.local/bin/nvr
 .authinfo.gpg
 /macos-home/.config/nixpkgs/result
 /tags
+/macos-home/.config/karabiner/automatic_backups/karabiner_20210105.json

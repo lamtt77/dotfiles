@@ -78,6 +78,7 @@ in
       bash
       fish
       zsh
+      powershell
 
       # productivity boost
       autojump
@@ -99,9 +100,11 @@ in
       # emacs and required tools
       emacs-all-the-icons-fonts
       emacsMacport
+      # libtool  # GNU Libtool, use brew for now, libvterm requires this on MacOS, see https://github.com/neovim/homebrew-neovim/issues/164
+
+      # pdf viewer
       poppler
       zathura
-      # libtool  # GNU Libtool, use brew for now, libvterm requires this on MacOS, see https://github.com/neovim/homebrew-neovim/issues/164
 
       # coder stuffs
       bfg-repo-cleaner
@@ -114,16 +117,18 @@ in
       jq
       # valgrind  # auto detect memory management and threading bugs
 
+      # cloud stuffs
+      awscli
+      google-cloud-sdk
+      kubectl
+
       # alphabet sorted
       ansible
       asciinema
       aspell
       aspellDicts.en
-      awscli
       borgbackup
-      google-cloud-sdk
       htop
-      kubectl
       links
       lua
       lynx
@@ -140,7 +145,6 @@ in
       pandoc
       perl
       pinentry_mac
-      powershell
       python39
       rclone
       restic

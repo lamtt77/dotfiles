@@ -52,7 +52,8 @@ export INFOPATH="$HOME/.nix-home-path/share/info":$INFOPATH
 export EMACS="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs"
 export EMACSAPP="~/.nix-home-path/Applications/Emacs.app"
 alias emacs="open $EMACSAPP"
-alias emacsnw="$EMACS -nw"
+# see https://www.gnu.org/software/emacs/manual/html_mono/efaq.html#Colors-on-a-TTY
+alias emacsnw="TERM=xterm-direct $EMACS -nw"
 alias em="emacsclient -n"
 
 # vim: ft=sh

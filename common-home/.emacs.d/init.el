@@ -102,14 +102,6 @@
 ;; Make ESC quit prompts
 ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; Make frame transparency overridable
-(defvar efs/frame-transparency '(90 . 90))
-;; Set frame transparency
-(set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
-(add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
-(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 ;; performance tuning: garbage collection hack
 (use-package gcmh
   :config
@@ -237,7 +229,7 @@
 ;;   :config
 ;;   (pdf-tools-install)
 ;;   (setq-default pdf-view-display-size 'fit-width)
-;;   ;; (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+;;   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
 ;;   :custom
 ;;   (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
 
