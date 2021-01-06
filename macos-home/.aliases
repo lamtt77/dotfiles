@@ -5,9 +5,16 @@ alias la='ls -laF'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias yt2mp3='youtube-dl -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
 
-# LamT alias for doom-emacs and spacemacs
-alias doom-emacs='~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs --with-profile doom-emacs &'
-alias spacemacs='~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs --with-profile spacemacs &'
+## for emacs daemon, usage of export variable must surround with "
+export EMACSAPP="~/.nix-home-path/Applications/Emacs.app"
+alias em="open $EMACSAPP"
+alias emacs="$EMACSAPP/Contents/MacOS/Emacs"
+# see https://www.gnu.org/software/emacs/manual/html_mono/efaq.html#Colors-on-a-TTY
+alias emacsnw="TERM=xterm-direct emacs -nw"
+alias ec="emacsclient -n"
+# doom-emacs and spacemacs
+alias doom-emacs="emacs --with-profile doom-emacs &"
+alias spacemacs="emacs --with-profile spacemacs &"
 
 # From https://github.com/nickjj/dotfiles/blob/master/.aliases
 #alias dew="docker-compose exec web"
@@ -20,8 +27,6 @@ alias spacemacs='~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs --
 #
 #alias jek="bundle exec jekyll serve --config _config.yml,_config.dev.yml --drafts --livereload"
 #
-#alias ymp3="youtube-dl --extract-audio --audio-format mp3"
-#
 #alias octal="stat -c '%a %n'"
 #
 #alias follow="namei -om"
@@ -31,3 +36,5 @@ alias spacemacs='~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs --
 #alias 755d="find . -type d -exec chmod 755 {} \;"
 #
 #alias 644f="find . -type f -exec chmod 644 {} \;"
+
+# vim: ft=sh

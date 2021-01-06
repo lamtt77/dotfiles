@@ -40,6 +40,7 @@ if [ ! -e '~/.nix-home-path' ]; then
   ln -sfn /nix/var/nix/profiles/per-user/alam/home-manager/home-path ~/.nix-home-path
 fi
 
+# FIXME hack to provide home-manager home-path
 export NIX_HOME_BIN="$HOME/.nix-home-path/bin"
 export PATH="$NIX_HOME_BIN:$PATH"
 
@@ -47,13 +48,5 @@ export PATH="$NIX_HOME_BIN:$PATH"
 export MANPATH="$HOME/.nix-home-path/share/man":$MANPATH
 # for emacs full manual
 export INFOPATH="$HOME/.nix-home-path/share/info":$INFOPATH
-
-# for emacs daemon
-export EMACS="~/.nix-home-path/Applications/Emacs.app/Contents/MacOS/Emacs"
-export EMACSAPP="~/.nix-home-path/Applications/Emacs.app"
-alias emacs="open $EMACSAPP"
-# see https://www.gnu.org/software/emacs/manual/html_mono/efaq.html#Colors-on-a-TTY
-alias emacsnw="TERM=xterm-direct $EMACS -nw"
-alias em="emacsclient -n"
 
 # vim: ft=sh

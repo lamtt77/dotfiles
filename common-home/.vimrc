@@ -228,7 +228,7 @@ Plug 'tpope/vim-repeat'
 " Plug 'tpope/vim-projectionist'
 
 " Plug 'moll/vim-bbye'                " optional dependency for vim-symlink, delete buffers (close files) without closing your windows or messing up your layout
-Plug 'aymericbeaumet/vim-symlink'   " fix an annoying vim-fugitive symlink issue
+" Plug 'aymericbeaumet/vim-symlink'   " fix an annoying vim-fugitive symlink issue  # by introduced other annoying issue
 
 Plug 'junegunn/fzf',                { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -272,8 +272,8 @@ Plug 'mhinz/vim-startify'
 
 Plug 'dyng/ctrlsf.vim'
 
-" LeaderF introduces by vim github wiki, let's try it
-Plug 'Yggdroot/LeaderF',            { 'do': ':LeaderfInstallCExtension' }
+" " LeaderF introduces by vim github wiki, let's try it
+" Plug 'Yggdroot/LeaderF',            { 'do': ':LeaderfInstallCExtension' }
 
 Plug 'romainl/vim-qf'               | let g:qf_mapping_ack_style = 1
 
@@ -610,33 +610,33 @@ nnoremap <silent> <leader>S         :Startify<cr>
 " Git Grep
 nnoremap <silent> <leader>gg        :GGrep<cr>
 
-" === LeaderF mappings
-" don't show the help in normal mode
-let g:Lf_HideHelp = 1
-let g:Lf_UseCache = 0
-let g:Lf_UseVersionControlTool = 0
-let g:Lf_IgnoreCurrentBufferName = 1
-" popup mode
-let g:Lf_WindowPosition = 'popup'
-let g:Lf_PreviewInPopup = 1
-let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
-let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
+" " === LeaderF mappings
+" " don't show the help in normal mode
+" let g:Lf_HideHelp = 1
+" let g:Lf_UseCache = 0
+" let g:Lf_UseVersionControlTool = 0
+" let g:Lf_IgnoreCurrentBufferName = 1
+" " popup mode
+" let g:Lf_WindowPosition = 'popup'
+" let g:Lf_PreviewInPopup = 1
+" let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+" let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
 
-let g:Lf_ShortcutF = "<leader>ff"
-noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
-noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
-noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
-noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+" let g:Lf_ShortcutF = "<leader>ff"
+" noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+" noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+" noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+" noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
-" should use `Leaderf gtags --update` first, and `sudo pacman -S global`
-let g:Lf_GtagsAutoGenerate = 0
-let g:Lf_Gtagslabel = 'native-pygments'
-noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
-noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
-noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
-" === END LeaderF mappings
+" " should use `Leaderf gtags --update` first, and `sudo pacman -S global`
+" let g:Lf_GtagsAutoGenerate = 0
+" let g:Lf_Gtagslabel = 'native-pygments'
+" noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+" noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+" noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+" noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+" noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+" " === END LeaderF mappings
 
 " === convenient mappings
 " visual mode pressing * or # searches for the current selection, use `//` to resume that search pattern
