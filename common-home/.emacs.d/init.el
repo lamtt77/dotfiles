@@ -125,6 +125,8 @@
   :config
   (setq ranger-show-hidden t))
 
+(use-package vterm)
+
 (use-package dired-single)
 
 (use-package direx
