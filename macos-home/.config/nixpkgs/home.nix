@@ -71,6 +71,7 @@ in
       git
       gnupg
       gnutls
+      fontconfig
       tree
       stow
 
@@ -79,6 +80,11 @@ in
       fish
       zsh
       powershell
+      shellcheck
+
+      # nix
+      nixfmt
+      nox
 
       # productivity boost
       autojump
@@ -115,6 +121,9 @@ in
       gdb
       go
       jq
+      plantuml
+      rtags
+
       # valgrind  # auto detect memory management and threading bugs
 
       # cloud stuffs
@@ -138,7 +147,6 @@ in
       neofetch
       nmap
       nodejs
-      nox
       openssh
       openssl
       packer
