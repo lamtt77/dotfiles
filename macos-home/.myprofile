@@ -45,8 +45,8 @@ export NIX_HOME_BIN="$HOME/.nix-home-path/bin"
 export PATH="$NIX_HOME_BIN:$PATH"
 
 # for nix home-manager updated manual
-export MANPATH="$HOME/.nix-home-path/share/man":$MANPATH
+export MANPATH="$HOME/.nix-home-path/share/man:$MANPATH"
 # for emacs full manual
-export INFOPATH="$HOME/.nix-home-path/share/info":$INFOPATH
+export INFOPATH="$HOME/.nix-home-path/share/info:$INFOPATH"
 
 # vim: ft=sh

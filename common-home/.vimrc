@@ -601,6 +601,9 @@ imap     <c-x><c-l>                 <plug>(fzf-complete-line)
 "imap <c-x><c-f> <plug>(fzf-complete-path)
 "inoremap <expr> <c-x><c-d> fzf#vim#complete#path('blsd')
 
+" similar to dired-jump in emacs
+nnoremap <c-x><c-j>                 :e%:h<cr>
+
 " === vim-startify mappings
 nnoremap <silent> <leader>S         :Startify<cr>
 
