@@ -26,10 +26,9 @@
 ;; I use `dwm` terminal which has different default font size
 (if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
 
-;; restore the defaults changed by emacsMacport, TODO to-test
-(cond (IS-MAC
-       (setq mac-command-modifier      'super
-             mac-option-modifier       'alt)))
+;; restore the defaults changed by emacsMacport
+(cond (IS-MAC (setq mac-command-modifier      'super
+                    mac-option-modifier       'meta)))
 
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
 ;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
