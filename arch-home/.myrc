@@ -20,4 +20,11 @@ fi
 # LamT: use this temporarily till reboot
 source /etc/profile.d/nix{,-daemon}.sh
 
+# LamT: use fasd in parallel with autojump
+eval "$(fasd --init auto)"
+[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
+
+# LamT: go for auto-suggestion!
+exec fish
+
 # vim: ft=sh
