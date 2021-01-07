@@ -81,6 +81,7 @@
 
 (put 'downcase-region 'disabled nil)
 (setq truncate-lines t) 		; nowrap equivalent, why only work if run manually with C-x C-e?
+(setq kill-whole-line t)                ; make Ctrl-K remove the whole line, instead of just emptying it.
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
