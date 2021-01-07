@@ -26,6 +26,11 @@
 ;; I use `dwm` terminal which has different default font size
 (if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
 
+;; restore the defaults changed by emacsMacport, TODO to-test
+(cond (IS-MAC
+       (setq mac-command-modifier      'super
+             mac-option-modifier       'alt)))
+
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
 ;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
 ;; will % increase if adding more packages? Currently last package is avy
@@ -82,6 +87,7 @@
 (put 'downcase-region 'disabled nil)
 (setq truncate-lines t) 		; nowrap equivalent, why only work if run manually with C-x C-e?
 (setq kill-whole-line t)                ; make Ctrl-K remove the whole line, instead of just emptying it.
+(custom-set-variables '(indent-tabs-mode nil)) ; do not use hard tabs
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
@@ -103,6 +109,8 @@
 ;; Make ESC quit prompts
 ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; (setq debug-on-error t)			; turn on manually to trace error
+
 ;; performance tuning: garbage collection hack
 (use-package gcmh
   :config
@@ -116,24 +124,12 @@
 (use-package which-key
   :config
   (which-key-mode))
+
 (use-package evil
   :init
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1))
-
-(use-package ranger
-  :config
-  (setq ranger-show-hidden t))
-
-(use-package vterm)
-
-(use-package dired-single)
-
-(use-package direx
-  :bind (("C-x C-j" . dired-jump)
-	 ("C-x 4 C-j" . dired-jump-other-window))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))) 
 
 (use-package evil-collection
   :after evil 
@@ -152,6 +148,24 @@
 (use-package evil-commentary
   :config
   (evil-commentary-mode))
+
+;; column alignment like easy-alignment
+(use-package evil-lion
+  :config
+  (evil-lion-mode))
+
+(use-package ranger
+  :config
+  (setq ranger-show-hidden t))
+
+(use-package vterm)
+
+(use-package dired-single)
+
+(use-package direx
+  :bind (("C-x C-j" . dired-jump)
+	 ("C-x 4 C-j" . dired-jump-other-window))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))) 
 
 (use-package magit)			; evil-magit is now part of evil-collection
 
@@ -319,6 +333,18 @@
   (bind-key "M-g ("  'avy-goto-open-paren)
   (bind-key "M-g )"  'avy-goto-close-paren)
   (bind-key "M-g P"  'avy-pop-mar))
+
+;; from https://zzamboni.org/post/my-emacs-configuration-with-commentary/
+(use-package adoc-mode
+      :mode "\\.asciidoc\\'"
+      :hook
+      (adoc-mode . visual-line-mode)
+      (adoc-mode . variable-pitch-mode))
+
+(use-package markdown-mode
+      :hook
+      (markdown-mode . visual-line-mode)
+      (markdown-mode . variable-pitch-mode))
 
 ;; === doom performance tuning tips
 (add-hook 'emacs-startup-hook

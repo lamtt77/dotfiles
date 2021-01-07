@@ -11,7 +11,8 @@ alias em="open $EMACSAPP"
 alias emacs="$EMACSAPP/Contents/MacOS/Emacs"
 # see https://www.gnu.org/software/emacs/manual/html_mono/efaq.html#Colors-on-a-TTY
 alias emacsnw="TERM=xterm-direct emacs -nw"
-alias ec="emacsclient -n"
+alias ec="emacsclient -nc"
+alias ect='emacsclient -a "" -t'
 # doom-emacs and spacemacs
 alias doom-emacs="emacs --with-profile doom-emacs &"
 alias spacemacs="emacs --with-profile spacemacs &"
