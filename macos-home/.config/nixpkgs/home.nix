@@ -68,12 +68,12 @@ in
       coreutils # replace tools `du` so that `ranger` can call
       curl
       findutils
+      fontconfig
       git
       gnupg
       gnutls
-      fontconfig
-      tree
       stow
+      tree
 
       # shells
       bash
@@ -93,6 +93,8 @@ in
       fd
       fzf
       ranger
+        # enhanced file previews with `scope.sh`
+        highlight atool p7zip mediainfo odt2txt openscad #ncurses
       ripgrep
       silver-searcher
 

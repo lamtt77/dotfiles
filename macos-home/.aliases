@@ -2,6 +2,10 @@ alias l='ls -a'
 alias ll='ls -lAh'
 alias la='ls -laF'
 
+alias v='f -e "$EDITOR"'
+alias o='a -e xdg-open'
+alias j='zz'
+
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias yt2mp3='youtube-dl -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
 
