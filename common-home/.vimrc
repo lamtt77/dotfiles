@@ -435,7 +435,7 @@ augroup END
 " === vim-floaterm
 command! NNN FloatermNew nnn
 command! LF FloatermNew lf
-command! RangerNvim FloatermNew ranger
+" command! RangerNvim FloatermNew ranger
 
 " === vim-grepper
 let g:grepper = {}
@@ -680,12 +680,13 @@ command! SortBlock :normal! vip:sort i<CR>
 command! -range -nargs=+ Align <line1>,<line2>!column -Lts'<args>' -o'<args>'
 
 " replace all for word under cursor, yank that word for later use anyway
-nnoremap <leader>rr                 yiw:%s/\<<C-r>0\>//g<left><left>
+nnoremap <leader>r<space>           yiw:%s/\<<C-r>0\>//g<left><left>
 " replace all but in visual selection
-xnoremap <leader>rr                 "sy:%s/\<<C-r>s\>//g<left><left>
+xnoremap <leader>r<space>           "sy:%s/\<<C-r>s\>//g<left><left>
 
 " Ranger mappings, default current buffer directory
 nnoremap <leader>rg                 :Ranger<cr>
+nnoremap <leader>rt                 :RangerCurrentFileNewTab<cr>
 
 " vim-floaterm mappings, ranger only draw correctly in nvim unfortunately, thus use the above mapping
 nnoremap <leader>tr                 :RangerNvim<cr>

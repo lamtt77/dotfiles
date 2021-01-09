@@ -65,13 +65,14 @@ in
     stateVersion = "20.09";
     packages = with pkgs; [
       # essential utils
-      coreutils # replace tools `du` so that `ranger` can call
+      coreutils # use gnu `du` so that `ranger` can call
       curl
       findutils
       fontconfig
       git
       gnupg
       gnutls
+      pkg-config
       stow
       tree
 
@@ -95,6 +96,9 @@ in
       ranger
         # enhanced file previews with `scope.sh`
         highlight atool p7zip mediainfo odt2txt openscad #ncurses
+      lf
+        # also used a compact version of ranger's `scope.sh`
+        w3m xclip chafa
       ripgrep
       silver-searcher
 

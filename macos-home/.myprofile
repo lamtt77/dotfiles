@@ -49,4 +49,5 @@ export MANPATH="$HOME/.nix-home-path/share/man:$MANPATH"
 # for emacs full manual
 export INFOPATH="$HOME/.nix-home-path/share/info:$INFOPATH"
 
-# vim: ft=sh
+export NNN_FIFO="/tmp/nnn.fifo"
+export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview;p:preview-tui'
