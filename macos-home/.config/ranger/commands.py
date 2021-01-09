@@ -60,3 +60,13 @@ class my_edit(Command):
         # This is a generic tab-completion function that iterates through the
         # content of the current directory.
         return self._tab_directory_content()
+
+# Empty Trash folder command :empty
+class empty(Command):
+    """:empty
+
+    Empties the trash directory ~/.Trash
+    """
+
+    def execute(self):
+        self.fm.run("rm -rf $HOME/.local/share/.Trash/{*,.[^.]*}")

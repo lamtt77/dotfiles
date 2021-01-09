@@ -69,4 +69,4 @@ class empty(Command):
     """
 
     def execute(self):
-        self.fm.run("rm -rf /home/lam/.local/share/.Trash/{*,.[^.]*}")
+        self.fm.run("rm -rf $HOME/.local/share/.Trash/{*,.[^.]*}")
