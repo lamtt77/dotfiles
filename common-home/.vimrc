@@ -341,10 +341,10 @@ endif
 Plug 'reedes/vim-lexical'
   let g:lexical#thesaurus = ['~/.vim/thesaurus/mthesaur.txt',]
 
-Plug 'puremourning/vimspector'
-  let g:vimspector_base_dir        = expand('$HOME/.vim/plugged/vimspector')
-  let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools' ]
-  let g:vimspector_enable_mappings = 'HUMAN'
+" Plug 'puremourning/vimspector'
+"   let g:vimspector_base_dir        = expand('$HOME/.vim/plugged/vimspector')
+"   let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools' ]
+"   let g:vimspector_enable_mappings = 'HUMAN'
 call plug#end()
 " }}} === PLUGIN initialization end here
 

@@ -99,6 +99,7 @@ in
       lf
         # also used a compact version of ranger's `scope.sh`
         w3m xclip chafa
+      nnn
       ripgrep
       silver-searcher
 
@@ -119,7 +120,7 @@ in
       zathura
 
       # coder stuffs
-      bfg-repo-cleaner
+      bfg-repo-cleaner  # git files remover
       direnv
       docker
       dotnet-sdk_5

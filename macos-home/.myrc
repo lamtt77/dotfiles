@@ -4,6 +4,9 @@ __MYRC_SOURCED=1
 
 export EDITOR='vim'
 
+# to avoid highlight grey out in comments
+export HIGHLIGHT_STYLE="base16/gruvbox-dark-medium"
+
 # TODO replace autojump by fasd
 # [[ -f ~/.nix-home-path/etc/profile.d/autojump.sh ]] && . ~/.nix-home-path/etc/profile.d/autojump.sh
 eval "$(fasd --init auto)"

@@ -1,16 +1,4 @@
-alias l='ls -a'
-alias ll='ls -lAh'
-alias la='ls -laF'
-
-alias v='f -e "$EDITOR"'
-alias o='a -e xdg-open'
-alias j='zz'
-
-# lf dual panes, only effective if running within an active tmux session
-alias lfmc='tmux split -h lf; lf'
-
-alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
-alias yt2mp3='youtube-dl -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
+source $HOME/.config/myenv/aliases.common
 
 ## for emacs daemon, usage of export variable must surround with "
 export EMACSAPP="~/.nix-home-path/Applications/Emacs.app"
@@ -23,26 +11,5 @@ alias ect='emacsclient -a "" -t'
 # doom-emacs and spacemacs
 alias doom-emacs="emacs --with-profile doom-emacs &"
 alias spacemacs="emacs --with-profile spacemacs &"
-
-# From https://github.com/nickjj/dotfiles/blob/master/.aliases
-#alias dew="docker-compose exec web"
-#
-#alias dpsql="docker-compose exec postgres psql"
-#
-#alias drun='docker run --rm -it -v "${PWD}":/app'
-#
-#alias rmpyc="find . -type d -name '__pycache__' -exec rm -rf {} \;"
-#
-#alias jek="bundle exec jekyll serve --config _config.yml,_config.dev.yml --drafts --livereload"
-#
-#alias octal="stat -c '%a %n'"
-#
-#alias follow="namei -om"
-#
-#alias diff="diff --color -u"
-#
-#alias 755d="find . -type d -exec chmod 755 {} \;"
-#
-#alias 644f="find . -type f -exec chmod 644 {} \;"
 
 # vim: ft=sh
