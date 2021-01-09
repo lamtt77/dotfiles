@@ -10,11 +10,16 @@
 from __future__ import (absolute_import, division, print_function)
 
 # You can import any python module as needed.
-import os
+import os, time
 
 # You always need to import ranger.api.commands here to get the Command class:
 from ranger.api.commands import Command
 
+# from arch wiki
+from ranger.core.loader import CommandLoader
+from ranger.core.loader import Loadable
+from ranger.ext.signals import SignalDispatcher
+from ranger.ext.shell_escape import *
 
 # Any class that is a subclass of "Command" will be integrated into ranger as a
 # command.  Try typing ":my_edit<ENTER>" in ranger!
@@ -70,3 +75,111 @@ class empty(Command):
 
     def execute(self):
         self.fm.run("rm -rf $HOME/.local/share/.Trash/{*,.[^.]*}")
+
+# from arch wiki - ranger
+class extract_here(Command):
+    def execute(self):
+        """ extract selected files to current directory."""
+        cwd = self.fm.thisdir
+        marked_files = tuple(cwd.get_selection())
+
+        def refresh(_):
+            cwd = self.fm.get_directory(original_path)
+            cwd.load_content()
+
+        one_file = marked_files[0]
+        cwd = self.fm.thisdir
+        original_path = cwd.path
+        au_flags = ['-x', cwd.path]
+        au_flags += self.line.split()[1:]
+        au_flags += ['-e']
+
+        self.fm.copy_buffer.clear()
+        self.fm.cut_buffer = False
+        if len(marked_files) == 1:
+            descr = "extracting: " + os.path.basename(one_file.path)
+        else:
+            descr = "extracting files from: " + os.path.basename(
+                one_file.dirname)
+        obj = CommandLoader(args=['aunpack'] + au_flags
+                            + [f.path for f in marked_files], descr=descr,
+                            read=True)
+
+        obj.signal_bind('after', refresh)
+        self.fm.loader.add(obj)
+
+# from arch wiki - ranger
+class compress(Command):
+    def execute(self):
+        """ Compress marked files to current directory """
+        cwd = self.fm.thisdir
+        marked_files = cwd.get_selection()
+
+        if not marked_files:
+            return
+
+        def refresh(_):
+            cwd = self.fm.get_directory(original_path)
+            cwd.load_content()
+
+        original_path = cwd.path
+        parts = self.line.split()
+        au_flags = parts[1:]
+
+        descr = "compressing files in: " + os.path.basename(parts[1])
+        obj = CommandLoader(args=['apack'] + au_flags + \
+                [os.path.relpath(f.path, cwd.path) for f in marked_files], descr=descr, read=True)
+
+        obj.signal_bind('after', refresh)
+        self.fm.loader.add(obj)
+
+    def tab(self, tabnum):
+        """ Complete with current folder name """
+
+        extension = ['.zip', '.tar.gz', '.rar', '.7z']
+        return ['compress ' + os.path.basename(self.fm.thisdir.path) + ext for ext in extension]
+
+class MountLoader(Loadable, SignalDispatcher):
+    """
+    Wait until a directory is mounted
+    """
+    def __init__(self, path):
+        SignalDispatcher.__init__(self)
+        descr = "Waiting for dir '" + path + "' to be mounted"
+        Loadable.__init__(self, self.generate(), descr)
+        self.path = path
+
+    def generate(self):
+        available = False
+        while not available:
+            try:
+                if os.path.ismount(self.path):
+                    available = True
+            except:
+                pass
+            yield
+            time.sleep(0.03)
+        self.signal_emit('after')
+
+class mount(Command):
+    def execute(self):
+        selected_files = self.fm.thisdir.get_selection()
+
+        if not selected_files:
+            return
+
+        space = ' '
+        self.fm.execute_command("cdemu -b system unload 0")
+        self.fm.execute_command("cdemu -b system load 0 " + \
+                space.join([shell_escape(f.path) for f in selected_files]))
+
+        mountpath = "/media/virtualrom/"
+
+        def mount_finished(path):
+            currenttab = self.fm.current_tab
+            self.fm.tab_open(9, mountpath)
+            self.fm.tab_open(currenttab)
+
+        obj = MountLoader(mountpath)
+        obj.signal_bind('after', mount_finished)
+        self.fm.loader.add(obj)
