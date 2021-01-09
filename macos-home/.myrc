@@ -4,9 +4,6 @@ __MYRC_SOURCED=1
 
 export EDITOR='vim'
 
-# use `highlight` instead of `bat` to fix ranger freezing issue, HIGHLIGHT_STYLE can be a random name to avoid comment lines grey out
-export HIGHLIGHT_STYLE=gruvbox
-
 # TODO replace autojump by fasd
 # [[ -f ~/.nix-home-path/etc/profile.d/autojump.sh ]] && . ~/.nix-home-path/etc/profile.d/autojump.sh
 eval "$(fasd --init auto)"

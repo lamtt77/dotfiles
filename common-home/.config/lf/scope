@@ -26,7 +26,8 @@ HEIGHT="${2}"
 # Settings
 HIGHLIGHT_SIZE_MAX=262143  # 256KiB
 HIGHLIGHT_TABWIDTH=8
-HIGHLIGHT_STYLE='pablo'
+# HIGHLIGHT_STYLE='pablo'
+HIGHLIGHT_STYLE='base16/gruvbox-dark-medium'
 
 
 handle_mime() {
