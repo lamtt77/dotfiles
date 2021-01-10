@@ -15,39 +15,43 @@
  ;; If there is more than one, they won't work right.
  )
 
-;;; from doom-emacs core.el, should be here or early-init.el?
-(defconst EMACS27+   (> emacs-major-version 26))
-(defconst EMACS28+   (> emacs-major-version 27))
-(defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-LINUX   (eq system-type 'gnu/linux))
-(defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
-(defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
-
-;; I use `dwm` terminal which has different default font size
-(if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
-
-;; restore the defaults changed by emacsMacport
-(cond (IS-MAC (setq mac-command-modifier      'super
-                    mac-option-modifier       'meta)))
+;; (setq debug-on-error t)			; turn on manually to trace error
 
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
 ;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
-;; will % increase if adding more packages? Currently last package is avy
-(setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
-      gc-cons-percentage 0.6)
+;; NOTE: init.el is now generated from readme.org.  Please edit that file instead
+;; repeating here in case early-init.el is not loaded with chemacs
+(setq gc-cons-threshold most-positive-fixnum)
+(setq package-enable-at-startup nil)
+(setq comp-deferred-compilation nil)
+;
+;; `file-name-handler-alist' is consulted on every `require', `load' and various
+;; path/io functions. You get a minor speed up by nooping this. However, this
+;; may cause problems on builds of Emacs where its site lisp files aren't
+;; byte-compiled and we're forced to load the *.el.gz files (e.g. on Alpine)
+(unless (daemonp)
+  (defvar doom--initial-file-name-handler-alist file-name-handler-alist)
+  (setq file-name-handler-alist nil)
+  ;; Restore `file-name-handler-alist' later, because it is needed for handling
+  ;; encrypted or compressed files, among other things.
+  (defun doom-reset-file-handler-alist-h ()
+    ;; Re-add rather than `setq', because changes to `file-name-handler-alist'
+    ;; since startup ought to be preserved.
+    (dolist (handler file-name-handler-alist)
+      (add-to-list 'doom--initial-file-name-handler-alist handler))
+    (setq file-name-handler-alist doom--initial-file-name-handler-alist))
+  (add-hook 'emacs-startup-hook #'doom-reset-file-handler-alist-h)
+  (add-hook 'after-init-hook #'(lambda ()
+                                 ;; restore after startup
+                                 (setq gc-cons-threshold 16777216
+                                       gc-cons-percentage 0.1)))
+  )
+;; Ensure Doom is running out of this file's directory
+(setq user-emacs-directory (file-name-directory load-file-name))
 
-;; replaced by gcmh package
-;; (defun doom-defer-garbage-collection-h ()
-;;   (setq gc-cons-threshold most-positive-fixnum))
-
-;; (defun doom-restore-garbage-collection-h ()
-;;   ;; Defer it so that commands launched immediately after will enjoy the benefits.
-;;   (run-at-time
-;;    1 nil (lambda () (setq gc-cons-threshold 16777216)))) ; 16mb
-
-;; (add-hook 'minibuffer-setup-hook #'doom-defer-garbage-collection-h)
-;; (add-hook 'minibuffer-exit-hook #'doom-restore-garbage-collection-h)
-;; ===
+(setq straight-use-package-by-default t)
+;; below does not fully work yet, unless finding and correcting `:demand` on all apppriate packages
+;; (setq use-package-always-defer t)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -62,31 +66,43 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(straight-use-package 'use-package)
+
 ;; leave it here so that we could use package-list-packages
 ;; ref: emacs-from-scratch, https://github.crookster.org/switching-to-straight.el-from-emacs-26-builtin-package.el/
-(require 'package)
+;; (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
-(setq straight-use-package-by-default t)
-(straight-use-package 'use-package)
 
 (use-package benchmark-init
   :config
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
-(fset 'yes-or-no-p 'y-or-n-p)
-(column-number-mode t)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
+;; performance tuning: garbage collection hack
+(use-package gcmh
+  :demand
+  :config
+  (gcmh-mode 1))
+
+;;; from doom-emacs core.el, should be here or early-init.el?
+(defconst EMACS27+   (> emacs-major-version 26))
+(defconst EMACS28+   (> emacs-major-version 27))
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
+(defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
+
+;; I use `dwm` terminal which has different default font size
+(if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
+
+;; restore the defaults changed by emacsMacport
+(cond (IS-MAC (setq mac-command-modifier      'super
+                    mac-option-modifier       'meta
+                    mac-control-modifier      'control)))
 
 (put 'downcase-region 'disabled nil)
-(setq truncate-lines t) 		; nowrap equivalent, why only work if run manually with C-x C-e?
-(setq kill-whole-line t)                ; make Ctrl-K remove the whole line, instead of just emptying it.
-(custom-set-variables '(indent-tabs-mode nil)) ; do not use hard tabs
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
@@ -97,41 +113,228 @@
 (setq vc-follow-symlinks t )            ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
 
-(setq ring-bell-function 'ignore )	; silent bell when you make a mistake
-(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
-(setq coding-system-for-write 'utf-8 )
-(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
-(setq default-fill-column 80)		; toggle wrapping text at the 80th character
-(setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
-(setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
-
-;; Make ESC quit prompts
-;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-;; (setq debug-on-error t)			; turn on manually to trace error
-
-;; performance tuning: garbage collection hack
-(use-package gcmh
+;; modified from https://github.com/lccambiaghi/vanilla-emacs
+(use-package emacs
   :config
-  (gcmh-mode 1))
+  (setq inhibit-startup-screen t        ; toggle wrapping text at the 80th character
+        kill-whole-line t               ; make Ctrl-K remove the whole line, instead of just emptying it.
+        default-fill-column 80
+        initial-scratch-message nil
+        sentence-end-double-space nil
+        ring-bell-function 'ignore
+        frame-resize-pixelwise t)
 
-(use-package doom-themes
-  :config (load-theme 'doom-gruvbox t))
+  (setq user-full-name "LamT"
+        user-mail-address "lam@lamhub.com")
+
+  ;; always allow 'y' instead of 'yes'.
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; default to utf-8 for all the things
+  (set-charset-priority 'unicode)
+  (setq locale-coding-system 'utf-8
+        coding-system-for-read 'utf-8
+        coding-system-for-write 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
+  ;; write over selected text on input... like all modern editors do
+  (delete-selection-mode t)
+
+  ;; enable recent files mode.
+  (recentf-mode t)
+
+  ;; don't want ESC as a modifier
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  ;; Don't persist a custom file, this bites me more than it helps
+  (setq custom-file (make-temp-file "")) ; use a temp file as a placeholder
+  (setq custom-safe-themes t)            ; mark all themes as safe, since we can't persist now
+  (setq enable-local-variables :all)     ; fix =defvar= warnings
+
+  ;; don't show any extra window chrome
+  (when (window-system)
+    (column-number-mode t)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (tooltip-mode -1)
+    (menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
+    (toggle-scroll-bar -1))
+
+  ;; enable winner mode globally for undo/redo window layout changes
+  (winner-mode t))
+
+;; indentation
+(use-package emacs
+  :config
+  ;; use common convention for indentation by default
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 2)
+
+  ;; use a reasonable line length
+  (setq-default fill-column 120)
+
+  ;; let emacs handle indentation
+  (electric-indent-mode +1)
+  ;; and auto-close parentheses
+  (electric-pair-mode +1)
+  )
+
+;; popup management from https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#popup-rules
+(use-package emacs
+  :config
+  (defvar my-popups '()
+    "A list of popup matchers that determine if a popup can be escaped")
+
+  (cl-defun my/make-popup (buffer-rx &optional (height 0.4))
+    (add-to-list 'my-popups buffer-rx)
+    (add-to-list 'display-buffer-alist
+                 `(,buffer-rx
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (reusable-frames . visible)
+                   (side            . bottom)
+                   (window-height   . ,height))))
+
+  (my/make-popup (rx bos "*Messages*" eos))
+  (my/make-popup (rx bos "*Backtrace*" eos))
+  (my/make-popup (rx bos "*Warnings*" eos))
+  (my/make-popup (rx bos "*compilation*" eos))
+  (my/make-popup (rx bos "*Help*" eos))
+  (my/make-popup (rx bos "*helpful*" eos))
+  (my/make-popup (rx bos "*scratch*" eos) 0.4)
+  )
+
+;; add a visual intent guide
+(use-package highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode)
+  ;; :custom
+  ;; (highlight-indent-guides-method 'character)
+  ;; (highlight-indent-guides-character ?|)
+  ;; (highlight-indent-guides-responsive 'stack)
+  )
+
+(use-package general
+  :demand t
+  :config
+  (general-evil-setup)
+
+  (general-create-definer my/leader-keys
+                          :states '(normal visual emacs)
+                          :keymaps 'override
+                          :prefix "SPC"
+                          :global-prefix "C-SPC")
+
+  (general-create-definer my/local-leader-keys
+                          :states '(normal visual)
+                          :keymaps 'override
+                          :prefix ","
+                          :global-prefix "SPC m")
+
+  (my/leader-keys
+   "SPC" '(execute-extended-command :which-key "execute command")
+   "`" '(switch-to-prev-buffer :which-key "prev buffer")
+   ";" '(eval-expression :which-key "eval sexp")
+
+   "b" '(:ignore t :which-key "buffer")
+   "br"  'revert-buffer
+   "bd"  'kill-current-buffer
+
+   "f" '(:ignore t :which-key "file")
+   "ff"  'find-file
+   "fs" 'save-buffer
+   "fr" 'recentf-open-files
+
+   "g" '(:ignore t :which-key "git")
+
+   "h" '(:ignore t :which-key "describe")
+   "hv" 'describe-variable
+   "he" 'view-echo-area-messages
+   "hp" 'describe-package
+   "hf" 'describe-function
+   "hF" 'describe-face
+   "hk" 'describe-key
+
+   "p" '(:ignore t :which-key "project")
+
+   "s" '(:ignore t :which-key "search")
+
+   "t"  '(:ignore t :which-key "toggle")
+   "t d"  '(toggle-debug-on-error :which-key "debug on error")
+   "t v" '((lambda () (interactive) (visual-line-mode)) :wk "visual line")
+
+   "w" '(:ignore t :which-key "window")
+   "wl"  'windmove-right
+   "wh"  'windmove-left
+   "wk"  'windmove-up
+   "wj"  'windmove-down
+   "wd"  'delete-window
+   "wu" 'winner-undo
+   "wr" 'winner-redo
+   )
+
+  (my/local-leader-keys
+   "d" '(:ignore t :which-key "debug")
+   "e" '(:ignore t :which-key "eval")
+   "t" '(:ignore t :which-key "test")
+   )
+  )
+
+(use-package rainbow-delimiters
+  :hook (lisp-mode . rainbow-delimiters-mode))
+
+(use-package tree-sitter
+  :hook (python-mode . (lambda ()
+                         (require 'tree-sitter)
+                         (require 'tree-sitter-langs)
+                         (require 'tree-sitter-hl)
+                         (tree-sitter-hl-mode))))
+
+(use-package tree-sitter-langs
+  :after tree-sitter)
 
 (use-package all-the-icons)
 
+(use-package doom-themes
+  :demand
+  :config (load-theme 'doom-gruvbox t))
+
+(use-package doom-modeline
+  :demand
+  :init
+  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-env-enable-python nil)
+  (setq doom-modeline-height 15)
+  :config
+  (doom-modeline-mode 1))
+
 (use-package which-key
+  :demand t
+  :init
+  (setq which-key-separator " ")
+  (setq which-key-prefix-prefix "+")
+  ;; (setq which-key-idle-delay 0.5)
   :config
   (which-key-mode))
 
 (use-package evil
+  :demand t
+  :general
+  (my/leader-keys
+   "wv" 'evil-window-vsplit
+   "ws" 'evil-window-split)
   :init
   (setq evil-want-keybinding nil)
+  (setq evil-want-Y-yank-to-eol t)
   :config
   (evil-mode 1))
 
 (use-package evil-collection
   :after evil 
+  :demand
   :config
   (evil-collection-init)
   ;; Use visual line motions even outside of visual-line-mode buffers, 'cherry-pick' from emacs-from-scratch
@@ -141,10 +344,76 @@
   (evil-set-initial-state 'dashboard-mode 'normal)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer)
+    "l" 'dired-single-buffer
+    "q" ''quit-window)
   )
 
+;; suppercharge `Shift-K`
+(use-package helpful
+  :after evil
+  :init
+  (setq evil-lookup-func #'helpful-at-point)
+  :bind
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-key] . helpful-key))
+
+(use-package eldoc
+  :hook (emacs-lisp-mode cider-mode))
+
+(use-package projectile
+  :demand
+  :general
+  (my/leader-keys
+   "p" '(:keymap projectile-command-map :which-key "projectile")
+   "p a" 'projectile-add-known-project
+   "p t" 'projectile-run-vterm)
+  :init
+  (when (file-directory-p "~/git")
+    (setq projectile-project-search-path '("~/git")))
+  (setq projectile-completion-system 'default)
+  (setq projectile-switch-project-action #'projectile-find-file)
+  ;; (add-to-list 'projectile-globally-ignored-directories "straight") ;; TODO
+  :config
+  (defadvice projectile-project-root (around ignore-remote first activate)
+    (unless (file-remote-p default-directory) ad-do-it))
+  (projectile-mode))
+
+(use-package dashboard
+  :after projectile
+  :demand
+  :init
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq dashboard-center-content t)
+  (setq dashboard-projects-backend 'projectile)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          ;; (agenda . 5)
+                          ))
+  ;; (setq dashboard-startup-banner [VALUE])
+  :config
+  (dashboard-setup-startup-hook))
+
+(use-package perspective
+  :general
+  (my/leader-keys
+   "<tab> <tab>" 'persp-switch
+   "<tab> `" 'persp-switch-last
+   "<tab> d" 'persp-kill)
+  :config
+  (persp-mode))
+
+(use-package persp-projectile
+  :general
+  (my/leader-keys
+   "p p" 'projectile-persp-switch-project))
+
 (use-package evil-commentary
+  :demand
   :config
   (evil-commentary-mode))
 
@@ -153,23 +422,129 @@
   :config
   (evil-lion-mode))
 
+;; multiple cursors
+(use-package evil-mc
+  :commands (evil-mc-make-and-goto-next-match ;C-n
+             evil-mc-make-and-goto-prev-match ;C-p
+             evil-mc-make-cursor-here ; grh
+             evil-mc-undo-all-cursors ; grq
+             evil-mc-make-all-cursors ; grm
+             evil-mc-make-cursor-move-next-line ; grj
+             evil-mc-make-cursor-move-prev-line ; grk
+             )
+  :config
+  (global-evil-mc-mode +1)
+  )
+
+(use-package evil-surround
+  :general
+  (:states 'visual
+           "S" 'evil-surround-region
+           "gS" 'evil-Surround-region))
+
 (use-package ranger
   :config
   (setq ranger-show-hidden t))
 
-(use-package vterm)
+(use-package vterm
+  :general
+  (my/leader-keys
+    "'" 'vterm-other-window)
+  :config
+  (setq ;; vterm-shell (executable-find "fish")
+        vterm-max-scrollback 10000))
 
-(use-package dired-single)
-
-(use-package direx
+(use-package dired
+  :straight nil
+  :ensure nil
   :bind (("C-x C-j" . dired-jump)
 	 ("C-x 4 C-j" . dired-jump-other-window))
   :custom ((dired-listing-switches "-agho --group-directories-first"))) 
 
-(use-package magit)			; evil-magit is now part of evil-collection
+(use-package dired-single
+  :after dired)
+
+(use-package magit			; evil-magit is now part of evil-collection
+  :general
+  (my/leader-keys
+    "g g" 'magit-status
+    "g G" 'magit-status-here)
+  :init
+  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  )
 
 (if IS-LINUX (use-package evil-magit	; but gccemacs linux still requires it
                :after magit))
+
+;; NOTE: Make sure to configure a GitHub token before using this package!
+;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
+;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
+(use-package forge :after magit)
+
+(use-package git-timemachine
+  :hook (git-time-machine-mode . evil-normalize-keymaps)
+  :init (setq git-timemachine-show-minibuffer-details t)
+  :general
+  (general-nmap "SPC g t" 'git-timemachine-toggle)
+  (git-timemachine-mode-map "C-k" 'git-timemachine-show-previous-revision)
+  (git-timemachine-mode-map "C-j" 'git-timemachine-show-next-revision)
+  (git-timemachine-mode-map "q" 'git-timemachine-quit)
+  )
+
+(use-package git-gutter-fringe
+  :hook
+  ((text-mode
+    org-mode
+    prog-mode) . git-gutter-mode)
+  :config
+  (setq-default fringes-outside-margins t)
+  )
+
+(use-package hydra)
+
+(use-package smerge-mode
+  :straight nil
+  :ensure nil
+  :after hydra
+  :general
+  (my/leader-keys "g m" 'hydra-smerge)
+  :init
+  (defhydra hydra-smerge (:hint nil
+                                :pre (smerge-mode 1)
+                                ;; Disable `smerge-mode' when quitting hydra if
+                                ;; no merge conflicts remain.
+                                :post (smerge-auto-leave))
+    "
+                                                  ╭────────┐
+Movement   Keep           Diff              Other │ smerge │
+╭─────────────────────────────────────────────────┴────────╯
+   ^_g_^       [_b_] base       [_<_] upper/base    [_C_] Combine
+   ^_C-k_^     [_u_] upper      [_=_] upper/lower   [_r_] resolve
+   ^_k_ ↑^     [_l_] lower      [_>_] base/lower    [_R_] remove
+   ^_j_ ↓^     [_a_] all        [_H_] hightlight
+   ^_C-j_^     [_RET_] current  [_E_] ediff             ╭──────────
+   ^_G_^                                            │ [_q_] quit"
+    ("g" (progn (goto-char (point-min)) (smerge-next)))
+    ("G" (progn (goto-char (point-max)) (smerge-prev)))
+    ("C-j" smerge-next)
+    ("C-k" smerge-prev)
+    ("j" next-line)
+    ("k" previous-line)
+    ("b" smerge-keep-base)
+    ("u" smerge-keep-upper)
+    ("l" smerge-keep-lower)
+    ("a" smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("\C-m" smerge-keep-current)
+    ("<" smerge-diff-base-upper)
+    ("=" smerge-diff-upper-lower)
+    (">" smerge-diff-base-lower)
+    ("H" smerge-refine)
+    ("E" smerge-ediff)
+    ("C" smerge-combine-with-next)
+    ("r" smerge-resolve)
+    ("R" smerge-kill-current)
+    ("q" nil :color blue)))
 
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
@@ -189,35 +564,92 @@
 ;;   (global-undo-tree-mode)
 ;;   (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
 
-;; company globally??
 (use-package company
-  :config
-  (company-mode 1)
-  (add-hook 'after-init-hook 'global-company-mode)
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  :demand
+  :hook ((lsp-mode . company-mode)
+         (emacs-lisp-mode . company-mode))
+  :bind
+  (:map company-active-map
+        ("<tab>" . company-complete-selection))
+  :init
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.0)
+  (setq company-backends '(company-capf company-dabbrev-code company-keywords company-files company-dabbrev)))
+
+;; (use-package company-box
+;;   :hook (company-mode . company-box-mode))
+
+(use-package envrc
+  :hook ((python-mode . envrc-mode)
+         (org-mode . envrc-mode)))
+
+(use-package yasnippet
+  :hook
+  ((text-mode . yas-minor-mode)
+   (prog-mode . yas-minor-mode)
+   (org-mode . yas-minor-mode)))
 
 ;; turn on flycheck-mode on demand, global-flycheck-mode is a bit too much, do I still need flycheck if used lsp-mode?
 (use-package flycheck)
 
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 ;; (setq lsp-keymap-prefix "s-l")
-(setq lsp-keymap-prefix "C-c l")
+;; (setq lsp-keymap-prefix "C-c l")
+
+;; (defun my/lsp-mode-setup ()
+;;   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+;;   (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
-  :hook (;; if you want which-key integration
-	 (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  :commands (lsp lsp-deferred)
+  ;; :hook (lsp-mode . my/lsp-mode-setup)
+  :general
+  (my/leader-keys
+    "l" '(:keymap lsp-command-map :which-key "lsp"))
 
-;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
+  (lsp-mode-map "<tab>" 'company-indent-or-complete-common)
+  :init
+  (setq lsp-restart 'ignore)
+  (setq lsp-eldoc-enable-hover nil)
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook ((lsp-mode . lsp-ui-mode))
+  :init
+  (setq lsp-ui-doc-show-with-cursor nil)
+  (setq lsp-ui-doc-show-with-mouse nil)
+  )
+
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
-;; optionally if you want to use debugger
-(use-package dap-mode)
+(use-package dap-mode
+  :general
+  (my/local-leader-keys
+    :keymaps 'python-mode-map
+    "d h" '(dap-hydra :wk "hydra"))
+  :init
+  (setq dap-auto-configure nil)
+  :config
+  (dap-ui-mode 1))
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+(use-package elisp-mode
+  :straight nil
+  :ensure nil
+  :general
+  (my/local-leader-keys
+    :keymaps '(org-mode-map emacs-lisp-mode-map)
+    "e l" '(eval-last-sexp :wk "last sexp"))
+  (my/local-leader-keys
+    :keymaps '(org-mode-map emacs-lisp-mode-map)
+    :states 'visual
+    "e" '(eval-last-sexp :wk "sexp")))
+
+(use-package nix-mode
+  :commands (nix-mode) ;;FIXME
+  :mode "\\.nix\\'")
 
 ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
@@ -345,13 +777,7 @@
       (markdown-mode . visual-line-mode)
       (markdown-mode . variable-pitch-mode))
 
-;; === doom performance tuning tips
-(add-hook 'emacs-startup-hook
-  (lambda ()
-    (setq gc-cons-threshold 16777216 ; 16mb
-          gc-cons-percentage 0.1)))
-;; ===
-
+; ===
 (setq startup-time-toc (current-time))
 (setq startup-time-seconds
       (time-to-seconds (time-subtract startup-time-toc startup-time-tic)))

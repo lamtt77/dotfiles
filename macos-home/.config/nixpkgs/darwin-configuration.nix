@@ -8,6 +8,7 @@
   # environment setup
   environment = {
     # loginShell = pkgs.fish;
+    loginShell = pkgs.zsh;
     pathsToLink = [ "/Applications" ];
     etc = {
       darwin.source = "${inputs.darwin}";

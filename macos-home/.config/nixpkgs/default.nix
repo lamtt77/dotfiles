@@ -9,6 +9,7 @@ let
   systemSetup = ''
     set -e
     echo >&2 "Installing Nix-Darwin..."
+
     # setup /run directory for darwin system installations
     if ! grep -q '^run\b' /etc/synthetic.conf 2>/dev/null; then
       echo "setting up /etc/synthetic.conf..."
@@ -23,7 +24,7 @@ let
   '';
 
   darwinBuild = ''
-    ${pkgs.nixFlakes}/bin/nix build ".#darwinConfigurations.lamt-macbookpro.system" --experimental-features "flakes nix-command" --show-trace
+    ${pkgs.nixFlakes}/bin/nix build ".#darwinConfigurations.lamt-macbookpro.system" -v --experimental-features "flakes nix-command" --show-trace
   '';
 
   darwinInstall = pkgs.writeShellScriptBin "darwinInstall" ''

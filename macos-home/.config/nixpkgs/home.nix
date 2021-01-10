@@ -84,7 +84,9 @@ in
       shellcheck
 
       # nix
+      nixpkgs-fmt
       nixfmt
+      niv
       nox
 
       # productivity boost
@@ -94,7 +96,7 @@ in
       fd
       fzf
       ranger
-        # enhanced file previews with `scope.sh`
+        # enhance file previews with `scope.sh`
         highlight atool p7zip mediainfo odt2txt openscad #ncurses
       lf
         # also used a compact version of ranger's `scope.sh`
