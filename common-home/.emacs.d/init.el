@@ -2,21 +2,6 @@
 
 (setq startup-time-tic (current-time))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;; (setq debug-on-error t)			; turn on manually to trace error
-
 ;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
 ;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
 ;; NOTE: init.el is now generated from readme.org.  Please edit that file instead
@@ -49,6 +34,7 @@
 ;; Ensure Doom is running out of this file's directory
 (setq user-emacs-directory (file-name-directory load-file-name))
 
+;; LamT tangled
 (setq straight-use-package-by-default t)
 ;; below does not fully work yet, unless finding and correcting `:demand` on all apppriate packages
 ;; (setq use-package-always-defer t)
@@ -86,7 +72,7 @@
   :config
   (gcmh-mode 1))
 
-;;; from doom-emacs core.el, should be here or early-init.el?
+  ;;; from doom-emacs core.el, should be here or early-init.el?
 (defconst EMACS27+   (> emacs-major-version 26))
 (defconst EMACS28+   (> emacs-major-version 27))
 (defconst IS-MAC     (eq system-type 'darwin))
@@ -223,64 +209,67 @@
   (general-evil-setup)
 
   (general-create-definer my/leader-keys
-                          :states '(normal visual emacs)
-                          :keymaps 'override
-                          :prefix "SPC"
-                          :global-prefix "C-SPC")
+    :states '(normal visual emacs)
+    :keymaps 'override
+    :prefix "SPC"
+    :global-prefix "C-SPC")
 
   (general-create-definer my/local-leader-keys
-                          :states '(normal visual)
-                          :keymaps 'override
-                          :prefix ","
-                          :global-prefix "SPC m")
+    :states '(normal visual)
+    :keymaps 'override
+    :prefix ","
+    :global-prefix "SPC m")
 
   (my/leader-keys
-   "SPC" '(execute-extended-command :which-key "execute command")
-   "`" '(switch-to-prev-buffer :which-key "prev buffer")
-   ";" '(eval-expression :which-key "eval sexp")
+    "SPC" '(execute-extended-command :which-key "execute command")
+    "`" '(switch-to-prev-buffer :which-key "prev buffer")
+    ";" '(eval-expression :which-key "eval sexp")
 
-   "b" '(:ignore t :which-key "buffer")
-   "br"  'revert-buffer
-   "bd"  'kill-current-buffer
+    "b" '(:ignore t :which-key "buffer")
+    "br"  'revert-buffer
+    "bd"  'kill-current-buffer
 
-   "f" '(:ignore t :which-key "file")
-   "ff"  'find-file
-   "fs" 'save-buffer
-   "fr" 'recentf-open-files
+    "f" '(:ignore t :which-key "file")
+    "ff"  'find-file
+    "fs" 'save-buffer
+    "fr" 'recentf-open-files
 
-   "g" '(:ignore t :which-key "git")
+    "g" '(:ignore t :which-key "git")
 
-   "h" '(:ignore t :which-key "describe")
-   "hv" 'describe-variable
-   "he" 'view-echo-area-messages
-   "hp" 'describe-package
-   "hf" 'describe-function
-   "hF" 'describe-face
-   "hk" 'describe-key
+    "h" '(:ignore t :which-key "describe")
+    "hv" 'describe-variable
+    "he" 'view-echo-area-messages
+    "hp" 'describe-package
+    "hf" 'describe-function
+    "hF" 'describe-face
+    "hk" 'describe-key
 
-   "p" '(:ignore t :which-key "project")
+    "p" '(:ignore t :which-key "project")
 
-   "s" '(:ignore t :which-key "search")
+    "s" '(:ignore t :which-key "search")
 
-   "t"  '(:ignore t :which-key "toggle")
-   "t d"  '(toggle-debug-on-error :which-key "debug on error")
-   "t v" '((lambda () (interactive) (visual-line-mode)) :wk "visual line")
+    "t"  '(:ignore t :which-key "toggle")
+    "t d"  '(toggle-debug-on-error :which-key "debug on error")
+    "t v" '((lambda () (interactive) (visual-line-mode)) :wk "visual line")
 
-   "w" '(:ignore t :which-key "window")
-   "wl"  'windmove-right
-   "wh"  'windmove-left
-   "wk"  'windmove-up
-   "wj"  'windmove-down
-   "wd"  'delete-window
-   "wu" 'winner-undo
-   "wr" 'winner-redo
-   )
+    "w" '(:ignore t :which-key "window")
+    "wl"  'windmove-right
+    "wh"  'windmove-left
+    "wk"  'windmove-up
+    "wj"  'windmove-down
+    "wd"  'delete-window
+    "wu" 'winner-undo
+    "wr" 'winner-redo
+
+    "[d" 'git-gutter:previous-hunk
+    "]d" 'git-gutter:next-hunk
+    )
 
   (my/local-leader-keys
-   "d" '(:ignore t :which-key "debug")
-   "e" '(:ignore t :which-key "eval")
-   "t" '(:ignore t :which-key "test")
-   )
+    "d" '(:ignore t :which-key "debug")
+    "e" '(:ignore t :which-key "eval")
+    "t" '(:ignore t :which-key "test")
+    )
   )
 
 (use-package rainbow-delimiters
@@ -324,8 +313,8 @@
   :demand t
   :general
   (my/leader-keys
-   "wv" 'evil-window-vsplit
-   "ws" 'evil-window-split)
+    "wv" 'evil-window-vsplit
+    "ws" 'evil-window-split)
   :init
   (setq evil-want-keybinding nil)
   (setq evil-want-Y-yank-to-eol t)
@@ -345,7 +334,7 @@
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-single-up-directory
     "l" 'dired-single-buffer
-    "q" ''quit-window)
+    "q" 'quit-window)
   )
 
 ;; suppercharge `Shift-K`
@@ -366,9 +355,9 @@
   :demand
   :general
   (my/leader-keys
-   "p" '(:keymap projectile-command-map :which-key "projectile")
-   "p a" 'projectile-add-known-project
-   "p t" 'projectile-run-vterm)
+    "p" '(:keymap projectile-command-map :which-key "projectile")
+    "p a" 'projectile-add-known-project
+    "p t" 'projectile-run-vterm)
   :init
   (when (file-directory-p "~/git")
     (setq projectile-project-search-path '("~/git")))
@@ -398,19 +387,37 @@
   :config
   (dashboard-setup-startup-hook))
 
+(use-package centaur-tabs
+  :hook (emacs-startup . centaur-tabs-mode)
+  :general
+  (general-nvmap "gt" 'centaur-tabs-forward)
+  (general-nvmap "gT" 'centaur-tabs-backward)
+  :init
+  (setq centaur-tabs-set-icons t)
+  :config
+  (centaur-tabs-mode t)
+  (centaur-tabs-group-by-projectile-project)
+  )
+
+(use-package centered-cursor-mode
+  :general (my/leader-keys "t -" (lambda () (interactive) (centered-cursor-mode 'toggle))))
+
+(use-package hide-mode-line
+  :commands (hide-mode-line-mode))
+
 (use-package perspective
   :general
   (my/leader-keys
-   "<tab> <tab>" 'persp-switch
-   "<tab> `" 'persp-switch-last
-   "<tab> d" 'persp-kill)
+    "<tab> <tab>" 'persp-switch
+    "<tab> `" 'persp-switch-last
+    "<tab> d" 'persp-kill)
   :config
   (persp-mode))
 
 (use-package persp-projectile
   :general
   (my/leader-keys
-   "p p" 'projectile-persp-switch-project))
+    "p p" 'projectile-persp-switch-project))
 
 (use-package evil-commentary
   :demand
@@ -452,13 +459,13 @@
     "'" 'vterm-other-window)
   :config
   (setq ;; vterm-shell (executable-find "fish")
-        vterm-max-scrollback 10000))
+   vterm-max-scrollback 10000))
 
 (use-package dired
   :straight nil
   :ensure nil
   :bind (("C-x C-j" . dired-jump)
-	 ("C-x 4 C-j" . dired-jump-other-window))
+         ("C-x 4 C-j" . dired-jump-other-window))
   :custom ((dired-listing-switches "-agho --group-directories-first"))) 
 
 (use-package dired-single
@@ -515,15 +522,15 @@
                                 ;; no merge conflicts remain.
                                 :post (smerge-auto-leave))
     "
-                                                  ╭────────┐
-Movement   Keep           Diff              Other │ smerge │
-╭─────────────────────────────────────────────────┴────────╯
-   ^_g_^       [_b_] base       [_<_] upper/base    [_C_] Combine
-   ^_C-k_^     [_u_] upper      [_=_] upper/lower   [_r_] resolve
-   ^_k_ ↑^     [_l_] lower      [_>_] base/lower    [_R_] remove
-   ^_j_ ↓^     [_a_] all        [_H_] hightlight
-   ^_C-j_^     [_RET_] current  [_E_] ediff             ╭──────────
-   ^_G_^                                            │ [_q_] quit"
+                                                    ╭────────┐
+  Movement   Keep           Diff              Other │ smerge │
+  ╭─────────────────────────────────────────────────┴────────╯
+     ^_g_^       [_b_] base       [_<_] upper/base    [_C_] Combine
+     ^_C-k_^     [_u_] upper      [_=_] upper/lower   [_r_] resolve
+     ^_k_ ↑^     [_l_] lower      [_>_] base/lower    [_R_] remove
+     ^_j_ ↓^     [_a_] all        [_H_] hightlight
+     ^_C-j_^     [_RET_] current  [_E_] ediff             ╭──────────
+     ^_G_^                                            │ [_q_] quit"
     ("g" (progn (goto-char (point-min)) (smerge-next)))
     ("G" (progn (goto-char (point-max)) (smerge-prev)))
     ("C-j" smerge-next)
@@ -647,17 +654,29 @@ Movement   Keep           Diff              Other │ smerge │
     :states 'visual
     "e" '(eval-last-sexp :wk "sexp")))
 
+(use-package clojure-mode
+  :mode "\\.clj$")
+
+(use-package cider
+  :commands (cider-jack-in cider-mode)
+  :general
+  ;; (clojure-mode-map "")
+  :init
+  (setq nrepl-hide-special-buffers t)
+  :config
+  (add-hook 'cider-mode-hook #'eldoc-mode))
+
 (use-package nix-mode
   :commands (nix-mode) ;;FIXME
   :mode "\\.nix\\'")
 
-; expand the marked region in semantic increments (negative prefix to reduce region)
+                                        ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
   :config
   (global-set-key (kbd "C--") 'er/contract-region)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-; deletes all the whitespace when you hit backspace or delete
+                                        ; deletes all the whitespace when you hit backspace or delete
 (use-package hungry-delete
   :config
   (global-hungry-delete-mode))
@@ -667,9 +686,43 @@ Movement   Keep           Diff              Other │ smerge │
 (use-package gnuplot)
 (use-package org-roam)
 
-(setq org-agenda-files "~/org-lam/lam-arch-notes.org")
-(setq org-directory "/home/lam/org-lam/")
-(setq org-default-notes-file (concat org-directory "capture.org"))
+(use-package org
+  :hook ((org-mode . my/org-mode-setup)
+         (org-mode . (lambda () (add-hook 'after-save-hook #'my/org-babel-tangle-config))))
+  :init
+  (setq org-agenda-files "~/org-lam/lam-arch-notes.org"
+        org-directory "/home/lam/org-lam/"
+        org-default-notes-file (concat org-directory "capture.org"))
+  ;; setup my org mode
+  (defun my/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
+  ;; from  https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org#auto-tangle-configuration-files
+  (defun my/org-babel-tangle-config ()
+    (when (string-equal (file-name-directory (buffer-file-name))
+                        (expand-file-name user-emacs-directory))
+      ;; Dynamic scoping to the rescue
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
+  )
+
+(use-package org
+  :general
+  (my/local-leader-keys
+    :keymaps 'org-mode-map
+    "," '(org-edit-special :wk "edit")
+    "-" '(org-babel-demarcate-block :wk "split block"))
+  (my/local-leader-keys
+    :keymaps 'org-src-mode-map
+    "," '(org-edit-src-exit :wk "exit")) ;;FIXME
+  :init
+  (setq org-confirm-babel-evaluate nil)
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t))))
 
 ;; ;; on-going issue: https://github.com/politza/pdf-tools/pull/588
 ;; ;; also refer to https://emacs.stackexchange.com/questions/13314/install-pdf-tools-on-emacs-macosx
@@ -767,17 +820,17 @@ Movement   Keep           Diff              Other │ smerge │
 
 ;; from https://zzamboni.org/post/my-emacs-configuration-with-commentary/
 (use-package adoc-mode
-      :mode "\\.asciidoc\\'"
-      :hook
-      (adoc-mode . visual-line-mode)
-      (adoc-mode . variable-pitch-mode))
+  :mode "\\.asciidoc\\'"
+  :hook
+  (adoc-mode . visual-line-mode)
+  (adoc-mode . variable-pitch-mode))
 
 (use-package markdown-mode
-      :hook
-      (markdown-mode . visual-line-mode)
-      (markdown-mode . variable-pitch-mode))
+  :hook
+  (markdown-mode . visual-line-mode)
+  (markdown-mode . variable-pitch-mode))
 
-; ===
+                                        ; ===
 (setq startup-time-toc (current-time))
 (setq startup-time-seconds
       (time-to-seconds (time-subtract startup-time-toc startup-time-tic)))
