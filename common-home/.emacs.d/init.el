@@ -81,12 +81,14 @@
 ;; I use `dwm` terminal which has different default font size
 ;; (if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
 
-(defvar my/default-font-name "Liberation Mono")
-(defvar my/default-font-size 100)
-(defvar my/default-variable-font-size 105)
-(set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
-(set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height my/default-variable-font-size :weight 'regular)
+(if IS-LINUX (
+              (defvar my/default-font-name "Liberation Mono")
+              (defvar my/default-font-size 100)
+              (set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
+              (set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
+              (defvar my/default-variable-font-size 105)
+              (set-face-attribute 'variable-pitch nil :font "Cantarell" :height my/default-variable-font-size :weight 'regular)
+              ))
 
 ;; restore the defaults changed by emacsMacport
 (cond (IS-MAC (setq mac-command-modifier      'super
