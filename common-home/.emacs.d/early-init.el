@@ -1,6 +1,7 @@
+;; NOTE: early-init.el is now generated from readme.org.  Please edit that file instead
 ;; in ~/.emacs.d/init.el (or ~/.emacs.d/early-init.el in Emacs 27)
 
-;; performance tuning tips
+;; doom performance tuning tips
 ;; Defer garbage collection further back in the startup process
 (setq gc-cons-threshold most-positive-fixnum)
 

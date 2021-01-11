@@ -1,10 +1,10 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+;; NOTE: init.el is now generated from readme.org.  Please edit that file instead
+
 (setq startup-time-tic (current-time))
 
-;; === apply some (not all) doom performance tuning tips, startup time 3.6s -> 2.3s after tuned (reduced ~36%)
-;; gccemacs startup time also being at ~2.4s, so not improving if already using straight??
-;; NOTE: init.el is now generated from readme.org.  Please edit that file instead
+;; === apply some doom performance tuning tips, gccemacs startup time before tuning being at ~2.4s with much less packages
 ;; repeating here in case early-init.el is not loaded with chemacs
 (setq gc-cons-threshold most-positive-fixnum)
 (setq package-enable-at-startup nil)
@@ -35,7 +35,7 @@
 (setq user-emacs-directory (file-name-directory load-file-name))
 
 (setq straight-use-package-by-default t)
-;; below does not fully work yet, unless finding and correcting `:demand` on all apppriate packages
+;; below does not fully work yet, unless finding and correcting `:demand` on all appropriate packages
 ;; (setq use-package-always-defer t)
 
 (defvar bootstrap-version)
@@ -70,7 +70,7 @@
   :config
   (gcmh-mode 1))
 
-;;; from doom-emacs core.el, should be here or early-init.el?
+;;; from doom-emacs core.el
 (defconst EMACS27+   (> emacs-major-version 26))
 (defconst EMACS28+   (> emacs-major-version 27))
 (defconst IS-MAC     (eq system-type 'darwin))
@@ -82,7 +82,7 @@
 ;; (if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
 
 (defvar my/default-font-name "Liberation Mono")
-(defvar my/default-font-size 105)
+(defvar my/default-font-size 100)
 (defvar my/default-variable-font-size 105)
 (set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
 (set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
@@ -135,7 +135,7 @@
   ;; write over selected text on input... like all modern editors do
   (delete-selection-mode t)
 
-  ;; enable recent files mode.
+  (show-paren-mode t)
   (recentf-mode t)
 
   ;; don't want ESC as a modifier
@@ -207,6 +207,17 @@
   ;; (highlight-indent-guides-character ?|)
   ;; (highlight-indent-guides-responsive 'stack)
   )
+(use-package rainbow-delimiters
+  :hook (lisp-mode . rainbow-delimiters-mode))
+
+(use-package tree-sitter
+  :hook (python-mode . (lambda ()
+                         (require 'tree-sitter)
+                         (require 'tree-sitter-langs)
+                         (require 'tree-sitter-hl)
+                         (tree-sitter-hl-mode))))
+(use-package tree-sitter-langs
+  :after tree-sitter)
 
 (use-package general
   :demand t
@@ -277,19 +288,6 @@
     )
   )
 
-(use-package rainbow-delimiters
-  :hook (lisp-mode . rainbow-delimiters-mode))
-
-(use-package tree-sitter
-  :hook (python-mode . (lambda ()
-                         (require 'tree-sitter)
-                         (require 'tree-sitter-langs)
-                         (require 'tree-sitter-hl)
-                         (tree-sitter-hl-mode))))
-
-(use-package tree-sitter-langs
-  :after tree-sitter)
-
 (use-package all-the-icons)
 
 (use-package doom-themes
@@ -304,6 +302,9 @@
   (setq doom-modeline-height 15)
   :config
   (doom-modeline-mode 1))
+
+(use-package hide-mode-line
+  :commands (hide-mode-line-mode))
 
 (use-package which-key
   :demand t
@@ -324,105 +325,25 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-Y-yank-to-eol t)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  ;; Use visual line motions even outside of visual-line-mode buffers, 'cherry-pick' from emacs-from-scratch
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal)
+  )
 
 (use-package evil-collection
   :after evil
   :demand
   :config
   (evil-collection-init)
-  ;; Use visual line motions even outside of visual-line-mode buffers, 'cherry-pick' from emacs-from-scratch
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-single-up-directory
     "l" 'dired-single-buffer
     "q" 'quit-window)
   )
-
-;; suppercharge `Shift-K`
-(use-package helpful
-  :after evil
-  :init
-  (setq evil-lookup-func #'helpful-at-point)
-  :bind
-  ([remap describe-function] . helpful-callable)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . helpful-variable)
-  ([remap describe-key] . helpful-key))
-
-(use-package eldoc
-  :hook (emacs-lisp-mode cider-mode))
-
-(use-package projectile
-  :demand
-  :general
-  (my/leader-keys
-    "p" '(:keymap projectile-command-map :which-key "projectile")
-    "p a" 'projectile-add-known-project
-    "p t" 'projectile-run-vterm)
-  :init
-  (when (file-directory-p "~/git")
-    (setq projectile-project-search-path '("~/git")))
-  (setq projectile-completion-system 'default)
-  (setq projectile-switch-project-action #'projectile-find-file)
-  ;; (add-to-list 'projectile-globally-ignored-directories "straight") ;; TODO
-  :config
-  (defadvice projectile-project-root (around ignore-remote first activate)
-    (unless (file-remote-p default-directory) ad-do-it))
-  (projectile-mode))
-
-(use-package dashboard
-  :after projectile
-  :demand
-  :init
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-  (setq dashboard-center-content t)
-  (setq dashboard-projects-backend 'projectile)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5)
-                          ;; (agenda . 5)
-                          ))
-  ;; (setq dashboard-startup-banner [VALUE])
-  :config
-  (dashboard-setup-startup-hook))
-
-(use-package centaur-tabs
-  :hook (emacs-startup . centaur-tabs-mode)
-  :general
-  (general-nvmap "gt" 'centaur-tabs-forward)
-  (general-nvmap "gT" 'centaur-tabs-backward)
-  :init
-  (setq centaur-tabs-set-icons t)
-  :config
-  (centaur-tabs-mode t)
-  (centaur-tabs-group-by-projectile-project)
-  )
-
-(use-package centered-cursor-mode
-  :general (my/leader-keys "t -" (lambda () (interactive) (centered-cursor-mode 'toggle))))
-
-(use-package hide-mode-line
-  :commands (hide-mode-line-mode))
-
-(use-package perspective
-  :general
-  (my/leader-keys
-    "<tab> <tab>" 'persp-switch
-    "<tab> `" 'persp-switch-last
-    "<tab> d" 'persp-kill)
-  :config
-  (persp-mode))
-
-(use-package persp-projectile
-  :general
-  (my/leader-keys
-    "p p" 'projectile-persp-switch-project))
 
 (use-package evil-commentary
   :demand
@@ -454,6 +375,38 @@
            "S" 'evil-surround-region
            "gS" 'evil-Surround-region))
 
+;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
+(use-package undo-fu
+  :after evil
+  :config
+  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
+  (define-key evil-normal-state-map "\C-r" 'undo-fu-only-redo))
+
+(use-package undo-fu-session
+  :config
+  (global-undo-fu-session-mode)
+  (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
+
+;; Persistent-undo lost when close-then-open emacs!
+;; (use-package undo-tree
+;;   :init
+;;   (global-undo-tree-mode)
+;;   (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
+
+;; suppercharge `Shift-K`
+(use-package helpful
+  :after evil
+  :init
+  (setq evil-lookup-func #'helpful-at-point)
+  :bind
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-key] . helpful-key))
+
+(use-package eldoc
+  :hook (emacs-lisp-mode cider-mode))
+
 (use-package ranger
   :config
   (setq ranger-show-hidden t))
@@ -475,6 +428,65 @@
 
 (use-package dired-single
   :after dired)
+
+(use-package dired-open
+  :config
+  ;; Doesn't work as expected!
+  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+  (setq dired-open-extensions '(("png" . "feh")
+                                ("mkv" . "mpv"))))
+
+;; is this still need if using counsel?
+(use-package deadgrep
+  :config
+  (global-set-key (kbd "<f5>") #'deadgrep))
+
+;; counsel includes 3 packages: counsel, swiper and ivy
+(use-package counsel
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  ;; enable this if you want `swiper' to use it
+  ;; (setq search-default-mode #'char-fold-to-regexp)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c c") 'counsel-compile)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c L") 'counsel-git-log)
+  (global-set-key (kbd "C-c k") 'counsel-rg)
+  (global-set-key (kbd "C-c m") 'counsel-linux-app)
+  (global-set-key (kbd "C-c n") 'counsel-fzf)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package avy
+  :config
+  (setq avy-case-fold-search nil)       ;; case sensitive makes selection easier
+  (bind-key "C-;"    'avy-goto-char-2)  ;; I use this most frequently
+  (bind-key "C-'"    'avy-goto-line)    ;; Consistent with ivy-avy
+  (bind-key "M-g c"  'avy-goto-char)
+  (bind-key "M-g e"  'avy-goto-word-0)  ;; lots of candidates
+  (bind-key "M-g g"  'avy-goto-line)    ;; digits behave like goto-line
+  (bind-key "M-g w"  'avy-goto-word-1)  ;; first character of the word
+  (bind-key "M-g ("  'avy-goto-open-paren)
+  (bind-key "M-g )"  'avy-goto-close-paren)
+  (bind-key "M-g P"  'avy-pop-mar))
 
 (use-package magit			; evil-magit is now part of evil-collection
   :general
@@ -511,6 +523,76 @@
   :config
   (setq-default fringes-outside-margins t)
   )
+
+(use-package company
+  :demand
+  :hook ((lsp-mode . company-mode)
+         (emacs-lisp-mode . company-mode))
+  :bind
+  (:map company-active-map
+        ("<tab>" . company-complete-selection))
+  :init
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.0)
+  (setq company-backends '(company-capf company-dabbrev-code company-keywords company-files company-dabbrev)))
+
+;; (use-package company-box
+;;   :hook (company-mode . company-box-mode))
+
+(use-package envrc
+  :hook ((python-mode . envrc-mode)
+         (org-mode . envrc-mode)))
+
+(use-package projectile
+  :demand
+  :general
+  (my/leader-keys
+    "p" '(:keymap projectile-command-map :which-key "projectile")
+    "p a" 'projectile-add-known-project
+    "p t" 'projectile-run-vterm)
+  :init
+  (when (file-directory-p "~/git")
+    (setq projectile-project-search-path '("~/git")))
+  (setq projectile-completion-system 'default)
+  (setq projectile-switch-project-action #'projectile-find-file)
+  ;; (add-to-list 'projectile-globally-ignored-directories "straight") ;; TODO
+  :config
+  (defadvice projectile-project-root (around ignore-remote first activate)
+    (unless (file-remote-p default-directory) ad-do-it))
+  (projectile-mode))
+
+(use-package dashboard
+  :after projectile
+  :demand
+  :init
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq dashboard-center-content t)
+  (setq dashboard-projects-backend 'projectile)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          ;; (agenda . 5)
+                          ))
+  ;; (setq dashboard-startup-banner [VALUE])
+  :config
+  (dashboard-setup-startup-hook)
+  )
+
+(use-package perspective
+  :general
+  (my/leader-keys
+    "<tab> <tab>" 'persp-switch
+    "<tab> `" 'persp-switch-last
+    "<tab> d" 'persp-kill)
+  :config
+  (persp-mode))
+
+(use-package persp-projectile
+  :general
+  (my/leader-keys
+    "p p" 'projectile-persp-switch-project))
 
 (use-package hydra)
 
@@ -558,48 +640,26 @@
     ("R" smerge-kill-current)
     ("q" nil :color blue)))
 
-;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
-(use-package undo-fu
-  :after evil
-  :config
-  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
-  (define-key evil-normal-state-map "\C-r" 'undo-fu-only-redo))
-
-(use-package undo-fu-session
-  :config
-  (global-undo-fu-session-mode)
-  (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
-
-;; Persistent-undo lost when close-then-open emacs!
-;; (use-package undo-tree
-;;   :init
-;;   (global-undo-tree-mode)
-;;   (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
-
-(use-package company
-  :demand
-  :hook ((lsp-mode . company-mode)
-         (emacs-lisp-mode . company-mode))
-  :bind
-  (:map company-active-map
-        ("<tab>" . company-complete-selection))
-  :init
-  (setq company-minimum-prefix-length 1)
-  (setq company-idle-delay 0.0)
-  (setq company-backends '(company-capf company-dabbrev-code company-keywords company-files company-dabbrev)))
-
-;; (use-package company-box
-;;   :hook (company-mode . company-box-mode))
-
-(use-package envrc
-  :hook ((python-mode . envrc-mode)
-         (org-mode . envrc-mode)))
-
 (use-package yasnippet
   :hook
   ((text-mode . yas-minor-mode)
    (prog-mode . yas-minor-mode)
    (org-mode . yas-minor-mode)))
+
+(use-package centaur-tabs
+  :hook (emacs-startup . centaur-tabs-mode)
+  :general
+  (general-nvmap "gt" 'centaur-tabs-forward)
+  (general-nvmap "gT" 'centaur-tabs-backward)
+  :init
+  (setq centaur-tabs-set-icons t)
+  :config
+  (centaur-tabs-mode t)
+  (centaur-tabs-group-by-projectile-project)
+  )
+
+(use-package centered-cursor-mode
+  :general (my/leader-keys "t -" (lambda () (interactive) (centered-cursor-mode 'toggle))))
 
 ;; turn on flycheck-mode on demand, global-flycheck-mode is a bit too much, do I still need flycheck if used lsp-mode?
 (use-package flycheck)
@@ -675,97 +735,253 @@
   :commands (nix-mode) ;;FIXME
   :mode "\\.nix\\'")
 
-                                        ; expand the marked region in semantic increments (negative prefix to reduce region)
+;; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
   :config
   (global-set-key (kbd "C--") 'er/contract-region)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-                                        ; deletes all the whitespace when you hit backspace or delete
+;; deletes all the whitespace when you hit backspace or delete
 (use-package hungry-delete
   :config
   (global-hungry-delete-mode))
 
-;;(use-package auctex)
-;;(use-package ox-report)    ; got issue in gccemacs MacOS
 (use-package gnuplot)
+
 (use-package org-roam)
 
-(defun my/org-font-setup ()
-  ;; Replace list hyphen with dot
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (defun my/org-font-setup ()
+    ;; Replace list hyphen with dot
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-  ;; Set faces for heading levels
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+    ;; Set faces for heading levels
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
 
-  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
 
-;; setup my org mode
-(defun my/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (visual-line-mode 1))
+  ;; setup my org mode
+  (defun my/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
 
-;; from https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory
-(defun my/org-babel-tangle-config ()
-  "If the current file is in '~/dotfiles/common-home/', the code blocks are tangled"
-  (when (equal (file-name-directory (directory-file-name buffer-file-name))
-               (concat (getenv "HOME") "/dotfiles/common-home/.emacs.d/"))
-    ;; Dynamic scoping to the rescue
-    (let ((org-confirm-babel-evaluate nil))
-      (org-babel-tangle))))
+  ;; from https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory
+  (defun my/org-babel-tangle-config ()
+    "If the current file is in '~/dotfiles/common-home/', the code blocks are tangled"
+    (when (equal (file-name-directory (directory-file-name buffer-file-name))
+                 (concat (getenv "HOME") "/dotfiles/common-home/.emacs.d/"))
+      ;; Dynamic scoping to the rescue
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
 
-(use-package org
-  :hook ((org-mode . my/org-mode-setup)
-         (org-mode . (lambda () (add-hook 'after-save-hook #'my/org-babel-tangle-config))))
-  :init
-  (setq org-agenda-files "~/org-lam/lam-arch-notes.org"
-        org-directory "/home/lam/org-lam/"
-        org-default-notes-file (concat org-directory "capture.org"))
-  (my/org-font-setup)
-  (require 'org-tempo)
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python"))
-  (add-to-list 'org-structure-template-alist '("clj" . "src clojure"))
-  (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python"))
-  )
+  (use-package org-superstar
+    :hook (org-mode . org-superstar-mode)
+    :init
+    (setq org-superstar-headline-bullets-list '("✖" "✚" "◆" "▶" "○")
+          org-superstar-special-todo-items t
+          org-ellipsis "▼")
+    )
 
-(use-package org
-  :general
-  (my/local-leader-keys
-    :keymaps 'org-mode-map
-    "," '(org-edit-special :wk "edit")
-    "-" '(org-babel-demarcate-block :wk "split block"))
-  (my/local-leader-keys
-    :keymaps 'org-src-mode-map
-    "," '(org-edit-src-exit :wk "exit")) ;;FIXME
-  :init
-  (setq org-confirm-babel-evaluate nil)
-  :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (shell . t))))
+;; (defun my/org-mode-visual-fill ()
+;;   (setq visual-fill-column-width 100
+;;         visual-fill-column-center-text t)
+;;   (visual-fill-column-mode 1))
+
+;; (use-package visual-fill-column
+;;   :hook (org-mode . my/org-mode-visual-fill))
+
+  (use-package org
+    :pin org
+    :hook ((org-mode . my/org-mode-setup)
+           (org-mode . (lambda () (add-hook 'after-save-hook #'my/org-babel-tangle-config))))
+    :general
+    (my/leader-keys
+      "C" '(org-capture :wk "capture"))
+    (org-mode-map
+     :states '(normal)
+     "z i" '(org-toggle-inline-images :wk "inline images"))
+    ;; :init
+    ;; (setq org-agenda-files "~/org-lam/lam-arch-notes.org"
+    ;;       org-directory "/home/lam/org-lam/"
+    ;;       org-default-notes-file (concat org-directory "capture.org"))
+    :config
+    (setq org-agenda-start-with-log-mode t)
+    (setq org-log-done 'time)
+    (setq org-log-into-drawer t)
+
+    (setq org-agenda-files
+          '("~/org-lam/Tasks.org"
+            "~/org-lam/Habits.org"
+            "~/org-lam/Birthdays.org"))
+
+    (require 'org-habit)
+    (add-to-list 'org-modules 'org-habit)
+    (setq org-habit-graph-column 60)
+
+    (setq org-todo-keywords
+          '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+            (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+
+    (setq org-refile-targets
+          '(("Archive.org" :maxlevel . 1)
+            ("Tasks.org" :maxlevel . 1)))
+
+    ;; Save Org buffers after refiling!
+    (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+    (setq org-tag-alist
+          '((:startgroup)
+            ;; Put mutually exclusive tags here
+            (:endgroup)
+            ("@errand" . ?E)
+            ("@home" . ?H)
+            ("@work" . ?W)
+            ("agenda" . ?a)
+            ("planning" . ?p)
+            ("publish" . ?P)
+            ("batch" . ?b)
+            ("note" . ?n)
+            ("idea" . ?i)))
+
+    ;; Configure custom agenda views
+    (setq org-agenda-custom-commands
+          '(("d" "Dashboard"
+             ((agenda "" ((org-deadline-warning-days 7)))
+              (todo "NEXT"
+                    ((org-agenda-overriding-header "Next Tasks")))
+              (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+            ("n" "Next Tasks"
+             ((todo "NEXT"
+                    ((org-agenda-overriding-header "Next Tasks")))))
+
+            ("W" "Work Tasks" tags-todo "+work-email")
+
+            ;; Low-effort next actions
+            ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+             ((org-agenda-overriding-header "Low Effort Tasks")
+              (org-agenda-max-todos 20)
+              (org-agenda-files org-agenda-files)))
+
+            ("w" "Workflow Status"
+             ((todo "WAIT"
+                    ((org-agenda-overriding-header "Waiting on External")
+                     (org-agenda-files org-agenda-files)))
+              (todo "REVIEW"
+                    ((org-agenda-overriding-header "In Review")
+                     (org-agenda-files org-agenda-files)))
+              (todo "PLAN"
+                    ((org-agenda-overriding-header "In Planning")
+                     (org-agenda-todo-list-sublevels nil)
+                     (org-agenda-files org-agenda-files)))
+              (todo "BACKLOG"
+                    ((org-agenda-overriding-header "Project Backlog")
+                     (org-agenda-todo-list-sublevels nil)
+                     (org-agenda-files org-agenda-files)))
+              (todo "READY"
+                    ((org-agenda-overriding-header "Ready for Work")
+                     (org-agenda-files org-agenda-files)))
+              (todo "ACTIVE"
+                    ((org-agenda-overriding-header "Active Projects")
+                     (org-agenda-files org-agenda-files)))
+              (todo "COMPLETED"
+                    ((org-agenda-overriding-header "Completed Projects")
+                     (org-agenda-files org-agenda-files)))
+              (todo "CANC"
+                    ((org-agenda-overriding-header "Cancelled Projects")
+                     (org-agenda-files org-agenda-files)))))))
+
+    (setq org-capture-templates
+          `(("t" "Tasks / Projects")
+            ("tt" "Task" entry (file+olp "~/org-lam/Tasks.org" "Inbox")
+             "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+            ("j" "Journal Entries")
+            ("jj" "Journal" entry
+             (file+olp+datetree "~/org-lam/Journal.org")
+             "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+             ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+             :clock-in :clock-resume
+             :empty-lines 1)
+            ("jm" "Meeting" entry
+             (file+olp+datetree "~/org-lam/Journal.org")
+             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+             :clock-in :clock-resume
+             :empty-lines 1)
+
+            ("w" "Workflows")
+            ("we" "Checking Email" entry (file+olp+datetree "~/org-lam/Journal.org")
+             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+            ("m" "Metrics Capture")
+            ("mw" "Weight" table-line (file+headline "~/org-lam/Metrics.org" "Weight")
+             "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
+
+    ;; (define-key global-map (kbd "C-c j")
+    ;;   (lambda () (interactive) (org-capture nil "jj")))
+
+    (my/org-font-setup)
+    (require 'org-tempo)
+    (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+    (add-to-list 'org-structure-template-alist '("py" . "src python"))
+    (add-to-list 'org-structure-template-alist '("clj" . "src clojure"))
+    (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python"))
+    )
+
+  (use-package org
+    :general
+    (my/local-leader-keys
+      :keymaps 'org-mode-map
+      "," '(org-edit-special :wk "edit")
+      "-" '(org-babel-demarcate-block :wk "split block"))
+    (my/local-leader-keys
+      :keymaps 'org-src-mode-map
+      "," '(org-edit-src-exit :wk "exit")) ;;FIXME
+    :init
+    (setq org-confirm-babel-evaluate nil)
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (shell . t))))
+
+  ;; not working yet
+  ;; (setq image-use-external-converter t)
+  (use-package org-download
+    :after org
+    :custom
+    (org-download-method 'directory)
+    (org-download-image-dir "images")
+    (org-download-heading-lvl nil)
+    (org-download-timestamp "%Y%m%d-%H%M%S_")
+    (org-image-actual-width 600)
+    ;; (org-download-screenshot-method "/usr/bin/scrot %s")
+    ;; Drag-and-drop to `dired`
+    (add-hook 'dired-mode-hook 'org-download-enable)
+    :bind
+    ("C-M-y" . org-download-screenshot)
+    ("C-M-p" . org-download-clipboard)
+    :config)
 
 ;; ;; on-going issue: https://github.com/politza/pdf-tools/pull/588
 ;; ;; also refer to https://emacs.stackexchange.com/questions/13314/install-pdf-tools-on-emacs-macosx
@@ -790,77 +1006,6 @@
 ;; (use-package org-pdftools
 ;;   :after org)
 
-;; not working yet
-;; (setq image-use-external-converter t)
-
-(use-package org-download
-  :after org
-  :custom
-  (org-download-method 'directory)
-  (org-download-image-dir "images")
-  (org-download-heading-lvl nil)
-  (org-download-timestamp "%Y%m%d-%H%M%S_")
-  (org-image-actual-width 600)
-  ;; (org-download-screenshot-method "/usr/bin/scrot %s")
-  ;; Drag-and-drop to `dired`
-  (add-hook 'dired-mode-hook 'org-download-enable)
-  :bind
-  ("C-M-y" . org-download-screenshot)
-  ("C-M-p" . org-download-clipboard)
-  :config)
-
-;; is this still need if using counsel?
-(use-package deadgrep
-  :config
-  (global-set-key (kbd "<f5>") #'deadgrep))
-
-;; counsel includes 3 packages: counsel, swiper and ivy
-(use-package counsel
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  ;; enable this if you want `swiper' to use it
-  ;; (setq search-default-mode #'char-fold-to-regexp)
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c c") 'counsel-compile)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c L") 'counsel-git-log)
-  (global-set-key (kbd "C-c k") 'counsel-rg)
-  (global-set-key (kbd "C-c m") 'counsel-linux-app)
-  (global-set-key (kbd "C-c n") 'counsel-fzf)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
-(use-package avy
-  :config
-  (setq avy-case-fold-search nil)       ;; case sensitive makes selection easier
-  (bind-key "C-;"    'avy-goto-char-2)  ;; I use this most frequently
-  (bind-key "C-'"    'avy-goto-line)    ;; Consistent with ivy-avy
-  (bind-key "M-g c"  'avy-goto-char)
-  (bind-key "M-g e"  'avy-goto-word-0)  ;; lots of candidates
-  (bind-key "M-g g"  'avy-goto-line)    ;; digits behave like goto-line
-  (bind-key "M-g w"  'avy-goto-word-1)  ;; first character of the word
-  (bind-key "M-g ("  'avy-goto-open-paren)
-  (bind-key "M-g )"  'avy-goto-close-paren)
-  (bind-key "M-g P"  'avy-pop-mar))
-
 ;; from https://zzamboni.org/post/my-emacs-configuration-with-commentary/
 (use-package adoc-mode
   :mode "\\.asciidoc\\'"
@@ -873,7 +1018,7 @@
   (markdown-mode . visual-line-mode)
   (markdown-mode . variable-pitch-mode))
 
-                                        ; ===
+;; ===
 (setq startup-time-toc (current-time))
 (setq startup-time-seconds
       (time-to-seconds (time-subtract startup-time-toc startup-time-tic)))
