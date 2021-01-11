@@ -9,7 +9,7 @@
 (setq gc-cons-threshold most-positive-fixnum)
 (setq package-enable-at-startup nil)
 (setq comp-deferred-compilation nil)
-;
+                                        ;
 ;; `file-name-handler-alist' is consulted on every `require', `load' and various
 ;; path/io functions. You get a minor speed up by nooping this. However, this
 ;; may cause problems on builds of Emacs where its site lisp files aren't
@@ -34,7 +34,6 @@
 ;; Ensure Doom is running out of this file's directory
 (setq user-emacs-directory (file-name-directory load-file-name))
 
-;; LamT tangled
 (setq straight-use-package-by-default t)
 ;; below does not fully work yet, unless finding and correcting `:demand` on all apppriate packages
 ;; (setq use-package-always-defer t)
@@ -55,7 +54,6 @@
 (straight-use-package 'use-package)
 
 ;; leave it here so that we could use package-list-packages
-;; ref: emacs-from-scratch, https://github.crookster.org/switching-to-straight.el-from-emacs-26-builtin-package.el/
 ;; (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
@@ -72,7 +70,7 @@
   :config
   (gcmh-mode 1))
 
-  ;;; from doom-emacs core.el, should be here or early-init.el?
+;;; from doom-emacs core.el, should be here or early-init.el?
 (defconst EMACS27+   (> emacs-major-version 26))
 (defconst EMACS28+   (> emacs-major-version 27))
 (defconst IS-MAC     (eq system-type 'darwin))
@@ -81,7 +79,14 @@
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
 
 ;; I use `dwm` terminal which has different default font size
-(if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
+;; (if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
+
+(defvar my/default-font-name "Liberation Mono")
+(defvar my/default-font-size 105)
+(defvar my/default-variable-font-size 105)
+(set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height my/default-variable-font-size :weight 'regular)
 
 ;; restore the defaults changed by emacsMacport
 (cond (IS-MAC (setq mac-command-modifier      'super
@@ -166,7 +171,7 @@
   ;; let emacs handle indentation
   (electric-indent-mode +1)
   ;; and auto-close parentheses
-  (electric-pair-mode +1)
+  ;; (electric-pair-mode +1)
   )
 
 ;; popup management from https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#popup-rules
@@ -322,7 +327,7 @@
   (evil-mode 1))
 
 (use-package evil-collection
-  :after evil 
+  :after evil
   :demand
   :config
   (evil-collection-init)
@@ -466,7 +471,7 @@
   :ensure nil
   :bind (("C-x C-j" . dired-jump)
          ("C-x 4 C-j" . dired-jump-other-window))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))) 
+  :custom ((dired-listing-switches "-agho --group-directories-first")))
 
 (use-package dired-single
   :after dired)
@@ -522,15 +527,15 @@
                                 ;; no merge conflicts remain.
                                 :post (smerge-auto-leave))
     "
-                                                    ╭────────┐
-  Movement   Keep           Diff              Other │ smerge │
-  ╭─────────────────────────────────────────────────┴────────╯
-     ^_g_^       [_b_] base       [_<_] upper/base    [_C_] Combine
-     ^_C-k_^     [_u_] upper      [_=_] upper/lower   [_r_] resolve
-     ^_k_ ↑^     [_l_] lower      [_>_] base/lower    [_R_] remove
-     ^_j_ ↓^     [_a_] all        [_H_] hightlight
-     ^_C-j_^     [_RET_] current  [_E_] ediff             ╭──────────
-     ^_G_^                                            │ [_q_] quit"
+                                                                ╭────────┐
+              Movement   Keep           Diff              Other │ smerge │
+              ╭─────────────────────────────────────────────────┴────────╯
+                 ^_g_^       [_b_] base       [_<_] upper/base    [_C_] Combine
+                 ^_C-k_^     [_u_] upper      [_=_] upper/lower   [_r_] resolve
+                 ^_k_ ↑^     [_l_] lower      [_>_] base/lower    [_R_] remove
+                 ^_j_ ↓^     [_a_] all        [_H_] hightlight
+                 ^_C-j_^     [_RET_] current  [_E_] ediff             ╭──────────
+                 ^_G_^                                            │ [_q_] quit"
     ("g" (progn (goto-char (point-min)) (smerge-next)))
     ("G" (progn (goto-char (point-max)) (smerge-prev)))
     ("C-j" smerge-next)
@@ -555,7 +560,7 @@
 
 ;; Persistent undo-fu, will that be more reliable than undo-tree? is it still needed with gccemacs 28?
 (use-package undo-fu
-  :after evil 
+  :after evil
   :config
   (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
   (define-key evil-normal-state-map "\C-r" 'undo-fu-only-redo))
@@ -566,7 +571,7 @@
   (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
 
 ;; Persistent-undo lost when close-then-open emacs!
-;; (use-package undo-tree			
+;; (use-package undo-tree
 ;;   :init
 ;;   (global-undo-tree-mode)
 ;;   (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
@@ -686,6 +691,49 @@
 (use-package gnuplot)
 (use-package org-roam)
 
+(defun my/org-font-setup ()
+  ;; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+  ;; Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
+
+;; setup my org mode
+(defun my/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
+;; from https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory
+(defun my/org-babel-tangle-config ()
+  "If the current file is in '~/dotfiles/common-home/', the code blocks are tangled"
+  (when (equal (file-name-directory (directory-file-name buffer-file-name))
+               (concat (getenv "HOME") "/dotfiles/common-home/.emacs.d/"))
+    ;; Dynamic scoping to the rescue
+    (let ((org-confirm-babel-evaluate nil))
+      (org-babel-tangle))))
+
 (use-package org
   :hook ((org-mode . my/org-mode-setup)
          (org-mode . (lambda () (add-hook 'after-save-hook #'my/org-babel-tangle-config))))
@@ -693,18 +741,13 @@
   (setq org-agenda-files "~/org-lam/lam-arch-notes.org"
         org-directory "/home/lam/org-lam/"
         org-default-notes-file (concat org-directory "capture.org"))
-  ;; setup my org mode
-  (defun my/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (visual-line-mode 1))
-  ;; from  https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org#auto-tangle-configuration-files
-  (defun my/org-babel-tangle-config ()
-    (when (string-equal (file-name-directory (buffer-file-name))
-                        (expand-file-name user-emacs-directory))
-      ;; Dynamic scoping to the rescue
-      (let ((org-confirm-babel-evaluate nil))
-        (org-babel-tangle))))
+  (my/org-font-setup)
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("clj" . "src clojure"))
+  (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python"))
   )
 
 (use-package org
