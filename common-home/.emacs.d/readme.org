@@ -116,7 +116,7 @@
 
 ** Emacs Initialization and Settings
 #+begin_src emacs-lisp
-  ;;; from doom-emacs core.el
+  ;; from doom-emacs core.el
   (defconst EMACS27+   (> emacs-major-version 26))
   (defconst EMACS28+   (> emacs-major-version 27))
   (defconst IS-MAC     (eq system-type 'darwin))
@@ -127,19 +127,24 @@
   ;; I use `dwm` terminal which has different default font size
   ;; (if IS-LINUX (setq my-font (font-spec :family "Liberation Mono" :size 10.5)))
 
-  (if IS-LINUX (
-                (defvar my/default-font-name "Liberation Mono")
-                (defvar my/default-font-size 100)
-                (set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
-                (set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
-                (defvar my/default-variable-font-size 105)
-                (set-face-attribute 'variable-pitch nil :font "Cantarell" :height my/default-variable-font-size :weight 'regular)
-                ))
+  (defvar my/default-font-name "Liberation Mono")
+  (defvar my/default-font-size 100)
+  (defvar my/default-variable-font-name "Cantarell")
+  (defvar my/default-variable-font-size 105)
 
-  ;; restore the defaults changed by emacsMacport
-  (cond (IS-MAC (setq mac-command-modifier      'super
+  (cond (IS-MAC (setq my/default-font-name "Monaco"
+                      my/default-font-size 120
+                      my/default-variable-font-name "Tahoma"
+                      my/default-variable-font-size 125
+                      ;; restore the defaults changed by emacsMacport
+                      mac-command-modifier      'super
                       mac-option-modifier       'meta
-                      mac-control-modifier      'control)))
+                      mac-control-modifier      'control
+                      )))
+
+  (set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
+  (set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
+  (set-face-attribute 'variable-pitch nil :font my/default-variable-font-name :height my/default-variable-font-size :weight 'regular)
 
   (put 'downcase-region 'disabled nil)
 
@@ -873,7 +878,7 @@
                       (org-level-6 . 1.1)
                       (org-level-7 . 1.1)
                       (org-level-8 . 1.1)))
-        (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+        (set-face-attribute (car face) nil :font my/default-variable-font-name :weight 'regular :height (cdr face)))
 
       ;; Ensure that anything that should be fixed-pitch in Org files appears that way
       (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
