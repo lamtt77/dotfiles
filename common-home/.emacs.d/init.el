@@ -59,6 +59,9 @@
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
+;; M-x use-package-report to see the statictics
+;; (setq use-package-compute-statistics t)
+
 (use-package benchmark-init
   :config
   ;; To disable collection of benchmark data after init is done.
@@ -143,7 +146,7 @@
   ;; enable winner mode globally for undo/redo window layout changes
   (winner-mode t))
 
-;; indentation
+;; indentation and hippie-expand
 (use-package emacs
   :config
   ;; use common convention for indentation by default
@@ -449,6 +452,8 @@
   :config
   (global-set-key (kbd "<f5>") #'deadgrep))
 
+(use-package diminish)
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -641,6 +646,7 @@
   "scale text"
   ("j" text-scale-increase "in")
   ("k" text-scale-decrease "out")
+  ("=" (text-scale-set 0) "default")
   ("f" nil "finished" :exit t))
 
 (use-package smerge-mode
@@ -868,12 +874,13 @@
    "z i" '(org-toggle-inline-images :wk "inline images"))
   ;; :init
   ;; (setq org-agenda-files "~/org-lam/lam-arch-notes.org"
-  ;;       org-directory "~/org-lam/"
   ;;       org-default-notes-file (concat org-directory "capture.org"))
   :config
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
+
+  (setq org-directory "~/org-lam")
 
   (setq org-agenda-files
         '("~/org-lam/Tasks.org"
