@@ -18,9 +18,8 @@ fi
 # use this temporarily till reboot
 source /etc/profile.d/nix{,-daemon}.sh
 
-# use fasd in parallel with autojump
+# use fasd to replace for autojump
 eval "$(fasd --init auto)"
-[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 
 # start doom-emacs daemon so that 2 options can be called:
 #   emacsclient -nc (nowait, newframe)

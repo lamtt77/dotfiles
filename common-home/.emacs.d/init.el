@@ -9,7 +9,7 @@
 (setq gc-cons-threshold most-positive-fixnum)
 (setq package-enable-at-startup nil)
 (setq comp-deferred-compilation nil)
-                                        ;
+
 ;; `file-name-handler-alist' is consulted on every `require', `load' and various
 ;; path/io functions. You get a minor speed up by nooping this. However, this
 ;; may cause problems on builds of Emacs where its site lisp files aren't
@@ -193,7 +193,7 @@
   ;; (highlight-indent-guides-responsive 'stack)
   )
 (use-package rainbow-delimiters
-  :hook (lisp-mode . rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package tree-sitter
   :hook (python-mode . (lambda ()
@@ -201,8 +201,6 @@
                          (require 'tree-sitter-langs)
                          (require 'tree-sitter-hl)
                          (tree-sitter-hl-mode))))
-(use-package tree-sitter-langs
-  :after tree-sitter)
 
 (use-package general
   :demand t
@@ -250,8 +248,9 @@
     "s" '(:ignore t :which-key "search")
 
     "t"  '(:ignore t :which-key "toggle")
-    "t d"  '(toggle-debug-on-error :which-key "debug on error")
-    "t v" '((lambda () (interactive) (visual-line-mode)) :wk "visual line")
+    "td"  '(toggle-debug-on-error :which-key "debug on error")
+    "tv" '((lambda () (interactive) (visual-line-mode)) :wk "visual line")
+    "ts" '(hydra-text-scale/body :which-key "scale text")
 
     "w" '(:ignore t :which-key "window")
     "wl"  'windmove-right
@@ -329,10 +328,13 @@
     "ws" 'evil-window-split)
   :init
   (setq evil-want-keybinding nil)
+  ;; (setq evil-want-C-u-scroll t)
   (setq evil-want-Y-yank-to-eol t)
   :config
   (evil-mode 1)
-  ;; Use visual line motions even outside of visual-line-mode buffers, 'cherry-pick' from emacs-from-scratch
+  ;; (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  ;; (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
@@ -447,19 +449,52 @@
   :config
   (global-set-key (kbd "<f5>") #'deadgrep))
 
-;; counsel includes 3 packages: counsel, swiper and ivy
-(use-package counsel
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         ("C-c C-r" . ivy-resume)
+         ("<f6>" . ivy-resume)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
   :config
-  (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
+  (ivy-mode 1))
+
+(use-package ivy-rich
+  :after ivy
+  :init
+  (ivy-rich-mode 1))
+
+(use-package ivy-prescient
+  :after counsel
+  :custom
+  (ivy-prescient-enable-filtering nil)
+  :config
+  ;; Uncomment the following line to have sorting remembered across sessions!
+  ;;(prescient-persist-mode 1)
+  (ivy-prescient-mode 1))
+
+;; counsel includes 3 packages: counsel, swiper and ivy
+(use-package counsel
+  :bind (("M-x" . 'counsel-M-x)
+         ("C-M-j" . 'counsel-switch-buffer)
+         ("C-x C-f" . 'counsel-find-file)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history))
+  :config
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
   (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
@@ -475,11 +510,7 @@
   (global-set-key (kbd "C-c n") 'counsel-fzf)
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
+  (counsel-mode 1))
 
 (use-package avy
   :config
@@ -531,15 +562,19 @@
   )
 
 (use-package company
+  :after lsp-mode
   :demand
   :hook ((lsp-mode . company-mode)
          (emacs-lisp-mode . company-mode))
   :bind
   (:map company-active-map
         ("<tab>" . company-complete-selection))
+  (:map lsp-mode-map
+        ("<tab>" . company-indent-or-complete-common))
   :init
   (setq company-minimum-prefix-length 1)
   (setq company-idle-delay 0.0)
+  ;; lessen backends to speed-up
   (setq company-backends '(company-capf company-dabbrev-code company-keywords company-files company-dabbrev)))
 
 (use-package company-box
@@ -601,6 +636,12 @@
     "p p" 'projectile-persp-switch-project))
 
 (use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
 
 (use-package smerge-mode
   :straight nil
@@ -784,12 +825,6 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
 
-;; setup my org mode
-(defun my/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (visual-line-mode 1))
-
 ;; from https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory
 (defun my/org-babel-tangle-config ()
   "If the current file is in '~/dotfiles/common-home/', the code blocks are tangled"
@@ -815,6 +850,12 @@
 ;; (use-package visual-fill-column
 ;;   :hook (org-mode . my/org-mode-visual-fill))
 
+;; setup my org mode
+(defun my/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
 (use-package org
   :pin org
   :hook ((org-mode . my/org-mode-setup)
@@ -827,7 +868,7 @@
    "z i" '(org-toggle-inline-images :wk "inline images"))
   ;; :init
   ;; (setq org-agenda-files "~/org-lam/lam-arch-notes.org"
-  ;;       org-directory "/home/lam/org-lam/"
+  ;;       org-directory "~/org-lam/"
   ;;       org-default-notes-file (concat org-directory "capture.org"))
   :config
   (setq org-agenda-start-with-log-mode t)
@@ -925,7 +966,7 @@
           ("jj" "Journal" entry
            (file+olp+datetree "~/org-lam/Journal.org")
            "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-           ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+           ;; ,(my/read-file-as-string "~/Notes/Templates/Daily.org")
            :clock-in :clock-resume
            :empty-lines 1)
           ("jm" "Meeting" entry
@@ -954,6 +995,7 @@
   (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python"))
   )
 
+;; configure babel languages
 (use-package org
   :general
   (my/local-leader-keys
@@ -964,15 +1006,15 @@
     :keymaps 'org-src-mode-map
     "," '(org-edit-src-exit :wk "exit")) ;;FIXME
   :init
-  (setq org-confirm-babel-evaluate nil)
+  ;; (setq org-confirm-babel-evaluate nil)
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
+     (python . t)
      (shell . t))))
 
-;; not working yet
-;; (setq image-use-external-converter t)
+;; (setq image-use-external-converter t)   ; not working yet
 (use-package org-download
   :after org
   :custom
