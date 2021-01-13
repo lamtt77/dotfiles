@@ -81,6 +81,12 @@
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
 
+;; restore the defaults changed by emacsMacport
+(cond (IS-MAC (setq mac-command-modifier      'super
+                    mac-option-modifier       'meta
+                    mac-control-modifier      'control
+                    )))
+
 (put 'downcase-region 'disabled nil)
 
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
@@ -288,11 +294,7 @@
                     my/default-font-size 120
                     my/default-variable-font-name "Tahoma"
                     my/default-variable-font-size 125
-                    ;; restore the defaults changed by emacsMacport
-                    mac-command-modifier      'super
-                    mac-option-modifier       'meta
-                    mac-control-modifier      'control
-                    )))
+                   )))
 
 (set-face-attribute 'default nil :font my/default-font-name :height my/default-font-size)
 (set-face-attribute 'fixed-pitch nil :font my/default-font-name :height my/default-font-size)
