@@ -510,7 +510,7 @@
   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
   (global-set-key (kbd "C-c c") 'counsel-compile)
   (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c G") 'counsel-git-grep)
   (global-set-key (kbd "C-c L") 'counsel-git-log)
   (global-set-key (kbd "C-c k") 'counsel-rg)
   (global-set-key (kbd "C-c m") 'counsel-linux-app)
@@ -992,8 +992,8 @@
           ("mw" "Weight" table-line (file+headline "~/org-lam/Metrics.org" "Weight")
            "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
 
-  ;; (define-key global-map (kbd "C-c j")
-  ;;   (lambda () (interactive) (org-capture nil "jj")))
+  (define-key global-map (kbd "C-c j")
+    (lambda () (interactive) (org-capture nil "jj")))
 
   (my/org-font-setup)
   (require 'org-tempo)
@@ -1074,3 +1074,8 @@
   :hook
   (markdown-mode . visual-line-mode)
   (markdown-mode . variable-pitch-mode))
+
+;; ===
+(setq startup-time-toc (current-time))
+(setq startup-time-seconds
+      (time-to-seconds (time-subtract startup-time-toc startup-time-tic)))

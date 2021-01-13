@@ -30,13 +30,13 @@ let
     done
   '';
 
-  # Update Homebrew pagkages/apps
+  # Update Homebrew packages/apps
   brew-bundle-update = pkgs.writeShellScriptBin "brew-bundle-update" ''
     brew update
     brew bundle --file=~/.config/nixpkgs/Brewfile
   '';
 
-  # Remove Homebrew pakages/apps not in Brewfile
+  # Remove Homebrew packages/apps not in Brewfile
   brew-bundle-cleanup = pkgs.writeShellScriptBin "brew-bundle-cleanup" ''
     brew bundle cleanup --zap --force --file=~/.config/nixpkgs/Brewfile
   '';
