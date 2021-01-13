@@ -435,7 +435,7 @@ augroup END
 " === vim-floaterm
 command! NNN FloatermNew nnn
 command! LF FloatermNew lf
-" command! RangerNvim FloatermNew ranger
+command! RangerNvim FloatermNew ranger
 
 " === vim-grepper
 let g:grepper = {}

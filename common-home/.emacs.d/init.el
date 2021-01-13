@@ -101,6 +101,7 @@
         initial-scratch-message nil
         sentence-end-double-space nil
         ring-bell-function 'ignore
+        blink-cursor-mode nil
         frame-resize-pixelwise t)
 
   (setq user-full-name "LamT"
@@ -122,7 +123,6 @@
 
   ;; write over selected text on input... like all modern editors do
   (delete-selection-mode t)
-
   (show-paren-mode t)
   (recentf-mode t)
 
@@ -1072,8 +1072,3 @@
   :hook
   (markdown-mode . visual-line-mode)
   (markdown-mode . variable-pitch-mode))
-
-;; ===
-(setq startup-time-toc (current-time))
-(setq startup-time-seconds
-      (time-to-seconds (time-subtract startup-time-toc startup-time-tic)))
