@@ -87,8 +87,6 @@
                     mac-control-modifier      'control
                     )))
 
-(put 'downcase-region 'disabled nil)
-
 ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
 (setq delete-old-versions -1 )		; delete excess backup versions silently
@@ -97,6 +95,14 @@
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
 (setq vc-follow-symlinks t )            ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
+
+;; customized from yay-evil-emacs, better scrolling experience, press 'k' do not scroll-back page pls
+(setq scroll-margin 3
+      scroll-conservatively 101 ; > 100
+      scroll-preserve-screen-position t
+      auto-window-vscroll nil)
+;; dump custom-set-variables to a custom.el file and don't load it
+(setq custom-file (concat user-emacs-directory "custom.el"))
 
 ;; modified from https://github.com/lccambiaghi/vanilla-emacs
 (use-package emacs
@@ -531,6 +537,8 @@
   (bind-key "M-g ("  'avy-goto-open-paren)
   (bind-key "M-g )"  'avy-goto-close-paren)
   (bind-key "M-g P"  'avy-pop-mar))
+
+(use-package wgrep)
 
 (use-package magit			; evil-magit is now part of evil-collection
   :general

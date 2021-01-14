@@ -133,8 +133,6 @@
                       mac-control-modifier      'control
                       )))
 
-  (put 'downcase-region 'disabled nil)
-
   ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
   ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
   (setq delete-old-versions -1 )		; delete excess backup versions silently
@@ -143,6 +141,14 @@
   (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
   (setq vc-follow-symlinks t )            ; don't ask for confirmation when opening symlinked file
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
+
+  ;; customized from yay-evil-emacs, better scrolling experience, press 'k' do not scroll-back page pls
+  (setq scroll-margin 3
+        scroll-conservatively 101 ; > 100
+        scroll-preserve-screen-position t
+        auto-window-vscroll nil)
+  ;; dump custom-set-variables to a custom.el file and don't load it
+  (setq custom-file (concat user-emacs-directory "custom.el"))
 
   ;; modified from https://github.com/lccambiaghi/vanilla-emacs
   (use-package emacs
@@ -239,7 +245,6 @@
     (my/make-popup (rx bos "*scratch*" eos) 0.4)
     )
 #+end_src
-
 ** Indent, Syntax and Format
 #+begin_src emacs-lisp
   ;; add a visual intent guide
@@ -586,7 +591,7 @@
     (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (counsel-mode 1))
 #+end_src
-** Avy
+** Avy, wgrep
 #+begin_src emacs-lisp
   (use-package avy
     :config
@@ -600,6 +605,8 @@
     (bind-key "M-g ("  'avy-goto-open-paren)
     (bind-key "M-g )"  'avy-goto-close-paren)
     (bind-key "M-g P"  'avy-pop-mar))
+
+  (use-package wgrep)
 #+end_src
 ** Magit, forge, git-gutter-fringe and git-timemachine
 #+begin_src emacs-lisp
