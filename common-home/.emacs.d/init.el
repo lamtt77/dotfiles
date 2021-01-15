@@ -577,20 +577,16 @@
   )
 
 (use-package company
-  :after lsp-mode
   :demand
-  :hook ((lsp-mode . company-mode)
-         (emacs-lisp-mode . company-mode))
   :bind
   (:map company-active-map
         ("<tab>" . company-complete-selection))
-  (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
   :init
   (setq company-minimum-prefix-length 1)
   (setq company-idle-delay 0.0)
-  ;; lessen backends to speed-up
-  (setq company-backends '(company-capf company-dabbrev-code company-keywords company-files company-dabbrev)))
+  (setq company-backends '(company-capf company-dabbrev-code company-keywords company-files company-dabbrev))
+  :config
+  (global-company-mode))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
@@ -1045,7 +1041,7 @@
   (add-hook 'dired-mode-hook 'org-download-enable)
   :bind
   ("C-M-y" . org-download-screenshot)
-  ("C-M-p" . org-download-clipboard)
+  ("C-M-]" . org-download-clipboard)
   :config)
 
 ;; ;; on-going issue: https://github.com/politza/pdf-tools/pull/588
