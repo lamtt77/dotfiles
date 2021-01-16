@@ -472,8 +472,8 @@ autocmd vimrc FileType go,py setlocal ts=8 sw=4 expandtab
 autocmd vimrc Filetype vim,js,ts,html setlocal sts=2 sw=2 expandtab
 
 " quickly jump to header or source filetype, TODO add more filetype when needed
-autocmd BufLeave *.{c,cpp} mark C
-autocmd BufLeave *.h       mark H
+autocmd vimrc BufLeave *.{c,cpp} mark C
+autocmd vimrc BufLeave *.h       mark H
 
 autocmd vimrc BufWritePre * :call lamutils#TrimWhitespace()
 
@@ -499,7 +499,7 @@ augroup lexical
 augroup END
 
 " fugitive
-autocmd BufReadPost fugitive:// setlocal bufhidden=delete
+autocmd vimrc BufReadPost fugitive:// setlocal bufhidden=delete
 " }}}1
 
 " === LamT: integrate with ibus-bamboo {{{1
@@ -679,6 +679,20 @@ command! SortBlock :normal! vip:sort i<CR>
 " simple version of vim-easyalign, support visual selection :)
 command! -range -nargs=+ Align <line1>,<line2>!column -Lts'<args>' -o'<args>'
 
+" from https://stackoverflow.com/questions/14385998/how-can-i-execute-the-current-line-as-vim-ex-commands/14386090
+" NOTE: vim vanilla way for the current line only, command-line: <C-r><C-l><cr>
+":[range]Execute    Execute text lines as ex commands.
+"                   Handles |line-continuation|.
+" The same can be achieved via "zyy@z (or yy@" through the unnamed register);
+" but there, the ex command must be preceded by a colon (i.e. :ex)
+command! -bar -range Execute silent <line1>,<line2>yank z | let @z = substitute(@z, '\n\s*\\', '', 'g') | @z
+
+" [count]<Leader>el  Execute current [count] line(s) as ex commands, then
+" {Visual}<Leader>el jump to the following line (to allow speedy sequential
+"                   execution of multiple lines).
+nnoremap <silent> <Leader>el :Execute<Bar>execute 'normal! ' . v:count1 . 'j'<CR>
+xnoremap <silent> <Leader>el :Execute<Bar>execute 'normal! ' . v:count1 . 'j'<CR>
+
 " replace all for word under cursor, yank that word for later use anyway
 nnoremap <leader>r<space>           yiw:%s/\<<C-r>0\>//g<left><left>
 " replace all but in visual selection
@@ -754,6 +768,6 @@ nnoremap <leader>gpl :Gpull<cr>
 " noremap <silent> <leader>ts :Step<cr>
 " noremap <silent> <leader>to :Over<cr>
 
-" }}} === My custom mapping end here
+" === My custom mapping end here }}}
 
 " vim: sts=2 sw=2 et:foldmethod=marker
