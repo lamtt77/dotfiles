@@ -147,12 +147,12 @@
 
   ;; from https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
   ;; for more ref: https://github.com/abo-abo/oremacs/blob/github/init.el
-  (setq delete-old-versions -1 )		; delete excess backup versions silently
-  (setq version-control t )		; use version control
-  (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-  (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
-  (setq vc-follow-symlinks t )            ; don't ask for confirmation when opening symlinked file
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
+  (setq delete-old-versions -1)           ; delete excess backup versions silently
+  (setq version-control t)                ; use version control
+  (setq vc-make-backup-files t)           ; make backups file even when in version controlled dir
+  (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))                   ; which directory to put backups file
+  (setq vc-follow-symlinks t)             ; don't ask for confirmation when opening symlinked file
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))  ;transform backups file name
 
   (setq user-full-name "LamT"
         user-mail-address "lam@lamhub.com")
@@ -166,6 +166,7 @@
   ;; dump custom-set-variables to a custom.el file and don't load it
   (setq custom-file (concat user-emacs-directory "custom.el"))
 
+  ;; from https://github.com/lccambiaghi/vanilla-emacs
   (setq inhibit-startup-screen t        ; toggle wrapping text at the 80th character
         kill-whole-line t               ; make Ctrl-K remove the whole line, instead of just emptying it.
         default-fill-column 80
@@ -173,7 +174,8 @@
         sentence-end-double-space nil
         ring-bell-function 'ignore
         blink-cursor-mode nil
-        frame-resize-pixelwise t)
+        frame-resize-pixelwise t
+        create-lockfiles nil)
 
   ;; default to utf-8 for all the things
   (set-charset-priority 'unicode)
@@ -227,6 +229,21 @@
   (my/make-popup (rx bos "*helpful*" eos))
   (my/make-popup (rx bos "*scratch*" eos) 0.4)
 
+  ;; from https://emacs.stackexchange.com/questions/46210/reuse-help-window
+  (setq display-buffer-alist
+        `((,(rx bos (or "*Apropos*" "*Help*" "*helpful" "*info*" "*Summary*") (0+ not-newline))
+           (display-buffer-reuse-mode-window display-buffer-below-selected)
+           (window-height . 0.33)
+           (mode apropos-mode help-mode helpful-mode Info-mode Man-mode))))
+
+  (add-to-list 'display-buffer-alist
+               '((lambda (buffer _) (with-current-buffer buffer
+                                      (seq-some (lambda (mode)
+                                                  (derived-mode-p mode))
+                                                '(help-mode))))
+                 (display-buffer-reuse-window display-buffer-below-selected)
+                 (reusable-frames . visible)
+                 (window-height . 0.33)))
 #+end_src
 ** Indent, Syntax and Format
 *** Indentation and hippie-expand
@@ -242,8 +259,9 @@
   ;; let emacs handle indentation
   (electric-indent-mode +1)
   ;; and auto-close parentheses
-  ;; (electric-pair-mode +1)
-
+  (electric-pair-mode +1)
+  (add-function :before-until electric-pair-inhibit-predicate
+                (lambda (c) (eq c ?<)))
 #+end_src
 *** highlight-indent-guides, rainbow-delimiters, tree-sitter
 #+begin_src emacs-lisp
@@ -273,7 +291,7 @@
     (general-evil-setup)
 
     (general-create-definer my/leader-keys
-      :states '(normal visual emacs)
+      :states '(normal insert visual emacs)
       :keymaps 'override
       :prefix "SPC"
       :global-prefix "C-SPC")
@@ -281,7 +299,7 @@
     (general-create-definer my/local-leader-keys
       :states '(normal visual)
       :keymaps 'override
-      :prefix ","
+      ;; :prefix ","
       :global-prefix "SPC m")
 
     (my/leader-keys
@@ -292,6 +310,9 @@
       "b" '(:ignore t :which-key "buffer")
       "br"  'revert-buffer
       "bd"  'kill-current-buffer
+      "bs" '((lambda () (interactive) (pop-to-buffer "*scratch*")) :wk "scratch")
+
+      "c" '(:ignore t :which-key "code")
 
       "f" '(:ignore t :which-key "file")
       "ff"  'find-file
@@ -307,6 +328,8 @@
       "hf" 'describe-function
       "hF" 'describe-face
       "hk" 'describe-key
+
+      "o" '(:ignore t :which-key "org")
 
       "p" '(:ignore t :which-key "project")
 
@@ -325,9 +348,10 @@
       "wd"  'delete-window
       "wu" 'winner-undo
       "wr" 'winner-redo
+      "wm"  '(delete-other-windows :wk "maximize")
 
-      "[d" 'git-gutter:previous-hunk
-      "]d" 'git-gutter:next-hunk
+      "[d" 'diff-hl-previous-hunk
+      "]d" 'diff-hl-next-hunk
       )
 
     (my/local-leader-keys
@@ -618,10 +642,11 @@
     :general
     (my/leader-keys
       "g g" 'magit-status
-      "g G" 'magit-status-here)
+      "g G" 'magit-status-here
+      "g l" '(magit-log :wk "log"))
     :init
     (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-    )
+    (setq magit-log-arguments '("--graph" "--decorate" "--color")))
 
   (if IS-LINUX (use-package evil-magit	; but gccemacs linux still requires it
                  :after magit))
@@ -641,14 +666,33 @@
     (git-timemachine-mode-map "q" 'git-timemachine-quit)
     )
 
-  (use-package git-gutter-fringe
+  ;; (use-package git-gutter-fringe
+  ;;   :hook
+  ;;   ((text-mode
+  ;;     org-mode
+  ;;     prog-mode) . git-gutter-mode)
+  ;;   :config
+  ;;   (setq-default fringes-outside-margins t)
+  ;;   )
+
+  ;; diff-hl is a newer package
+  (use-package diff-hl
     :hook
-    ((text-mode
-      org-mode
-      prog-mode) . git-gutter-mode)
-    :config
-    (setq-default fringes-outside-margins t)
+    (((text-mode org-mode prog-mode) . diff-hl-mode)
+     (magit-pre-refresh . diff-hl-magit-pre-refresh)
+     (magit-post-refresh . diff-hl-magit-post-refresh))
+    :init
+    (setq diff-hl-draw-borders nil)
     )
+#+end_src
+** Persistent scratch
+#+begin_src emacs-lisp
+
+  (use-package persistent-scratch
+    :demand
+    :config
+    (persistent-scratch-setup-default))
+
 #+end_src
 ** Company
 #+begin_src emacs-lisp
@@ -687,6 +731,7 @@
       (setq projectile-project-search-path '("~/git")))
     (setq projectile-completion-system 'default)
     (setq projectile-switch-project-action #'projectile-find-file)
+    (setq projectile-project-root-files '("Dockerfile" "pyproject.toml" "project.clj" "deps.edn"))
     ;; (add-to-list 'projectile-globally-ignored-directories "straight") ;; TODO
     :config
     (defadvice projectile-project-root (around ignore-remote first activate)
