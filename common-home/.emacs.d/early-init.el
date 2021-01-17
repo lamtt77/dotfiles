@@ -5,9 +5,7 @@
 ;; Defer garbage collection further back in the startup process
 (setq gc-cons-threshold most-positive-fixnum)
 
-(setq package-enable-at-startup nil ; don't auto-initialize!
-      ;; don't add that `custom-set-variables' block to my init.el!
-      package--init-file-ensured t)
+(setq package-enable-at-startup nil)    ; don't auto-initialize!
 
 ;; Prevent the glimpse of un-styled Emacs by disabling these UI elements early.
 (push '(menu-bar-lines . 0) default-frame-alist)

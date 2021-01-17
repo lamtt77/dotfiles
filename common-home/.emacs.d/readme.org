@@ -12,9 +12,7 @@
   ;; Defer garbage collection further back in the startup process
   (setq gc-cons-threshold most-positive-fixnum)
 
-  (setq package-enable-at-startup nil ; don't auto-initialize!
-        ;; don't add that `custom-set-variables' block to my init.el!
-        package--init-file-ensured t)
+  (setq package-enable-at-startup nil)    ; don't auto-initialize!
 
   ;; Prevent the glimpse of un-styled Emacs by disabling these UI elements early.
   (push '(menu-bar-lines . 0) default-frame-alist)
@@ -117,8 +115,19 @@
     (gcmh-mode 1))
 #+end_src
 
-** Emacs Initialization, Contants and Settings
+** Emacs Initialization
+*** Constants and Settings 
 #+begin_src emacs-lisp
+
+  ;; don't show any extra window chrome
+  (when (window-system)
+    (column-number-mode t)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (tooltip-mode -1)
+    (menu-bar-mode -1)			              ; Use F10 or Fn-F10 for emacs context menu
+    (toggle-scroll-bar -1))
+
   ;; from doom-emacs core.el
   (defconst EMACS27+   (> emacs-major-version 26))
   (defconst EMACS28+   (> emacs-major-version 27))
@@ -126,6 +135,9 @@
   (defconst IS-LINUX   (eq system-type 'gnu/linux))
   (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
   (defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
+
+  ;; always allow 'y' instead of 'yes'.
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
   ;; restore the defaults changed by emacsMacport
   (cond (IS-MAC (setq mac-command-modifier      'super
@@ -142,110 +154,98 @@
   (setq vc-follow-symlinks t )            ; don't ask for confirmation when opening symlinked file
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
 
+  (setq user-full-name "LamT"
+        user-mail-address "lam@lamhub.com")
+
   ;; customized from yay-evil-emacs, better scrolling experience, press 'k' do not scroll-back page pls
   (setq scroll-margin 3
         scroll-conservatively 101 ; > 100
         scroll-preserve-screen-position t
         auto-window-vscroll nil)
+
   ;; dump custom-set-variables to a custom.el file and don't load it
   (setq custom-file (concat user-emacs-directory "custom.el"))
 
-  ;; modified from https://github.com/lccambiaghi/vanilla-emacs
-  (use-package emacs
-    :config
-    (setq inhibit-startup-screen t        ; toggle wrapping text at the 80th character
-          kill-whole-line t               ; make Ctrl-K remove the whole line, instead of just emptying it.
-          default-fill-column 80
-          initial-scratch-message nil
-          sentence-end-double-space nil
-          ring-bell-function 'ignore
-          blink-cursor-mode nil
-          frame-resize-pixelwise t)
+  (setq inhibit-startup-screen t        ; toggle wrapping text at the 80th character
+        kill-whole-line t               ; make Ctrl-K remove the whole line, instead of just emptying it.
+        default-fill-column 80
+        initial-scratch-message nil
+        sentence-end-double-space nil
+        ring-bell-function 'ignore
+        blink-cursor-mode nil
+        frame-resize-pixelwise t)
 
-    (setq user-full-name "LamT"
-          user-mail-address "lam@lamhub.com")
+  ;; default to utf-8 for all the things
+  (set-charset-priority 'unicode)
+  (setq locale-coding-system 'utf-8
+        coding-system-for-read 'utf-8
+        coding-system-for-write 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 
-    ;; always allow 'y' instead of 'yes'.
-    (defalias 'yes-or-no-p 'y-or-n-p)
+  ;; write over selected text on input... like all modern editors do
+  (delete-selection-mode t)
+  (show-paren-mode t)
+  (recentf-mode t)
+  ;; enable winner mode globally for undo/redo window layout changes
+  (winner-mode t)
 
-    ;; default to utf-8 for all the things
-    (set-charset-priority 'unicode)
-    (setq locale-coding-system 'utf-8
-          coding-system-for-read 'utf-8
-          coding-system-for-write 'utf-8)
-    (set-terminal-coding-system 'utf-8)
-    (set-keyboard-coding-system 'utf-8)
-    (set-selection-coding-system 'utf-8)
-    (prefer-coding-system 'utf-8)
-    (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+  ;; don't want ESC as a modifier
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-    ;; write over selected text on input... like all modern editors do
-    (delete-selection-mode t)
-    (show-paren-mode t)
-    (recentf-mode t)
+  ;; Don't persist a custom file, this bites me more than it helps
+  (setq custom-file (make-temp-file "")) ; use a temp file as a placeholder
+  (setq custom-safe-themes t)            ; mark all themes as safe, since we can't persist now
+  (setq enable-local-variables :all)     ; fix =defvar= warnings
 
-    ;; don't want ESC as a modifier
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
+*** Popup Management
+#+begin_src emacs-lisp
 
-    ;; Don't persist a custom file, this bites me more than it helps
-    (setq custom-file (make-temp-file "")) ; use a temp file as a placeholder
-    (setq custom-safe-themes t)            ; mark all themes as safe, since we can't persist now
-    (setq enable-local-variables :all)     ; fix =defvar= warnings
+  ;; from https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#popup-rules
+  (defvar my-popups '()
+    "A list of popup matchers that determine if a popup can be escaped")
 
-    ;; don't show any extra window chrome
-    (when (window-system)
-      (column-number-mode t)
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)
-      (tooltip-mode -1)
-      (menu-bar-mode -1)			; Use F10 or Fn-F10 for emacs context menu
-      (toggle-scroll-bar -1))
+  (cl-defun my/make-popup (buffer-rx &optional (height 0.4))
+    (add-to-list 'my-popups buffer-rx)
+    (add-to-list 'display-buffer-alist
+                 `(,buffer-rx
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (reusable-frames . visible)
+                   (side            . bottom)
+                   (window-height   . ,height))))
 
-    ;; enable winner mode globally for undo/redo window layout changes
-    (winner-mode t))
+  (my/make-popup (rx bos "*Messages*" eos))
+  (my/make-popup (rx bos "*Backtrace*" eos))
+  (my/make-popup (rx bos "*Warnings*" eos))
+  (my/make-popup (rx bos "*compilation*" eos))
+  (my/make-popup (rx bos "*Help*" eos))
+  (my/make-popup (rx bos "*helpful*" eos))
+  (my/make-popup (rx bos "*scratch*" eos) 0.4)
 
-  ;; indentation and hippie-expand
-  (use-package emacs
-    :config
-    ;; use common convention for indentation by default
-    (setq-default indent-tabs-mode nil)
-    (setq-default tab-width 2)
-
-    ;; use a reasonable line length
-    (setq-default fill-column 120)
-
-    ;; let emacs handle indentation
-    (electric-indent-mode +1)
-    ;; and auto-close parentheses
-    ;; (electric-pair-mode +1)
-    )
-
-  ;; popup management from https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#popup-rules
-  (use-package emacs
-    :config
-    (defvar my-popups '()
-      "A list of popup matchers that determine if a popup can be escaped")
-
-    (cl-defun my/make-popup (buffer-rx &optional (height 0.4))
-      (add-to-list 'my-popups buffer-rx)
-      (add-to-list 'display-buffer-alist
-                   `(,buffer-rx
-                     (display-buffer-reuse-window
-                      display-buffer-in-side-window)
-                     (reusable-frames . visible)
-                     (side            . bottom)
-                     (window-height   . ,height))))
-
-    (my/make-popup (rx bos "*Messages*" eos))
-    (my/make-popup (rx bos "*Backtrace*" eos))
-    (my/make-popup (rx bos "*Warnings*" eos))
-    (my/make-popup (rx bos "*compilation*" eos))
-    (my/make-popup (rx bos "*Help*" eos))
-    (my/make-popup (rx bos "*helpful*" eos))
-    (my/make-popup (rx bos "*scratch*" eos) 0.4)
-    )
 #+end_src
 ** Indent, Syntax and Format
+*** Indentation and hippie-expand
+#+begin_src emacs-lisp
+
+  ;; use common convention for indentation by default
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 2)
+
+  ;; use a reasonable line length
+  (setq-default fill-column 120)
+
+  ;; let emacs handle indentation
+  (electric-indent-mode +1)
+  ;; and auto-close parentheses
+  ;; (electric-pair-mode +1)
+
+#+end_src
+*** highlight-indent-guides, rainbow-delimiters, tree-sitter
 #+begin_src emacs-lisp
   ;; add a visual intent guide
   (use-package highlight-indent-guides
@@ -337,6 +337,25 @@
       )
     )
 #+end_src
+** Helpful and Elisp Doc 
+#+begin_src emacs-lisp
+  ;; suppercharge `Shift-K`
+  (use-package helpful
+    :after evil
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :init
+    (setq evil-lookup-func #'helpful-at-point)
+    :bind
+    ([remap describe-function] . helpful-callable)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-key] . helpful-key))
+
+  (use-package eldoc
+    :hook (emacs-lisp-mode cider-mode))
+#+end_src
 ** Themes, fonts, icons and modeline
 #+begin_src emacs-lisp
   (use-package all-the-icons)
@@ -399,8 +418,8 @@
     (setq evil-want-Y-yank-to-eol t)
     :config
     (evil-mode 1)
-    ;; (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-    ;; (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
     ;; Use visual line motions even outside of visual-line-mode buffers
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
@@ -470,22 +489,6 @@
   ;;   (global-undo-tree-mode)
   ;;   (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
 #+end_src
-** Helpful and Elisp Doc 
-#+begin_src emacs-lisp
-  ;; suppercharge `Shift-K`
-  (use-package helpful
-    :after evil
-    :init
-    (setq evil-lookup-func #'helpful-at-point)
-    :bind
-    ([remap describe-function] . helpful-callable)
-    ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . helpful-variable)
-    ([remap describe-key] . helpful-key))
-
-  (use-package eldoc
-    :hook (emacs-lisp-mode cider-mode))
-#+end_src
 ** Dired, vterm and ranger
 #+begin_src emacs-lisp
   (use-package ranger
@@ -550,20 +553,6 @@
     (setq enable-recursive-minibuffers t)
     (ivy-mode 1))
 
-  (use-package ivy-rich
-    :after ivy
-    :init
-    (ivy-rich-mode 1))
-
-  (use-package ivy-prescient
-    :after counsel
-    :custom
-    (ivy-prescient-enable-filtering nil)
-    :config
-    ;; Uncomment the following line to have sorting remembered across sessions!
-    ;;(prescient-persist-mode 1)
-    (ivy-prescient-mode 1))
-
   ;; counsel includes 3 packages: counsel, swiper and ivy
   (use-package counsel
     :bind (("M-x" . 'counsel-M-x)
@@ -590,6 +579,21 @@
     (global-set-key (kbd "C-x l") 'counsel-locate)
     (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (counsel-mode 1))
+
+  ;; ivy-rich needed to lead after counsel
+  (use-package ivy-rich
+    :after counsel
+    :config
+    (ivy-rich-mode 1))
+
+  (use-package ivy-prescient
+    :after counsel
+    :custom
+    (ivy-prescient-enable-filtering nil)
+    :config
+    ;; Uncomment the following line to have sorting remembered across sessions!
+    ;;(prescient-persist-mode 1)
+    (ivy-prescient-mode 1))
 #+end_src
 ** Avy, wgrep
 #+begin_src emacs-lisp
