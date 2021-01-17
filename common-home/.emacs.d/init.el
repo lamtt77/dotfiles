@@ -286,9 +286,9 @@
   :init
   (setq evil-lookup-func #'helpful-at-point)
   :bind
-  ([remap describe-function] . helpful-callable)
+  ([remap describe-function] . counsel-describe-function)
   ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . helpful-variable)
+  ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
 (use-package eldoc
@@ -504,7 +504,7 @@
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   (counsel-mode 1))
 
-;; ivy-rich needed to lead after counsel
+;; ivy-rich needed to load after counsel
 (use-package ivy-rich
   :after counsel
   :config
@@ -606,6 +606,9 @@
   (defadvice projectile-project-root (around ignore-remote first activate)
     (unless (file-remote-p default-directory) ad-do-it))
   (projectile-mode))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
 
 (use-package dashboard
   :after projectile
