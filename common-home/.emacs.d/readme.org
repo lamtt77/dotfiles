@@ -246,7 +246,7 @@
                  (window-height . 0.33)))
 #+end_src
 ** Indent, Syntax and Format
-*** Indentation and hippie-expand
+*** Indentation and TODO hippie-expand
 #+begin_src emacs-lisp
 
   ;; use common convention for indentation by default
@@ -295,11 +295,11 @@
       :keymaps 'override
       :prefix "SPC"
       :global-prefix "C-SPC")
-
+ 
     (general-create-definer my/local-leader-keys
       :states '(normal visual)
       :keymaps 'override
-      ;; :prefix ","
+      :prefix "SPC m"
       :global-prefix "SPC m")
 
     (my/leader-keys
@@ -1180,11 +1180,7 @@
     :general
     (my/local-leader-keys
       :keymaps 'org-mode-map
-      "," '(org-edit-special :wk "edit")
       "-" '(org-babel-demarcate-block :wk "split block"))
-    (my/local-leader-keys
-      :keymaps 'org-src-mode-map
-      "," '(org-edit-src-exit :wk "exit")) ;;FIXME
     :init
     ;; (setq org-confirm-babel-evaluate nil)
     :config

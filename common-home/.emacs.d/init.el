@@ -241,7 +241,7 @@
   (general-create-definer my/local-leader-keys
     :states '(normal visual)
     :keymaps 'override
-    ;; :prefix ","
+    :prefix "SPC m"
     :global-prefix "SPC m")
 
   (my/leader-keys
@@ -1053,11 +1053,7 @@
   :general
   (my/local-leader-keys
     :keymaps 'org-mode-map
-    "," '(org-edit-special :wk "edit")
     "-" '(org-babel-demarcate-block :wk "split block"))
-  (my/local-leader-keys
-    :keymaps 'org-src-mode-map
-    "," '(org-edit-src-exit :wk "exit")) ;;FIXME
   :init
   ;; (setq org-confirm-babel-evaluate nil)
   :config
