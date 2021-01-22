@@ -1,6 +1,13 @@
 [branch]
 autosetuprebase = always
 
+[push]
+default = current
+
+[rebase]
+autostash = true
+autosquash = true
+
 [user]
 signingkey = 17BAE317A746B44C
 name = LamT
