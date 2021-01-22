@@ -1,0 +1,8 @@
+[branch]
+autosetuprebase = always
+
+[user]
+signingkey = 17BAE317A746B44C
+name = LamT
+email = lam@lamhub.com
+useConfigOnly = true
