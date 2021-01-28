@@ -66,7 +66,7 @@ in with pkgs.stdenv; with lib; {
       nixpkgs.source = "${inputs.nixpkgs}";
     };
     # list of acceptable shells in /etc/shells
-    shells = [ pkgs.zsh ];
+    shells = with pkgs; [ bash zsh fish ];
   };
 
   users.users = {

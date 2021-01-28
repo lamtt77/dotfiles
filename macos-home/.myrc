@@ -1,20 +1,14 @@
-# Only execute this file once per shell.
-if [ -n "${__MYRC_SOURCED:-}" ]; then return; fi
-__MYRC_SOURCED=1
-
 export EDITOR='vim'
 
 # to avoid highlight grey out in comments
 export HIGHLIGHT_STYLE="base16/gruvbox-dark-medium"
 
-# TODO replace autojump by fasd
-# [[ -f ~/.nix-home-path/etc/profile.d/autojump.sh ]] && . ~/.nix-home-path/etc/profile.d/autojump.sh
+# fasd replaced autojump
 eval "$(fasd --init auto)"
 
 # Lam changed to use gpg agent instead of macos ssh default agent
-# the old value was SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.HFFnABBlrf/Listeners
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-# Lam: should I change to `gpg-agent --daemon`?
+# should I change to `gpg-agent --daemon`?
 gpgconf --launch gpg-agent
 
 # vim: ft=sh

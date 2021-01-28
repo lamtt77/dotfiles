@@ -99,7 +99,7 @@ map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%C
 
 cmd on-cd &{{
     # display git repository status in your prompt
-    source $HOME/.nix-home-path/share/bash-completion/completions/git-prompt.sh
+    source $HOME/.nix-profile/share/bash-completion/completions/git-prompt.sh
     GIT_PS1_SHOWDIRTYSTATE=auto
     GIT_PS1_SHOWSTASHSTATE=auto
     GIT_PS1_SHOWUNTRACKEDFILES=auto

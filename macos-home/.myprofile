@@ -1,7 +1,3 @@
-# Only execute this file once per shell.
-if [ -n "${__MYPROFILE_SOURCED:-}" ]; then return; fi
-__MYPROFILE_SOURCED=1
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export TERM=xterm-256color
@@ -16,6 +12,7 @@ export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
 export PACKER_CACHE_DIR=~/.packer.d/packer_cache
 
 export PATH="/Applications/VMware OVF Tool:$PATH"
+
 # MacPorts Installer addition on 2020-06-02_at_22:04:23: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
@@ -23,31 +20,29 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
-# fix missing ca cert when reboot, from https://luca.cambiaghi.me/nix-package-manager
-export NIX_SSL_CERT_FILE="/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
-export NIX_PATH=~/.nix-defexpr/channels:$NIX_PATH
+# do the following if missing ca cert when reboot, from https://luca.cambiaghi.me/nix-package-manager
+# LamT: reason was due to not running suggested testing step right-after installed nix
+#export NIX_SSL_CERT_FILE="/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
+#export NIX_PATH=~/.nix-defexpr/channels:$NIX_PATH
 
-# LamT: does not need this if installing nix-darwin or flake
-# nix-darwin will automatically source from /etc/static/zshenv, nix flake will NOT automatically source
+# LamT: does not need this if installing nix-darwin or nix flake git installer
+# nix-darwin will automatically source from /etc/static/zshenv
 # Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-  # . '/nix/var/nix/profiles/per-user/$USER/profile/etc/profile.d/nix-daemon.sh'
-fi
+#if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+#  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+#fi
 # End Nix
 
-if [ ! -e '~/.nix-home-path' ]; then
-  ln -sfn /nix/var/nix/profiles/per-user/alam/home-manager/home-path ~/.nix-home-path
-fi
+# LamT: switching to my custom profile to enable default path for apps in ~/.nix-profile
+# nix-env --switch-profile /etc/profiles/per-user/$USER
+# keep user's default profile for trying with nix-env
+# Example: nix-env --profile /nix/var/nix/profiles/per-user/$USER/profile -i hello
+export PATH="/nix/var/nix/profiles/per-user/$USER/profile/bin:$PATH"
 
-# FIXME hack to provide home-manager home-path
-export NIX_HOME_BIN="$HOME/.nix-home-path/bin"
-export PATH="$NIX_HOME_BIN:$PATH"
-
-# for nix home-manager updated manual
-export MANPATH="$HOME/.nix-home-path/share/man:$MANPATH"
-# for emacs full manual
-export INFOPATH="$HOME/.nix-home-path/share/info:$INFOPATH"
+# for nix home-manager latest manual
+export MANPATH="$HOME/.nix-profile/share/man:$MANPATH"
+# for emacs full-latest manual
+export INFOPATH="$HOME/.nix-profile/share/info:$INFOPATH"
 
 export NNN_FIFO="/tmp/nnn.fifo"
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview;p:preview-tui'

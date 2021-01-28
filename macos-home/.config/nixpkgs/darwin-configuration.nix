@@ -1,5 +1,6 @@
 { inputs, config, pkgs, ... }:
-{
+let prefix = "/run/current-system/sw/bin";
+in {
   imports = [
     # ./modules/darwin_modules
     ./modules/common.nix
@@ -50,7 +51,7 @@
       in { })
   ];
 
-  programs.fish.enable = true;
+  # programs.fish.enable = true;
   programs.zsh.enable = true;
   programs.bash.enable = true;
 
