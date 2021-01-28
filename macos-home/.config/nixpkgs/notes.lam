@@ -10,9 +10,3 @@ Default profile:
 
 Switch to user default profile
 nix-env --switch-profile /nix/var/nix/profiles/per-user/$USER/profile
-
-Manually link to /etc/static ?
-/Users/alam/.config/nixpkgs/result/etc
-ln -sfn "$(readlink -f $systemConfig/etc)" /etc/static
-->
-ln -sfn "/Users/alam/.config/nixpkgs/result/etc" /etc/static

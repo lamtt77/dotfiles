@@ -90,7 +90,6 @@ in
       nox
 
       # productivity boost
-      autojump
       bat
       fasd
       fd

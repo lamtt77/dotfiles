@@ -105,7 +105,7 @@ bindkey "^X^E" edit-command-line
 # LamT: prevent nested ranger loading, comment to test if this causes ranger freezing?
 # ranger() {
 #     if [ -z "$RANGER_LEVEL" ]; then
-#         /run/current-system/sw/bin/ranger "$@"
+#         $HOME/.nix-profile/bin/ranger "$@"
 #     else
 #         exit
 #     fi
