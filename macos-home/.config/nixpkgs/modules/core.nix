@@ -18,6 +18,11 @@ in
       # enableFishIntegration = false;
     };
     fzf.enable = true;
+    gpg.enable = true;
+    htop = {
+      enable = true;
+      showProgramPath = true;
+    };
     # emacs = {
     #   enable = true;
     #   package = if pkgs.stdenv.isDarwin then pkgs.emacsGcc else pkgs.emacsPgtkGcc;

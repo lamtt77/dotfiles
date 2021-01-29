@@ -12,6 +12,9 @@ alias lfmc='tmux split -h lf; lf'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias yt2mp3='youtube-dl -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
 
+# git
+alias gst='git status'
+
 # From https://github.com/nickjj/dotfiles/blob/master/.aliases
 # can also refer to `oh-my-zsh` for more inspiration
 #alias dew="docker-compose exec web"

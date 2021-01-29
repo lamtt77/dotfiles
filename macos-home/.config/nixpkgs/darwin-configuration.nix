@@ -2,7 +2,7 @@
 # let prefix = "/run/current-system/sw/bin"; in
 {
   imports = [
-    # ./modules/darwin_modules
+    ./modules/darwin_modules
     ./modules/common.nix
   ];
 
