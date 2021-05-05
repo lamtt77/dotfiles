@@ -176,8 +176,6 @@ in
       unzip
       vagrant
       wget
-      wireguard-go
-      wireguard-tools
       xquartz
       yarn
       youtube-dl

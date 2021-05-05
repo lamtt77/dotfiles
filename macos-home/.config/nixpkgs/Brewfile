@@ -15,6 +15,10 @@ brew "koekeishiya/formulae/yabai"
 # This requires for libvterm -> vterm on emacs
 brew "libtool"
 
+# wireguard vpn
+brew "wireguard-go"
+brew "wireguard-tools"
+
 cask "font-source-code-pro"
 cask "iterm2"
 cask "alfred"
