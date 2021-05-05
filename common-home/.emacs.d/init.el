@@ -62,10 +62,10 @@
 ;; M-x use-package-report to see the statictics
 ;; (setq use-package-compute-statistics t)
 
-(use-package benchmark-init
-  :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+;; (use-package benchmark-init
+;;   :config
+;;   ;; To disable collection of benchmark data after init is done.
+;;   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 ;; performance tuning: garbage collection hack
 (use-package gcmh
