@@ -3,18 +3,18 @@ export LANG=en_US.UTF-8
 export TERM=xterm-256color
 
 # for go lang
-export GOPATH=/opt/goworkspace
-export GOBIN=$GOPATH/bin
-export PATH="$GOBIN:$PATH"
+# export GOPATH=/opt/goworkspace
+# export GOBIN=$GOPATH/bin
+# export PATH="$GOBIN:$PATH"
 
 # force default provider for vagrant
-export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
-export PACKER_CACHE_DIR=~/.packer.d/packer_cache
+# export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
+# export PACKER_CACHE_DIR=~/.packer.d/packer_cache
 
 export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # MacPorts Installer addition on 2020-06-02_at_22:04:23: adding an appropriate PATH variable for use with MacPorts.
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 # If you come from bash you might have to change your $PATH.
@@ -37,12 +37,14 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # nix-env --switch-profile /etc/profiles/per-user/$USER
 # keep user's default profile for trying with nix-env
 # Example: nix-env --profile /nix/var/nix/profiles/per-user/$USER/profile -i hello
-export PATH="/nix/var/nix/profiles/per-user/$USER/profile/bin:$PATH"
+# export PATH="/nix/var/nix/profiles/per-user/$USER/profile/bin:$PATH"
 
 # for nix home-manager latest manual
-export MANPATH="$HOME/.nix-profile/share/man:$MANPATH"
+# export MANPATH="$HOME/.nix-profile/share/man:$MANPATH"
 # for emacs full-latest manual
-export INFOPATH="$HOME/.nix-profile/share/info:$INFOPATH"
+# export INFOPATH="$HOME/.nix-profile/share/info:$INFOPATH"
 
-export NNN_FIFO="/tmp/nnn.fifo"
-export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview;p:preview-tui'
+# export NNN_FIFO="/tmp/nnn.fifo"
+# export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview;p:preview-tui'
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
