@@ -21,7 +21,7 @@ brew "wireguard-tools"
 
 cask "font-source-code-pro"
 cask "iterm2"
-cask "alfred"
+# cask "alfred"
 cask "qutebrowser"
 # Scometime need to scan keycodes for mapping keyboard
 # cash "key-codes"
