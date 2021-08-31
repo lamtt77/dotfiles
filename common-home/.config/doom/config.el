@@ -60,3 +60,11 @@
 ;; Restore right-option as meta changed by doom-emacs https://github.com/hlissner/doom-emacs/issues/4178
 (setq mac-right-option-modifier 'meta
       ns-right-option-modifier  'meta)
+
+;; LamT - tramp slowness issue, does not seem to get improved
+;; (setq remote-file-name-inhibit-cache nil)
+;; (setq vc-ignore-dir-regexp
+;;       (format "%s\\|%s"
+;;                     vc-ignore-dir-regexp
+;;                     tramp-file-name-regexp))
+;; (setq tramp-verbose 1)

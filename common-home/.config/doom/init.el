@@ -20,10 +20,10 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       company           ; the ultimate code completion backend
+       company ;; (company +childframe)           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       ;;ivy               ; a search engine for love and life
+       ;; (ivy +prescient)               ; a search engine for love and life
        vertico           ; the search engine of the future
 
        :ui
@@ -35,7 +35,7 @@
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
-       ligatures         ; ligatures and symbols to make your code pretty again
+       ;;ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
        ;;nav-flash         ; blink cursor line after big motions
@@ -92,7 +92,8 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        gist              ; interacting with github gists
-       lookup              ; navigate your code and its documentation
+       (lookup              ; navigate your code and its documentation
+        +dictionary +offline +docsets)
        lsp               ; M-x vscode
        magit             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
@@ -112,7 +113,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
-       cc                ; C > C++ == 1
+       (cc +lsp)                ; C > C++ == 1
        ;;clojure           ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -141,6 +142,7 @@
        ;;julia             ; a better, faster MATLAB
        kotlin            ; a better, slicker Java(Script)
        (latex +latexmk)             ; writing papers in Emacs has never been so fun
+       ;; (latex +latexmk +cdlatex)             ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ledger            ; be audit you can be
        lua               ; one-based indices? one-based indices
@@ -148,12 +150,12 @@
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org               ; organize your plain life in plain text
-        +journal +pretty +hugo +pandoc +present)
-       ;;php               ; perl's insecure younger brother
+       (org                ; organize your plain life in plain text
+        +gnuplot +dragndrop +pandoc +hugo +journal +present +pretty)
+       php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       python            ; beautiful is better than ugly
+       (python +lsp)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
