@@ -67,4 +67,8 @@
 ;;       (format "%s\\|%s"
 ;;                     vc-ignore-dir-regexp
 ;;                     tramp-file-name-regexp))
-;; (setq tramp-verbose 1)
+;; (setq tramp-verbose 10)
+;; (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+
+;; Fix my zsh custom prompt (z4h) issue as per tramp hangs #6: https://www.emacswiki.org/emacs/TrampMode
+(setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>].* *\\(\\[[[:digit:];]*[[:alpha:]] *\\)*")

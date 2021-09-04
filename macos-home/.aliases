@@ -1,9 +1,9 @@
 source $HOME/.config/myenv/aliases.common
 
 ## for emacs daemon, usage of export variable must surround with "
-export EMACSAPP="~/.nix-profile/Applications/Emacs.app"
-alias em="open $EMACSAPP"
-alias emacs="$EMACSAPP/Contents/MacOS/Emacs"
+# export EMACSAPP="~/.nix-profile/Applications/Emacs.app"
+# alias em="open $EMACSAPP"
+# alias emacs="$EMACSAPP/Contents/MacOS/Emacs"
 # see https://www.gnu.org/software/emacs/manual/html_mono/efaq.html#Colors-on-a-TTY
 alias emacsnw="TERM=xterm-direct emacs -nw"
 alias ec="emacsclient -nc"

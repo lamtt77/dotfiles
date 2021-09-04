@@ -2,20 +2,10 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export TERM=xterm-256color
 
-# for go lang
-# export GOPATH=/opt/goworkspace
-# export GOBIN=$GOPATH/bin
-# export PATH="$GOBIN:$PATH"
-
 # force default provider for vagrant
 # export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
 # export PACKER_CACHE_DIR=~/.packer.d/packer_cache
-
-export PATH="/Applications/VMware OVF Tool:$PATH"
-
-# MacPorts Installer addition on 2020-06-02_at_22:04:23: adding an appropriate PATH variable for use with MacPorts.
-# export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-# Finished adapting your PATH environment variable for use with MacPorts.
+# export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
@@ -46,5 +36,13 @@ export PATH="/Applications/VMware OVF Tool:$PATH"
 
 # export NNN_FIFO="/tmp/nnn.fifo"
 # export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview;p:preview-tui'
+
+# MacPorts Installer addition on 2021-09-01_at_10:24:50: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+# MacPorts Installer addition on 2021-09-01_at_10:24:50: adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH="/opt/local/share/man:$MANPATH"
+# Finished adapting your MANPATH environment variable for use with MacPorts.
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
