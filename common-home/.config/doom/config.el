@@ -72,3 +72,8 @@
 
 ;; Fix my zsh custom prompt (z4h) issue as per tramp hangs #6: https://www.emacswiki.org/emacs/TrampMode
 (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>].* *\\(\\[[[:digit:];]*[[:alpha:]] *\\)*")
+
+;; C-s: Control-Super or Control-Command on Mac
+(after! vertico
+  (define-key vertico-map (kbd "C-s-p") #'vertico-scroll-down)
+  (define-key vertico-map (kbd "C-s-n") #'vertico-scroll-up))
