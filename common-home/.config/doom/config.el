@@ -78,5 +78,11 @@
   (define-key vertico-map (kbd "C-s-p") #'vertico-scroll-down)
   (define-key vertico-map (kbd "C-s-n") #'vertico-scroll-up))
 
+;; I use back-tick quite often, so change the default org cdlatex-math-symbol from back-tick to C-M-`
+(after! cdlatex
+  (map! :map org-cdlatex-mode-map
+        "`"     nil
+        "C-M-`" #'cdlatex-math-symbol))
+
 ;; testing eglot & clangd
 ;; (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
