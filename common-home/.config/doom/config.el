@@ -77,3 +77,6 @@
 (after! vertico
   (define-key vertico-map (kbd "C-s-p") #'vertico-scroll-down)
   (define-key vertico-map (kbd "C-s-n") #'vertico-scroll-up))
+
+;; testing eglot & clangd
+;; (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))

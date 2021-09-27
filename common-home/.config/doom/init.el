@@ -94,7 +94,7 @@
        gist              ; interacting with github gists
        (lookup              ; navigate your code and its documentation
         +dictionary +offline +docsets)
-       lsp               ; M-x vscode
+       (lsp)               ; M-x vscode
        magit             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        pass              ; password manager for nerds
@@ -181,7 +181,7 @@
 
        :app
        ;;calendar
-       ;;emms
+       emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
        irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader

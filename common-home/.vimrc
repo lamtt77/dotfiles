@@ -527,7 +527,7 @@ autocmd vimrc BufReadPost fugitive:// setlocal bufhidden=delete
 " === end integration }}}
 
 " === All my custom and `steal` mappings start here {{{1
-" use `noremap` for almost everything, but `map` for `Plug` command, dot NOT comment at the end of map
+" use `noremap` for almost everything, but `map` for `Plug` command, do NOT comment at the end of map
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo, so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U>          <C-G>u<C-U>
@@ -583,9 +583,9 @@ nnoremap <leader>M   :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(
 nnoremap <leader>p   "*p
 
 " Fuzzy search in `pwd` directory (current project)
-nnoremap <silent> <leader>,         :FZF<cr>
+nnoremap <silent> <leader>.         :FZF<cr>
 " Fuzzy search in curent buffer directory
-nnoremap <silent> <leader>.         :Files <C-r>=expand("%:h")<cr>/<cr>
+nnoremap <silent> <leader>,         :Files <C-r>=expand("%:h")<cr>/<cr>
 nnoremap <silent> <leader><Enter>   :Buffers<cr>
 nnoremap <silent> <leader>L         :Lines<CR>
 nnoremap <silent> <leader>H         :History<CR>

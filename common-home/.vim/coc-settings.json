@@ -21,7 +21,7 @@
   "html.format.enable": true,
   "languageserver": {
     "golang": {
-      "command": "/opt/goworkspace/bin/gopls",
+      "command": "/opt/homebrew/bin/gopls",
       "args": ["-remote=auto"],
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
