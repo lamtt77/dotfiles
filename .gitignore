@@ -8,3 +8,4 @@ arch-home/.local/bin/nvr
 /macos-home/.config/nixpkgs/result
 /tags
 /macos-home/.config/karabiner/automatic_backups/*
+/common-home/.vim/autoload/plug.vim.old

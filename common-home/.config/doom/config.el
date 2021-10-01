@@ -73,10 +73,10 @@
 ;; Fix my zsh custom prompt (z4h) issue as per tramp hangs #6: https://www.emacswiki.org/emacs/TrampMode
 (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>].* *\\(\\[[[:digit:];]*[[:alpha:]] *\\)*")
 
-;; C-s: Control-Super or Control-Command on Mac
+;; C-s: Control-Super or Control-Command on Mac, a bit easier to press than Doom's default C-S-j/k for scrolling down/up minibuffer
 (after! vertico
-  (define-key vertico-map (kbd "C-s-p") #'vertico-scroll-down)
-  (define-key vertico-map (kbd "C-s-n") #'vertico-scroll-up))
+  (define-key vertico-map (kbd "C-s-j") #'vertico-scroll-up)
+  (define-key vertico-map (kbd "C-s-k") #'vertico-scroll-down))
 
 ;; I use back-tick quite often, so change the default org cdlatex-math-symbol from back-tick to C-M-`, :i is for insert state
 (after! cdlatex

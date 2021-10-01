@@ -49,13 +49,16 @@ set complete     +=kspell,d                " include #define or macro, and spell
 " set complete-=t                            " disable searching tags
 set completeopt   =longest,menuone,noselect
 
-set dictionary   +=/usr/share/dict/words    " sudo pacman -S words
+set dictionary   +=/usr/share/dict/words   " sudo pacman -S words
 
 set pastetoggle   =<F2>
 set history       =1000 " keep 1000 lines of command line history
 
 set timeoutlen    =500  " change back to default 1000ms if got issue
 set ttimeout            " time out for key codes
+
+" more scrollback lines for :term
+set termwinscroll =100000                  " default 10000
 
 " from https://github.com/vim/vim/issues/2588 - workaround to make vim recognize meta key as <M...> similar to gvim or nvim
 " with some caveats, but this will fix a delay when press <Esc> in vim if using meta key mapping
