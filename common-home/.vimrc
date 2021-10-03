@@ -650,20 +650,19 @@ nnoremap [<space>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
 nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
 " move lines
-nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
-nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
-" " save C-j and C-k for other things
-" nnoremap <silent> <C-k> :move-2<cr>
-" nnoremap <silent> <C-j> :move+<cr>
-" xnoremap <silent> <C-k> :move-2<cr>gv
-" xnoremap <silent> <C-j> :move'>+<cr>gv
+" nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
+" nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
+nnoremap <silent> <C-k> :move-2<cr>
+nnoremap <silent> <C-j> :move+<cr>
+xnoremap <silent> <C-k> :move-2<cr>gv
+xnoremap <silent> <C-j> :move'>+<cr>gv
 
-"" Markdown headings
-"nnoremap <leader>1 m`yypVr=``
-"nnoremap <leader>2 m`yypVr-``
-"nnoremap <leader>3 m`^i### <esc>``4l
-"nnoremap <leader>4 m`^i#### <esc>``5l
-"nnoremap <leader>5 m`^i##### <esc>``6l
+" Markdown headings
+nnoremap <leader>1 m`yypVr=``
+nnoremap <leader>2 m`yypVr-``
+nnoremap <leader>3 m`^i### <esc>``4l
+nnoremap <leader>4 m`^i#### <esc>``5l
+nnoremap <leader>5 m`^i##### <esc>``6l
 
 " #!! | Shebang, a good `steal`
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)

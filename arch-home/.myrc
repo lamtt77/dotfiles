@@ -1,32 +1,7 @@
-source ~/.aliases
+source $HOME/.config/myenv/aliases.common
 
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
-
-# gpg-agent will need to enable ssh support and allow pubkey in sshcontrol
-export GPG_TTY=$(tty)
-gpg-connect-agent updatestartuptty /bye >/dev/null
-
-# only change here if using directly xinitrc (i.e. not via LightDM)
-if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx ~/.xinitrc dwm
-  #exec startx ~/.xinitrc i3
-fi
-
-# use this temporarily till reboot
-source /etc/profile.d/nix{,-daemon}.sh
-
-# use fasd to replace for autojump
-eval "$(fasd --init auto)"
-
-# start doom-emacs daemon so that 2 options can be called:
-#   emacsclient -nc (nowait, newframe)
-#   emacsclient -a "" -t (for terminal program wait for the editor to finish like Mutt or Git)
-# emacs --with-profile doom-emacs --daemon
-
-# go for auto-suggestion, manually call for now till complete migration
-# exec fish
+alias emacsnw="TERM=xterm-direct emacs -nw"
+alias ec="emacsclient -nc"
+alias ect='emacsclient -a "" -t'
 
 # vim: ft=sh

@@ -1,7 +1,0 @@
-source $HOME/.config/myenv/aliases.common
-
-alias emacsnw="TERM=xterm-direct emacs -nw"
-alias ec="emacsclient -nc"
-alias ect='emacsclient -a "" -t'
-
-# vim: ft=sh

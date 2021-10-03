@@ -12,7 +12,7 @@ zstyle ':z4h:' auto-update-days '28'
 
 # Automaticaly wrap TTY with a transparent tmux ('integrated'), or start a
 # full-fledged tmux ('system'), or disable features that require tmux ('no').
-zstyle ':z4h:' start-tmux       'system'
+zstyle ':z4h:' start-tmux       'no'
 # Move prompt to the bottom when zsh starts up so that it's always in the
 # same position. Has no effect if start-tmux is 'no'.
 zstyle ':z4h:' prompt-at-bottom 'yes'
@@ -97,7 +97,6 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 ### LamT personalization start here
-[[ -e ~/.aliases ]] && source ~/.aliases
 [[ -e ~/.myrc ]] && source ~/.myrc
 
 # zsh4humans seems not set this yet

@@ -1,14 +1,15 @@
-export EDITOR='vim'
+source $HOME/.config/myenv/aliases.common
 
-# to avoid highlight grey out in comments
-export HIGHLIGHT_STYLE="base16/gruvbox-dark-medium"
-
-# fasd replaced autojump
-eval "$(fasd --init auto)"
-
-# Lam changed to use gpg agent instead of macos ssh default agent
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-# should I change to `gpg-agent --daemon`?
-gpgconf --launch gpg-agent
+## for emacs daemon, usage of export variable must surround with "
+# export EMACSAPP="~/.nix-profile/Applications/Emacs.app"
+# alias em="open $EMACSAPP"
+# alias emacs="$EMACSAPP/Contents/MacOS/Emacs"
+# see https://www.gnu.org/software/emacs/manual/html_mono/efaq.html#Colors-on-a-TTY
+alias emacsnw="TERM=xterm-direct emacs -nw"
+alias ec="emacsclient -nc"
+alias ect='emacsclient -a "" -t'
+# doom-emacs and spacemacs
+alias doom-emacs="emacs --with-profile doom-emacs &"
+alias spacemacs="emacs --with-profile spacemacs &"
 
 # vim: ft=sh

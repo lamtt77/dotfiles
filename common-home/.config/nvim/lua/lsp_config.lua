@@ -30,9 +30,15 @@ local custom_attach = function(client)
 	map('n','<leader>ep', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 end
 
-require('lspconfig').tsserver.setup{on_attach=custom_attach}
-require('lspconfig').clangd.setup{on_attach=custom_attach}
-require('lspconfig').sumneko_lua.setup{on_attach=custom_attach}
+-- require('lspconfig').tsserver.setup{on_attach=custom_attach}
+-- require('lspconfig').clangd.setup{on_attach=custom_attach}
+-- require('lspconfig').sumneko_lua.setup{on_attach=custom_attach}
+local lsp = require 'lspconfig'
+-- local lspfuzzy = require 'lspfuzzy'
+
+lsp.ccls.setup {}
+-- lsp.pylsp.setup {}
+-- lspfuzzy.setup {}  -- Make the LSP client use FZF instead of the quickfix list
 
 -- Uncomment to execute the extension test mentioned above.
 -- local function custom_codeAction_callback(_, _, action)

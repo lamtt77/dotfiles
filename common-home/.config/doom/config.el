@@ -74,9 +74,15 @@
 (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>].* *\\(\\[[[:digit:];]*[[:alpha:]] *\\)*")
 
 ;; C-s: Control-Super or Control-Command on Mac, a bit easier to press than Doom's default C-S-j/k for scrolling down/up minibuffer
-(after! vertico
-  (define-key vertico-map (kbd "C-s-j") #'vertico-scroll-up)
-  (define-key vertico-map (kbd "C-s-k") #'vertico-scroll-down))
+;; (after! vertico
+;;   (define-key vertico-map (kbd "C-s-j") #'vertico-scroll-up)
+;;   (define-key vertico-map (kbd "C-s-k") #'vertico-scroll-down))
+;;
+;; A bit more universal with this approach
+(when (featurep! :editor evil +everywhere)
+  (define-key! :keymaps +default-minibuffer-maps
+    "C-s-j"  #'scroll-up-command
+    "C-s-k"  #'scroll-down-command))
 
 ;; I use back-tick quite often, so change the default org cdlatex-math-symbol from back-tick to C-M-`, :i is for insert state
 (after! cdlatex
