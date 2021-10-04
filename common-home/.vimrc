@@ -57,12 +57,9 @@ set history       =1000 " keep 1000 lines of command line history
 set timeoutlen    =500  " change back to default 1000ms if got issue
 set ttimeout            " time out for key codes
 
-" more scrollback lines for :term
-set termwinscroll =100000                  " default 10000
-
 " from https://github.com/vim/vim/issues/2588 - workaround to make vim recognize meta key as <M...> similar to gvim or nvim
 " with some caveats, but this will fix a delay when press <Esc> in vim if using meta key mapping
-if !has('nvim') && !has('gui_running')
+if !has('gui_running')
   set ttimeoutlen=5
   " set up Meta to work properly for most keys in terminal vim
   " NOTE: these do not work: <m-space>,<m->>,<m-[>,<m-]>,<m-{up,down,left,right}>
@@ -178,29 +175,21 @@ set undoreload=10000
 set sessionoptions-=options
 set sessionoptions+=localoptions
 
+" more scrollback lines for :term, default 10000
+set termwinscroll=100000
+
 " System clipboard Ctrl-C or Ctrl-Shift-C will additionally go to `unnamedplus` if available
 if has('unnamedplus')
   " indepedently use of `+` for clipboard and `*` for autoslect
-  if has('nvim')
-    set clipboard^=unnamedplus
-  else
-    set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
-  endif
+  set clipboard^=unnamedplus,autoselect,exclude:cons\|linux
 else
   set clipboard^=unnamed
 endif
 
-" set shell
-"if executable('zsh')
-"  set shell=zsh
-"else
-"  set shell=bash
-"endif
-
 if has('mouse')
   set mouse=a
 endif
-" }}}
+" }}}1
 
 " === PLUGINs initialization {{{1
 packadd! matchit    " built-in plugin which provides smart % XML/HTML matching.
@@ -245,8 +234,6 @@ Plug 'easymotion/vim-easymotion',   { 'on': '<plug>(easymotion-overwin-f2)' }
 " ranger can do many things netrw can't
 Plug 'francoiscabrol/ranger.vim'    | let g:ranger_map_keys = 0
 
-Plug 'voldikss/vim-floaterm'
-
 Plug 'mhinz/vim-signify'
   let g:signify_vcs_list          = ['git']
   let g:signify_skip_filetype     = { 'journal': 1 }
@@ -255,7 +242,7 @@ Plug 'mhinz/vim-signify'
   " let g:signify_sign_changedelete = '│'
 Plug 'mhinz/vim-grepper',           { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 " TODO vim project for one specific vimrc / project + startify for startup cow
-" Plug 'amiorin/vim-project' | Plug 'mhinz/vim-startify'
+" Plug 'amiorin/vim-project'
 Plug 'mhinz/vim-startify'
   let g:startify_change_to_dir       = 0
   let g:startify_custom_header       = 'startify#pad(startify#fortune#boxed())'
@@ -292,9 +279,6 @@ Plug 'Lnl7/vim-nix'
 " Plug 'junegunn/limelight.vim'   " Dim paragraphs above and below the active paragraph
 " Plug 'vimwiki/vimwiki'
 " Plug 'lervag/vimtex'
-"   if has('nvim')
-"     let g:vimtex_compiler_progname = 'nvr'
-"   endif
 
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'dense-analysis/ale'
@@ -323,16 +307,13 @@ Plug 'editorconfig/editorconfig-vim'
   let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " fact-check: surprisingly coc-nvim performs fastest in my 10-year old MacbookPro, thus keeping despite annoying nodejs services
-if has('mac') && !has('nvim-0.5')
+if has('mac')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   source ~/.vim/coc-lam.vim
   " hack to avoid conflicting issue with vim-endwise, see https://github.com/tpope/vim-endwise/issues/22
   let g:endwise_no_mappings = v:true
   inoremap <expr> <Plug>CustomCocCR pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
   imap <CR> <Plug>CustomCocCR<Plug>DiscretionaryEnd
-elseif has('nvim-0.5')
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'nvim-lua/completion-nvim'
 else
   Plug 'prabirshrestha/vim-lsp'
   Plug 'prabirshrestha/asyncomplete.vim'
@@ -434,11 +415,6 @@ augroup quickfix
   autocmd QuickFixCmdPost cgetexpr cwindow
   autocmd QuickFixCmdPost lgetexpr lwindow
 augroup END
-
-" === vim-floaterm
-command! NNN FloatermNew nnn
-command! LF FloatermNew lf
-command! RangerNvim FloatermNew ranger
 
 " === vim-grepper
 let g:grepper = {}
@@ -704,12 +680,6 @@ xnoremap <leader>r<space>           "sy:%s/\<<C-r>s\>//g<left><left>
 nnoremap <leader>rg                 :Ranger<cr>
 nnoremap <leader>rt                 :RangerCurrentFileNewTab<cr>
 
-" vim-floaterm mappings, ranger only draw correctly in nvim unfortunately, thus use the above mapping
-nnoremap <leader>tr                 :RangerNvim<cr>
-nnoremap <leader>tl                 :LF<cr>
-" nnn is fastest with shortest hotkeys
-nnoremap <leader>tn                 :NNN<cr>
-
 " === vim-easy-align mappings
 " interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
@@ -770,6 +740,6 @@ nnoremap <leader>gpl :Gpull<cr>
 " noremap <silent> <leader>ts :Step<cr>
 " noremap <silent> <leader>to :Over<cr>
 
-" === My custom mapping end here }}}
+" === My custom mapping end here }}}1
 
 " vim: sts=2 sw=2 et:foldmethod=marker

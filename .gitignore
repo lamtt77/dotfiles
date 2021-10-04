@@ -9,3 +9,4 @@ arch-home/.local/bin/nvr
 /tags
 /macos-home/.config/karabiner/automatic_backups/*
 /common-home/.vim/autoload/plug.vim.old
+/common-home/.config/nvim/autoload/
