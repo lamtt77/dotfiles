@@ -108,6 +108,17 @@ else
   " === All my custom and `steal` mappings start here {{{1
   " use `noremap` for almost everything, but `map` for `Plug` command, do NOT comment at the end of map
 
+  nnoremap Y              y$
+
+  " maintain visual mode after shifting > and <
+  vnoremap < <gv
+  vnoremap > >gv
+
+  " Use <C-L> to clear the highlighting of :set hlsearch.
+  if maparg('<C-L>', 'n') ==# ''
+    nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+  endif
+
   " vim-floaterm mappings
   nnoremap <leader>tr                 :RangerNvim<cr>
   nnoremap <leader>tl                 :LF<cr>

@@ -1,4 +1,4 @@
-source $HOME/.config/myenv/aliases.common
+source $HOME/.config/myenv/.myrc-common
 
 ## for emacs daemon, usage of export variable must surround with "
 # export EMACSAPP="~/.nix-profile/Applications/Emacs.app"
