@@ -446,7 +446,7 @@ autocmd vimrc BufReadPost *
 autocmd vimrc BufWritePost .vimrc so ~/.vimrc
 
 " customize by filetype
-autocmd vimrc FileType cpp,cxx,h,hpp,c setlocal ts=8 sw=4 noet
+autocmd vimrc FileType cpp,cxx,h,hpp,c setlocal ts=8 sts=4 sw=4 noet
 autocmd vimrc FileType go,py setlocal ts=8 sw=4 expandtab
 autocmd vimrc Filetype vim,js,ts,html setlocal sts=2 sw=2 expandtab
 
@@ -742,4 +742,4 @@ nnoremap <leader>gpl :Gpull<cr>
 
 " === My custom mapping end here }}}1
 
-" vim: sts=2 sw=2 et:foldmethod=marker
+" vim:sts=2:sw=2:et:fdm=marker

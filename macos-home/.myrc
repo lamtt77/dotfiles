@@ -12,4 +12,7 @@ alias ect='emacsclient -a "" -t'
 alias doom-emacs="emacs --with-profile doom-emacs &"
 alias spacemacs="emacs --with-profile spacemacs &"
 
+# fasd replaced autojump
+eval "$(fasd --init auto)"
+
 # vim: ft=sh

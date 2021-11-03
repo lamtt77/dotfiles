@@ -10,8 +10,8 @@ export HIGHLIGHT_STYLE="base16/gruvbox-dark-medium"
 # force default provider for vagrant
 # export VAGRANT_DEFAULT_PROVIDER=vmware_esxi
 # export PACKER_CACHE_DIR=~/.packer.d/packer_cache
-# export PATH="/Applications/VMware OVF Tool:$PATH"
 
+export PATH="/Applications/VMware OVF Tool:$PATH"
 export PATH=$HOME/.local/bin:$PATH
 
 # do the following if missing ca cert when reboot, from https://luca.cambiaghi.me/nix-package-manager
@@ -59,8 +59,10 @@ export PATH=$PATH:$GOBIN
 # maybe we should not change this because vertico is going to use 'rg' anyway
 # export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 
-# fasd replaced autojump
-eval "$(fasd --init auto)"
+# openjdk@11
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+# for compilers to find openjdk@11
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk@11/include"
 
 # Lam changed to use gpg agent instead of macos ssh default agent
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)

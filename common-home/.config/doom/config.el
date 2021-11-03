@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Lam Tran"
-      user-mail-address "lam@lamhub.com")
+(setq user-full-name "LamT"
+      user-mail-address "lamtt77@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -67,7 +67,9 @@
 ;;       (format "%s\\|%s"
 ;;                     vc-ignore-dir-regexp
 ;;                     tramp-file-name-regexp))
-;; (setq tramp-verbose 10)
+;;
+;; set verbose to 10 in rare case
+;; (setq tramp-verbose 6)
 ;; (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 ;; Fix my zsh custom prompt (z4h) issue as per tramp hangs #6: https://www.emacswiki.org/emacs/TrampMode
@@ -92,3 +94,11 @@
 
 ;; testing eglot & clangd
 ;; (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
+
+;; from https://www.reddit.com/r/DoomEmacs/comments/jl6p9x/whitespacemode/
+;; LamT: FIXME this will get doom's default whitespace-mode broken
+(defun me:see-all-whitespace () (interactive)
+       (setq whitespace-style (default-value 'whitespace-style))
+       (setq whitespace-display-mappings (default-value 'whitespace-display-mappings))
+       (whitespace-mode 'toggle))
+(global-set-key (kbd "C-<f4>") 'me:see-all-whitespace)
