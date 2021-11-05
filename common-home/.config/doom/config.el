@@ -108,7 +108,7 @@
        (whitespace-mode 'toggle))
 (global-set-key (kbd "C-<f4>") 'me:see-all-whitespace)
 
-;; if do not like to load ranger by default
+;; if not like to load ranger by default
 ;; (ranger-override-dired-mode nil)
 ;; (setq ranger-show-hidden t)
 ;; (setq ranger-cleanup-on-disable t)

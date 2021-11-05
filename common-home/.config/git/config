@@ -8,6 +8,13 @@ default = current
 autostash = true
 autosquash = true
 
+[commit]
+gpgsign = true
+
+[diff "gpg"]
+binary = true
+textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+
 [user]
 signingkey = 0x822F580156A9B1FC
 name = LamT
