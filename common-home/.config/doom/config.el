@@ -9,6 +9,12 @@
 (setq user-full-name "LamT"
       user-mail-address "lamtt77@gmail.com")
 
+;; List of gpg keys for file encryption here, else doom will scan for all
+;; available 'Encrypt' keys in the key-ring
+;; lamtt77@gmail.com and lam@lamhub.com
+;; (setq epa-file-encrypt-to '("0xA332D9C1F057A785" "0x1AEB38F471BDE5B2"))
+(setq epa-file-encrypt-to '("0xA332D9C1F057A785"))
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -22,7 +28,6 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-;; LamT
 (if IS-LINUX (setq doom-font (font-spec :family "Liberation Mono" :size 10.5)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -102,3 +107,9 @@
        (setq whitespace-display-mappings (default-value 'whitespace-display-mappings))
        (whitespace-mode 'toggle))
 (global-set-key (kbd "C-<f4>") 'me:see-all-whitespace)
+
+;; if do not like to load ranger by default
+;; (ranger-override-dired-mode nil)
+;; (setq ranger-show-hidden t)
+;; (setq ranger-cleanup-on-disable t)
+;; (setq ranger-cleanup-eagerly t)

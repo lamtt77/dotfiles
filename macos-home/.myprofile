@@ -55,9 +55,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 export GOBIN=$HOME/go/bin
 export PATH=$PATH:$GOBIN
 
-# using gnu grep to satisfy emacs vertico (supporting async look-ahead search), TODO: check import over existing MacOS tools
-# maybe we should not change this because vertico is going to use 'rg' anyway
-# export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+# using gnu grep to satisfy emacs vertico (supporting async look-ahead search), TODO: check impact over existing MacOS tools
+export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+# export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 # openjdk@11
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"

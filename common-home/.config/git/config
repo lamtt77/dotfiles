@@ -9,10 +9,7 @@ autostash = true
 autosquash = true
 
 [user]
-# signingkey = 17BAE317A746B44C
-# name = LamT
-# email = lam@lamhub.com
-signingkey = 2C2E2A8208E38196
+signingkey = 0x822F580156A9B1FC
 name = LamT
 email = lamtt77@gmail.com
 useConfigOnly = true
