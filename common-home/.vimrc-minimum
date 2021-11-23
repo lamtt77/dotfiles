@@ -2,4 +2,4 @@ source $VIMRUNTIME/defaults.vim
 
 set modeline
 
-" vim:sts=4:sw=4:et:
+" vim:sts=4:sw=4:noet:
