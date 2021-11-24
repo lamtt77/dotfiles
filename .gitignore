@@ -10,3 +10,4 @@ arch-home/.local/bin/nvr
 /macos-home/.config/karabiner/automatic_backups/*
 /common-home/.vim/autoload/plug.vim.old
 /common-home/.config/nvim/autoload/
+/common-home/.config/.spacemacs.d/.spacemacs.env

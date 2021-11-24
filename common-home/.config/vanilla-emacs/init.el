@@ -220,12 +220,12 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package tree-sitter
-  :hook (python-mode . (lambda ()
-                         (require 'tree-sitter)
-                         (require 'tree-sitter-langs)
-                         (require 'tree-sitter-hl)
-                         (tree-sitter-hl-mode))))
+;; (use-package tree-sitter
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'tree-sitter)
+;;                          (require 'tree-sitter-langs)
+;;                          (require 'tree-sitter-hl)
+;;                          (tree-sitter-hl-mode))))
 
 (use-package general
   :demand t
@@ -446,33 +446,34 @@
 ;;   (evil-set-undo-system 'undo-tree))	; fixed undo-tree not loaded issue in evil-mode
 
 (use-package ranger
-  :config
-  (setq ranger-show-hidden t))
+    :config
+    (setq ranger-show-hidden t))
 
-(use-package vterm
-  :general
-  (my/leader-keys
-    "'" 'vterm-other-window)
-  :config
-  (setq ;; vterm-shell (executable-find "fish")
-   vterm-max-scrollback 10000))
+  (use-package vterm
+    :general
+    (my/leader-keys
+      "'" 'vterm-other-window)
+    :config
+    (setq ;; vterm-shell (executable-find "fish")
+     vterm-max-scrollback 10000))
 
-(use-package dired
-  :straight nil
-  :ensure nil
-  :bind (("C-x C-j" . dired-jump)
-         ("C-x 4 C-j" . dired-jump-other-window))
-  :custom ((dired-listing-switches "-agho --group-directories-first")))
+  (use-package dired
+    :straight nil
+    :ensure nil
+    :bind (("C-x C-j" . dired-jump)
+         ("C-x 4 C-j" . dired-jump-other-window)))
+;; below required `brew install coreutils` on MacOS, see https://github.com/d12frosted/homebrew-emacs-plus/issues/383
+;; :custom ((dired-listing-switches "-agho --group-directories-first")))
 
-(use-package dired-single
-  :after dired)
+  (use-package dired-single
+    :after dired)
 
-(use-package dired-open
-  :config
-  ;; Doesn't work as expected!
-  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
-  (setq dired-open-extensions '(("png" . "feh")
-                                ("mkv" . "mpv"))))
+  (use-package dired-open
+    :config
+    ;; Doesn't work as expected!
+    ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+    (setq dired-open-extensions '(("png" . "feh")
+                                  ("mkv" . "mpv"))))
 
 ;; is this still need if using counsel?
 (use-package deadgrep
@@ -847,7 +848,7 @@
 
 (use-package gnuplot)
 
-(use-package org-roam)
+;; (use-package org-roam)
 
 (defun my/org-font-setup ()
   ;; Replace list hyphen with dot
@@ -879,9 +880,9 @@
 
 ;; from https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory
 (defun my/org-babel-tangle-config ()
-  "If the current file is in '~/dotfiles/common-home/', the code blocks are tangled"
+  "If the current file is in '~/dotfiles/common-home/.config/vanilla-emacs', the code blocks are tangled"
   (when (equal (file-name-directory (directory-file-name buffer-file-name))
-               (concat (getenv "HOME") "/dotfiles/common-home/.emacs.d/"))
+               (concat (getenv "HOME") "/dotfiles/common-home/.config/vanilla-emacs/"))
     ;; Dynamic scoping to the rescue
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle))))

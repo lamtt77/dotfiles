@@ -3,6 +3,7 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el
 
 * LamT Emacs Literate Config
+** Migrated notes: I mainly use the pre-cook doom-emacs nowadays, so this might get out-of-synced
 ** early-init.el
 #+begin_src emacs-lisp :tangle early-init.el
   ;; NOTE: early-init.el is now generated from readme.org.  Please edit that file instead
@@ -28,6 +29,9 @@
   ;; compiled ahead-of-time when they are installed and site files are compiled
   ;; when gccemacs is installed.
   (setq comp-deferred-compilation nil)
+
+  ;; see https://systemcrafters.cc/emacs-tips/multiple-configurations-with-chemacs2
+  (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
 #+end_src
 ** Timer TIC - Lexcial check!
 #+begin_src emacs-lisp
@@ -103,10 +107,10 @@
   ;; M-x use-package-report to see the statictics
   ;; (setq use-package-compute-statistics t)
 
-  (use-package benchmark-init
-    :config
-    ;; To disable collection of benchmark data after init is done.
-    (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  ;; (use-package benchmark-init
+  ;;   :config
+  ;;   ;; To disable collection of benchmark data after init is done.
+  ;;   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
   ;; performance tuning: garbage collection hack
   (use-package gcmh
@@ -276,12 +280,12 @@
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 
-  (use-package tree-sitter
-    :hook (python-mode . (lambda ()
-                           (require 'tree-sitter)
-                           (require 'tree-sitter-langs)
-                           (require 'tree-sitter-hl)
-                           (tree-sitter-hl-mode))))
+  ;; (use-package tree-sitter
+  ;;   :hook (python-mode . (lambda ()
+  ;;                          (require 'tree-sitter)
+  ;;                          (require 'tree-sitter-langs)
+  ;;                          (require 'tree-sitter-hl)
+  ;;                          (tree-sitter-hl-mode))))
   #+end_src
 ** General bindings
 #+begin_src emacs-lisp
@@ -531,8 +535,9 @@
     :straight nil
     :ensure nil
     :bind (("C-x C-j" . dired-jump)
-           ("C-x 4 C-j" . dired-jump-other-window))
-    :custom ((dired-listing-switches "-agho --group-directories-first")))
+         ("C-x 4 C-j" . dired-jump-other-window)))
+;; below required `brew install coreutils` on MacOS, see https://github.com/d12frosted/homebrew-emacs-plus/issues/383
+;; :custom ((dired-listing-switches "-agho --group-directories-first")))
 
   (use-package dired-single
     :after dired)
@@ -551,7 +556,7 @@
     :config
     (global-set-key (kbd "<f5>") #'deadgrep))
 #+end_src
-** Counsel, swiper, ivy,  ivy-rich and diminish
+** Counsel, swiper, ivy, ivy-rich and diminish
 #+begin_src emacs-lisp
   (use-package diminish)
 
@@ -964,7 +969,7 @@
 ** Everything Org!
 *** org-roam
 #+begin_src emacs-lisp
-  (use-package org-roam)
+  ;; (use-package org-roam)
 #+end_src
 *** org-font-setup
 #+begin_src emacs-lisp
@@ -1000,9 +1005,9 @@
 #+begin_src emacs-lisp
   ;; from https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory
   (defun my/org-babel-tangle-config ()
-    "If the current file is in '~/dotfiles/common-home/', the code blocks are tangled"
+    "If the current file is in '~/dotfiles/common-home/.config/vanilla-emacs', the code blocks are tangled"
     (when (equal (file-name-directory (directory-file-name buffer-file-name))
-                 (concat (getenv "HOME") "/dotfiles/common-home/.emacs.d/"))
+                 (concat (getenv "HOME") "/dotfiles/common-home/.config/vanilla-emacs/"))
       ;; Dynamic scoping to the rescue
       (let ((org-confirm-babel-evaluate nil))
         (org-babel-tangle))))
@@ -1251,13 +1256,6 @@
 ** WIP - Work In Progress
 *** Company / auto-complete in org code blocks
 Add lsp-mode when a specific language activated
-*** Some temp testing
-#+begin_src emacs-lisp :tangle ~/temp/lam-testing.conf
-  (+ 55 100)
-
-  value=<<the-value()>>
-#+end_src
-
 ** Timer TOC
 #+begin_src emacs-lisp
   ;; ===

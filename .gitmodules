@@ -1,0 +1,3 @@
+[submodule "common-home/.emacs.d"]
+	path = common-home/.emacs.d
+	url = https://github.com/plexus/chemacs2

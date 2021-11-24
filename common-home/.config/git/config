@@ -20,3 +20,6 @@ signingkey = 0xECEF8844ACFAA4D4
 name = LamT
 email = lamtt77@gmail.com
 useConfigOnly = true
+
+[github]
+user = lamtt77

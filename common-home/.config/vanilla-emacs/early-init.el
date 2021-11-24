@@ -21,3 +21,6 @@
 ;; compiled ahead-of-time when they are installed and site files are compiled
 ;; when gccemacs is installed.
 (setq comp-deferred-compilation nil)
+
+;; see https://systemcrafters.cc/emacs-tips/multiple-configurations-with-chemacs2
+(add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
