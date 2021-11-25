@@ -1,13 +1,4 @@
-.DS_Store
-.lam
-.lamprivate
-__init__.py
-__pycache__
-arch-home/.local/bin/nvr
+*.lamt
+*.lamtprivate
+*.lamtsecret
 .authinfo.gpg
-/macos-home/.config/nixpkgs/result
-/tags
-/macos-home/.config/karabiner/automatic_backups/*
-/common-home/.vim/autoload/plug.vim.old
-/common-home/.config/nvim/autoload/
-/common-home/.config/.spacemacs.d/.spacemacs.env

@@ -1,25 +1,28 @@
 [branch]
-autosetuprebase = always
+	autosetuprebase = always
 
 [push]
-default = current
+	default = current
 
 [rebase]
-autostash = true
-autosquash = true
+	autostash = true
+	autosquash = true
 
 [commit]
-gpgsign = true
+	gpgsign = true
 
 [diff "gpg"]
-binary = true
-textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+	binary = true
+	textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+
+[core]
+	excludesfile = ~/.globalignore
 
 [user]
-signingkey = 0xECEF8844ACFAA4D4
-name = LamT
-email = lamtt77@gmail.com
-useConfigOnly = true
+	signingkey = 0xECEF8844ACFAA4D4
+	name = LamT
+	email = lamtt77@gmail.com
+	useConfigOnly = true
 
 [github]
-user = lamtt77
+	user = lamtt77
