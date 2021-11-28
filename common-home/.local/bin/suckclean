@@ -1,0 +1,14 @@
+#!/bin/sh
+
+branchnow="$(git branch --show-current)"
+dirnow="$(basename "$PWD")"
+
+if [ "$branchnow" = "master" ]; then
+    if [ "$dirnow" = "st" ] || [ "$dirnow" = "dwm" ] || [ "$dirnow" = "dmenu" ] || [ "$dirnow" = "slstatus" ]; then
+        make clean && rm config.h && git reset --hard origin/master
+    else
+        echo "Not a suckless repository"
+    fi
+else
+    echo "Not a suckless branch"
+fi
