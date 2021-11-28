@@ -1,3 +1,9 @@
+[init]
+	defaultBranch = main
+
+[core]
+	excludesfile = ~/.globalignore
+
 [branch]
 	autosetuprebase = always
 
@@ -15,8 +21,32 @@
 	binary = true
 	textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
 
-[core]
-	excludesfile = ~/.globalignore
+[diff]
+    colorMoved = default
+
+[pager]
+	diff = delta
+	log = delta
+	reflog = delta
+	show = delta
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[delta]
+    features = decorations
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
 
 [user]
 	signingkey = 0xECEF8844ACFAA4D4
