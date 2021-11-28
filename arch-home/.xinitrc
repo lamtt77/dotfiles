@@ -64,7 +64,7 @@ case $session in
     i3|i3wm           ) exec i3;;
     # call `startdwm` instead of `exec dwm` to loop reload config (killall xinit/lightdm) without restart all apps
     #dwm               ) startdwm;;
-    dwm               ) (conky | dwm-setstatus) & startdwm;;
+    dwm               ) (conky | dwmstatus) & startdwm;;
     kde               ) exec startplasma-x11;;
     xfce|xfce4        ) exec startxfce4;;
     # No known session, try to run it as command
