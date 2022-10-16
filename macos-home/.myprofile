@@ -12,7 +12,7 @@ export HIGHLIGHT_STYLE="base16/gruvbox-dark-medium"
 # export PACKER_CACHE_DIR=~/.packer.d/packer_cache
 
 export PATH="/Applications/VMware OVF Tool:$PATH"
-export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/.local/private:/usr/local/bin:$PATH
 
 # do the following if missing ca cert when reboot, from https://luca.cambiaghi.me/nix-package-manager
 # LamT: reason was due to not running suggested testing step right-after installed nix
