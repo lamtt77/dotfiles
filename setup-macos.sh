@@ -5,3 +5,18 @@
 
 stow -vv --stow macos-home/ -t ~/
 stow -vv --stow common-home/ -t ~/
+
+# some files needed to manually copy/sync, for instance, Safari won't read symlink config file
+MANUAL_DIR="macos-sync"
+
+echo "\nSyncing $MANUAL_DIR..."
+
+copy() {
+  orig_file="$MANUAL_DIR/$1"
+  dest_file="$2"
+
+  #cp -vR "$orig_file" "$dest_file/$1"
+  rsync -ravh "$orig_file" "$dest_file/$1"
+}
+
+copy "Library/" "$HOME"
