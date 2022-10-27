@@ -9,6 +9,10 @@
 (setq user-full-name "LamT"
       user-mail-address "lamtt77@gmail.com")
 
+;; hack to enable magit when running directly doom-emacs in graphics mode
+(setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
+(shell-command "gpgconf --launch gpg-agent")
+
 ;; List of gpg keys for file encryption here, else doom will scan for all
 ;; available 'Encrypt' keys in the key-ring
 (setq epa-file-encrypt-to '("0xA332D9C1F057A785"))
