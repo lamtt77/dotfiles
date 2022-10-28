@@ -11,8 +11,6 @@
 
 ;; List of gpg keys for file encryption here, else doom will scan for all
 ;; available 'Encrypt' keys in the key-ring
-;; lamtt77@gmail.com and lam@lamhub.com
-;; (setq epa-file-encrypt-to '("0xA332D9C1F057A785" "0x1AEB38F471BDE5B2"))
 (setq epa-file-encrypt-to '("0xA332D9C1F057A785"))
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -35,6 +33,9 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-gruvbox)
+
+;; hard-coded for my large monitor
+(setq default-frame-alist '((left . 240) (width . 268) (top . 65) (height . 78)))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -81,11 +82,6 @@
 (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>].* *\\(\\[[[:digit:];]*[[:alpha:]] *\\)*")
 
 ;; C-s: Control-Super or Control-Command on Mac, a bit easier to press than Doom's default C-S-j/k for scrolling down/up minibuffer
-;; (after! vertico
-;;   (define-key vertico-map (kbd "C-s-j") #'vertico-scroll-up)
-;;   (define-key vertico-map (kbd "C-s-k") #'vertico-scroll-down))
-;;
-;; A bit more universal with this approach
 (when (featurep! :editor evil +everywhere)
   (define-key! :keymaps +default-minibuffer-maps
     "C-s-j"  #'scroll-up-command
