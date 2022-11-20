@@ -19,6 +19,7 @@
 
 [diff "gpg"]
 	binary = true
+	# textconv = gpg --no-tty --decrypt
 	textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
 
 [diff]
@@ -56,3 +57,7 @@
 
 [github]
 	user = lamtt77
+
+[safe]
+	directory = /Volumes/Lab/kernel/linux
+	directory = /Volumes/Lab/nix/nixpkgs

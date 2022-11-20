@@ -9,9 +9,15 @@
 (setq user-full-name "LamT"
       user-mail-address "lamtt77@gmail.com")
 
-;; hack to enable magit when running directly doom-emacs in graphics mode
-(setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
-(shell-command "gpgconf --launch gpg-agent")
+(if IS-MAC
+    ;; hack to enable magit when running directly doom-emacs in graphics mode
+    (setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
+  (shell-command "gpgconf --launch gpg-agent")
+
+  ;; Restore right-option as meta changed by doom-emacs https://github.com/hlissner/doom-emacs/issues/4178
+  (setq mac-right-option-modifier 'meta
+        ns-right-option-modifier  'meta)
+  )
 
 ;; List of gpg keys for file encryption here, else doom will scan for all
 ;; available 'Encrypt' keys in the key-ring
@@ -67,10 +73,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; Restore right-option as meta changed by doom-emacs https://github.com/hlissner/doom-emacs/issues/4178
-(setq mac-right-option-modifier 'meta
-      ns-right-option-modifier  'meta)
-
 ;; LamT - tramp slowness issue, does not seem to get improved
 ;; (setq remote-file-name-inhibit-cache nil)
 ;; (setq vc-ignore-dir-regexp
@@ -84,12 +86,6 @@
 
 ;; Fix my zsh custom prompt (z4h) issue as per tramp hangs #6: https://www.emacswiki.org/emacs/TrampMode
 (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>].* *\\(\\[[[:digit:];]*[[:alpha:]] *\\)*")
-
-;; C-s: Control-Super or Control-Command on Mac, a bit easier to press than Doom's default C-S-j/k for scrolling down/up minibuffer
-(when (featurep! :editor evil +everywhere)
-  (define-key! :keymaps +default-minibuffer-maps
-    "C-s-j"  #'scroll-up-command
-    "C-s-k"  #'scroll-down-command))
 
 ;; I use back-tick quite often, so change the default org cdlatex-math-symbol from back-tick to C-M-`, :i is for insert state
 (after! cdlatex

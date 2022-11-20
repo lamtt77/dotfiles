@@ -90,7 +90,7 @@ set wildmenu            " display completion matches in a status line
 set suffixes     +=.a,.1,.class
 set suffixesadd  +=.lua
 set wildignore   +=*.o,*.so,*.zip,*.png,*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-set wildoptions   =tagfile
+set wildoptions   =tagfile,fuzzy
 
 set laststatus    =2
 set scrolloff     =3

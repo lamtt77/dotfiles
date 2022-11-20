@@ -1,5 +1,5 @@
 {
-  "settingsVersion": "1.66",
+  "settingsVersion": "1.67.2",
   "exclusionRules": [
     {
       "pattern": "https?://mail.google.com/*",
@@ -9,7 +9,7 @@
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "# Insert your preferred key mappings here.\nmap K previousTab\nmap J nextTab",
+  "keyMappings": "map J nextTab\nmap K previousTab",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
