@@ -12,12 +12,12 @@
 (if IS-MAC
     ;; hack to enable magit when running directly doom-emacs in graphics mode
     (setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
-  (shell-command "gpgconf --launch gpg-agent")
+  (shell-command "gpgconf --launch gpg-agent"))
 
+(if IS-MAC
   ;; Restore right-option as meta changed by doom-emacs https://github.com/hlissner/doom-emacs/issues/4178
   (setq mac-right-option-modifier 'meta
-        ns-right-option-modifier  'meta)
-  )
+        ns-right-option-modifier  'meta))
 
 ;; List of gpg keys for file encryption here, else doom will scan for all
 ;; available 'Encrypt' keys in the key-ring
