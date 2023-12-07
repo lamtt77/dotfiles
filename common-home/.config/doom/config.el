@@ -9,12 +9,10 @@
 (setq user-full-name "LamT"
       user-mail-address "lamtt77@gmail.com")
 
-(if IS-MAC
-    ;; hack to enable magit when running directly doom-emacs in graphics mode
-    (setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
-  (shell-command "gpgconf --launch gpg-agent"))
-
-(if IS-MAC
+(when IS-MAC
+  ;; hack to enable magit when running directly doom-emacs in graphics mode
+  (setenv "SSH_AUTH_SOCK" (concat (getenv "HOME") "/.gnupg/S.gpg-agent.ssh"))
+  (shell-command "gpgconf --launch gpg-agent")
   ;; Restore right-option as meta changed by doom-emacs https://github.com/hlissner/doom-emacs/issues/4178
   (setq mac-right-option-modifier 'meta
         ns-right-option-modifier  'meta))
@@ -36,6 +34,10 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
+(if IS-MAC
+    (setq doom-font (font-spec :family "Monaco Nerd Font" :size 14 :weight 'light)
+          doom-variable-pitch-font (font-spec :family "LiterationSans Nerd Font" :size 15)))
+
 (if IS-LINUX (setq doom-font (font-spec :family "Liberation Mono" :size 10.5)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -44,8 +46,10 @@
 (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-gruvbox)
 
-;; hard-coded for my large monitor
-(setq default-frame-alist '((left . 240) (width . 268) (top . 65) (height . 78)))
+;; hard-coded for my large monitor iMac
+;; (setq default-frame-alist '((left . 240) (width . 268) (top . 65) (height . 78)))
+;; MacAir15
+(setq default-frame-alist '((left . 0) (width . 211) (top . 40) (height . 78)))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
