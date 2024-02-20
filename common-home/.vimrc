@@ -306,20 +306,10 @@ Plug 'SirVer/ultisnips'
 Plug 'editorconfig/editorconfig-vim'
   let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-" fact-check: surprisingly coc-nvim performs fastest in my 10-year old MacbookPro, thus keeping despite annoying nodejs services
-if has('mac')
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  source ~/.vim/coc-lam.vim
-  " hack to avoid conflicting issue with vim-endwise, see https://github.com/tpope/vim-endwise/issues/22
-  let g:endwise_no_mappings = v:true
-  inoremap <expr> <Plug>CustomCocCR pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-  imap <CR> <Plug>CustomCocCR<Plug>DiscretionaryEnd
-else
-  Plug 'prabirshrestha/vim-lsp'
-  Plug 'prabirshrestha/asyncomplete.vim'
-  Plug 'prabirshrestha/asyncomplete-lsp.vim'
-  source ~/.vim/vim-lsp-lam.vim
-endif
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+source ~/.vim/vim-lsp-lam.vim
 
 " Dictionnary, thesaurus... https://github.com/Phantas0s/.dotfiles/blob/dd7f9c85353347fdf76e4847063745bacc390460/nvim/init.vim
 Plug 'reedes/vim-lexical'

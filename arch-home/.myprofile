@@ -26,9 +26,6 @@ if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   #exec startx ~/.xinitrc i3
 fi
 
-# use this temporarily till reboot
-source /etc/profile.d/nix{,-daemon}.sh
-
 # use fasd to replace for autojump
 eval "$(fasd --init auto)"
 
