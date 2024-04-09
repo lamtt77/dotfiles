@@ -1,0 +1,31 @@
+/* ref: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/TextDefaultsBindings/TextDefaultsBindings.html */
+/* ~/Library/KeyBindings/DefaultKeyBinding.dict */
+ {
+      /* Additional Emacs bindings for MacOS */
+      "~f"    = "moveWordForward:";
+      "~b"    = "moveWordBackward:";
+      "~<" = "moveToBeginningOfDocument:";
+      "~>" = "moveToEndOfDocument:";
+      "~v"    = "pageUp:";
+      "^v"    = "pageDown:";
+
+      "~d"    = "deleteWordForward:";
+      "~^h"   = "deleteWordBackward:";
+      "~\010" = "deleteWordBackward:";  /* Option-backspace */
+      "~\177" = "deleteWordBackward:";  /* Option-delete */
+
+      "^/"    = "undo:";
+      "~/"    = "complete:";
+      /* Escape should really be complete: */
+      /* "\033" = "complete:";  Escape */
+
+      "^g"    = "_cancelKey:";
+      "^a"    = "moveToBeginningOfLine:";
+      "^e"    = "moveToEndOfLine:";
+
+      "~c"	  = "capitalizeWord:"; /* M-c */
+      "~u"	  = "uppercaseWord:";	 /* M-u */
+      "~l"	  = "lowercaseWord:";	 /* M-l */
+      "^t"	  = "transpose:";      /* C-t */
+      "~t"	  = "transposeWords:"; /* M-t */
+}
