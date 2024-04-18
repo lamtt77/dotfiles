@@ -2,3 +2,5 @@
 *.lamtprivate
 *.lamtsecret
 .authinfo.gpg
+lamt-secrets
+lamt-private
